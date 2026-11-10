@@ -1,0 +1,42 @@
+[gd_scene format=3 uid="uid://cu7571ykwaeo2"]
+
+[ext_resource type="PackedScene" path="res://scenes/player/player.tscn" id="1_player"]
+[ext_resource type="Script" uid="uid://q6oaq4j47nth" path="res://scripts/main.gd" id="2_main"]
+[ext_resource type="PackedScene" path="res://scenes/ui/hud.tscn" id="3_hud"]
+[ext_resource type="PackedScene" path="res://scenes/environment/motel.tscn" id="4_reception"]
+[ext_resource type="PackedScene" path="res://scenes/ui/dialogue_box.tscn" id="5_dialogue"]
+
+[ext_resource type="PackedScene" path="res://scenes/ui/task_list.tscn" id="6_tasks"]
+
+[sub_resource type="Environment" id="Environment_main"]
+background_mode = 1
+background_color = Color(0.05, 0.05, 0.08, 1)
+ambient_light_source = 2
+ambient_light_color = Color(0.3, 0.3, 0.35, 1)
+fog_enabled = true
+fog_light_color = Color(0.1, 0.1, 0.14, 1)
+fog_density = 0.03
+fog_height_density = 4.4356
+
+[node name="Main" type="Node3D" unique_id=1266530711]
+script = ExtResource("2_main")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=501313113]
+environment = SubResource("Environment_main")
+
+[node name="MainLight" type="OmniLight3D" parent="." unique_id=1376586191]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.6, 0)
+shadow_enabled = true
+omni_range = 10.0
+
+[node name="Player" parent="." unique_id=144925829 instance=ExtResource("1_player")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.8)
+
+[node name="HUD" parent="." unique_id=1481366506 instance=ExtResource("3_hud")]
+
+[node name="Motel" parent="." unique_id=1695575333 instance=ExtResource("4_reception")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0076732635, 0.008154988, -0.0050997734)
+
+[node name="DialogueBox" parent="." unique_id=2134859266 instance=ExtResource("5_dialogue")]
+
+[node name="TaskList" parent="." instance=ExtResource("6_tasks")]

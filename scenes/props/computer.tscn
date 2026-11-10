@@ -1,0 +1,38 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/props/computer.gd" id="1_computer"]
+[ext_resource type="Script" path="res://scripts/components/interactable.gd" id="2_inter"]
+[ext_resource type="PackedScene" path="res://scenes/ui/computer_screen.tscn" id="3_screen"]
+
+[sub_resource type="StandardMaterial3D" id="Mat_body"]
+albedo_color = Color(0.12, 0.12, 0.14, 1)
+
+[sub_resource type="StandardMaterial3D" id="Mat_glow"]
+albedo_color = Color(0.05, 0.2, 0.08, 1)
+emission_enabled = true
+emission = Color(0.2, 0.9, 0.3, 1)
+emission_energy_multiplier = 0.8
+
+[sub_resource type="BoxShape3D" id="Box_area"]
+size = Vector3(0.6, 0.5, 0.5)
+
+[node name="Computer" type="Node3D"]
+script = ExtResource("1_computer")
+
+[node name="Body" type="CSGBox3D" parent="."]
+size = Vector3(0.5, 0.4, 0.4)
+material = SubResource("Mat_body")
+
+[node name="ScreenGlow" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.02, 0.2)
+size = Vector3(0.42, 0.3, 0.01)
+material = SubResource("Mat_glow")
+
+[node name="Interactable" type="Area3D" parent="."]
+script = ExtResource("2_inter")
+prompt_text = "Use computer"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Interactable"]
+shape = SubResource("Box_area")
+
+[node name="ComputerScreen" parent="." instance=ExtResource("3_screen")]

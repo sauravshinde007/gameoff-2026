@@ -1,0 +1,89 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/props/door.tscn" id="1_door"]
+
+[sub_resource type="StandardMaterial3D" id="Mat_wall"]
+albedo_color = Color(0.55, 0.55, 0.58, 1)
+
+[sub_resource type="StandardMaterial3D" id="Mat_floor"]
+albedo_color = Color(0.3, 0.3, 0.32, 1)
+
+[node name="Hallway" type="Node3D"]
+
+[node name="Shell" type="CSGCombiner3D" parent="."]
+use_collision = true
+
+[node name="Floor" type="CSGBox3D" parent="Shell"]
+position = Vector3(3, -0.1, 7.2)
+size = Vector3(2.2, 0.2, 8.2)
+material = SubResource("Mat_floor")
+
+[node name="WallWest" type="CSGBox3D" parent="Shell"]
+position = Vector3(2.0, 1.5, 7.2)
+size = Vector3(0.2, 3, 8.2)
+material = SubResource("Mat_wall")
+
+[node name="WallEast" type="CSGBox3D" parent="Shell"]
+position = Vector3(4.0, 1.5, 7.2)
+size = Vector3(0.2, 3, 8.2)
+material = SubResource("Mat_wall")
+
+[node name="WallEnd" type="CSGBox3D" parent="Shell"]
+position = Vector3(3, 1.5, 11.2)
+size = Vector3(2.2, 3, 0.2)
+material = SubResource("Mat_wall")
+
+[node name="Ceiling" type="CSGBox3D" parent="Shell"]
+position = Vector3(3, 3.1, 7.2)
+size = Vector3(2.2, 0.2, 8.2)
+material = SubResource("Mat_wall")
+
+[node name="Room1Hole" type="CSGBox3D" parent="Shell"]
+position = Vector3(2.0, 1.05, 5.2)
+size = Vector3(0.6, 2.1, 1.0)
+operation = 2
+material = SubResource("Mat_wall")
+
+[node name="Room2Hole" type="CSGBox3D" parent="Shell"]
+position = Vector3(4.0, 1.05, 7.1)
+size = Vector3(0.6, 2.1, 1.0)
+operation = 2
+material = SubResource("Mat_wall")
+
+[node name="Room3Hole" type="CSGBox3D" parent="Shell"]
+position = Vector3(2.0, 1.05, 9.0)
+size = Vector3(0.6, 2.1, 1.0)
+operation = 2
+material = SubResource("Mat_wall")
+
+[node name="Doors" type="Node3D" parent="."]
+
+[node name="Door1" parent="Doors" instance=ExtResource("1_door")]
+position = Vector3(2.0, 1.05, 5.2)
+rotation = Vector3(0, 1.5708, 0)
+room_id = 1
+door_size = Vector3(0.9, 2.1, 0.1)
+
+[node name="Door2" parent="Doors" instance=ExtResource("1_door")]
+position = Vector3(4.0, 1.05, 7.1)
+rotation = Vector3(0, -1.5708, 0)
+room_id = 2
+door_size = Vector3(0.9, 2.1, 0.1)
+
+[node name="Door3" parent="Doors" instance=ExtResource("1_door")]
+position = Vector3(2.0, 1.05, 9.0)
+rotation = Vector3(0, 1.5708, 0)
+room_id = 3
+door_size = Vector3(0.9, 2.1, 0.1)
+
+[node name="Light1" type="OmniLight3D" parent="."]
+position = Vector3(3, 2.6, 5.0)
+omni_range = 5.0
+shadow_enabled = true
+light_energy = 0.8
+
+[node name="Light2" type="OmniLight3D" parent="."]
+position = Vector3(3, 2.6, 9.0)
+omni_range = 5.0
+shadow_enabled = true
+light_energy = 0.8

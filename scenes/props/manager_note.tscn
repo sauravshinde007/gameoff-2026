@@ -1,0 +1,27 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/props/manager_note.gd" id="1_script"]
+[ext_resource type="Script" path="res://scripts/components/interactable.gd" id="2_inter"]
+[ext_resource type="PackedScene" path="res://scenes/ui/note_panel.tscn" id="3_panel"]
+
+[sub_resource type="StandardMaterial3D" id="Mat_paper"]
+albedo_color = Color(0.9, 0.88, 0.75, 1)
+
+[sub_resource type="BoxShape3D" id="Box_area"]
+size = Vector3(0.6, 0.7, 0.4)
+
+[node name="ManagerNote" type="Node3D"]
+script = ExtResource("1_script")
+
+[node name="Paper" type="CSGBox3D" parent="."]
+size = Vector3(0.3, 0.4, 0.02)
+material = SubResource("Mat_paper")
+
+[node name="Interactable" type="Area3D" parent="."]
+script = ExtResource("2_inter")
+prompt_text = "Read note"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Interactable"]
+shape = SubResource("Box_area")
+
+[node name="NotePanel" parent="." instance=ExtResource("3_panel")]

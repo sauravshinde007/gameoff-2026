@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="DialogueData" format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/dialogue_data.gd" id="1_data"]
+[ext_resource type="Script" path="res://scripts/resources/dialogue_line.gd" id="2_line"]
+
+[sub_resource type="Resource" id="L1"]
+script = ExtResource("2_line")
+speaker = "Ms. Carter"
+text = "Good evening. I have a reservation under Carter."
+
+[sub_resource type="Resource" id="L2"]
+script = ExtResource("2_line")
+speaker = "Ms. Carter"
+text = "I would like to check in, please."
+
+[sub_resource type="Resource" id="L3"]
+script = ExtResource("2_line")
+speaker = "You"
+text = "Of course. Let me find you on the computer."
+
+[resource]
+script = ExtResource("1_data")
+id = &"guest_checkin_ask"
+lines = Array[ExtResource("2_line")]([SubResource("L1"), SubResource("L2"), SubResource("L3")])

@@ -1,0 +1,125 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/props/door.tscn" id="1_door"]
+[ext_resource type="PackedScene" path="res://scenes/props/computer.tscn" id="2_computer"]
+[ext_resource type="PackedScene" path="res://scenes/props/telephone.tscn" id="3_phone"]
+[ext_resource type="PackedScene" path="res://scenes/props/key_rack.tscn" id="4_rack"]
+[ext_resource type="PackedScene" path="res://scenes/npcs/guest.tscn" id="5_guest"]
+[ext_resource type="PackedScene" path="res://scenes/props/manager_note.tscn" id="6_note"]
+[ext_resource type="PackedScene" path="res://scenes/props/guest_register.tscn" id="7_register"]
+
+[sub_resource type="StandardMaterial3D" id="Mat_wall"]
+albedo_color = Color(0.55, 0.55, 0.58, 1)
+
+[sub_resource type="StandardMaterial3D" id="Mat_desk"]
+albedo_color = Color(0.45, 0.3, 0.18, 1)
+
+[sub_resource type="StandardMaterial3D" id="Mat_prop"]
+albedo_color = Color(0.12, 0.12, 0.14, 1)
+
+[sub_resource type="StandardMaterial3D" id="Mat_paper"]
+albedo_color = Color(0.9, 0.88, 0.75, 1)
+
+[sub_resource type="StandardMaterial3D" id="Mat_floor"]
+albedo_color = Color(0.3, 0.3, 0.32, 1)
+
+[node name="Reception" type="Node3D"]
+
+[node name="Shell" type="CSGCombiner3D" parent="."]
+use_collision = true
+
+[node name="Floor" type="CSGBox3D" parent="Shell"]
+position = Vector3(0, -0.1, 0)
+size = Vector3(8.2, 0.2, 6.2)
+material = SubResource("Mat_floor")
+
+[node name="WallNorth" type="CSGBox3D" parent="Shell"]
+position = Vector3(0, 1.5, -3)
+size = Vector3(8.2, 3, 0.2)
+material = SubResource("Mat_wall")
+
+[node name="WallSouth" type="CSGBox3D" parent="Shell"]
+position = Vector3(0, 1.5, 3)
+size = Vector3(8.2, 3, 0.2)
+material = SubResource("Mat_wall")
+
+[node name="WallWest" type="CSGBox3D" parent="Shell"]
+position = Vector3(-4, 1.5, 0)
+size = Vector3(0.2, 3, 6.2)
+material = SubResource("Mat_wall")
+
+[node name="WallEast" type="CSGBox3D" parent="Shell"]
+position = Vector3(4, 1.5, 0)
+size = Vector3(0.2, 3, 6.2)
+material = SubResource("Mat_wall")
+
+[node name="Ceiling" type="CSGBox3D" parent="Shell"]
+position = Vector3(0, 3.1, 0)
+size = Vector3(8.2, 0.2, 6.2)
+material = SubResource("Mat_wall")
+
+[node name="DoorHole" type="CSGBox3D" parent="Shell"]
+position = Vector3(2.5, 1.1, -3)
+size = Vector3(1.2, 2.2, 0.6)
+operation = 2
+material = SubResource("Mat_wall")
+
+[node name="WindowHoleLeft" type="CSGBox3D" parent="Shell"]
+position = Vector3(-2.5, 1.5, -3)
+size = Vector3(1.8, 1.2, 0.6)
+operation = 2
+material = SubResource("Mat_wall")
+
+[node name="WindowHoleMid" type="CSGBox3D" parent="Shell"]
+position = Vector3(0, 1.5, -3)
+size = Vector3(1.8, 1.2, 0.6)
+operation = 2
+material = SubResource("Mat_wall")
+
+[node name="EntranceDoor" parent="." instance=ExtResource("1_door")]
+position = Vector3(2.5, 1.1, -3)
+room_id = -1
+door_size = Vector3(1.1, 2.2, 0.1)
+
+[node name="Desk" type="CSGBox3D" parent="."]
+position = Vector3(0, 0.5, -1.2)
+size = Vector3(4, 1, 0.8)
+use_collision = true
+material = SubResource("Mat_desk")
+
+[node name="Props" type="Node3D" parent="."]
+
+[node name="Computer" parent="Props" instance=ExtResource("2_computer")]
+position = Vector3(0.8, 1.2, -1.2)
+
+[node name="Telephone" parent="Props" instance=ExtResource("3_phone")]
+position = Vector3(-0.6, 1.05, -1.2)
+debug_ring_delay = 5.0
+
+[node name="GuestRegister" parent="Props" instance=ExtResource("7_register")]
+position = Vector3(0, 1.025, -1)
+
+[node name="CctvMonitor" type="CSGBox3D" parent="Props"]
+position = Vector3(1.5, 1.2, -1.2)
+size = Vector3(0.5, 0.4, 0.4)
+material = SubResource("Mat_prop")
+
+[node name="KeyRack" parent="Props" instance=ExtResource("4_rack")]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, -2, 1.6, 2.89)
+
+[node name="ManagerNote" parent="Props" instance=ExtResource("6_note")]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 1, 1.5, 2.89)
+
+[node name="WallClock" type="CSGBox3D" parent="Props"]
+position = Vector3(3.89, 2.4, 0)
+size = Vector3(0.1, 0.5, 0.5)
+material = SubResource("Mat_paper")
+
+[node name="Guest" parent="." instance=ExtResource("5_guest")]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, -0.4, 0, -0.3)
+
+[node name="HallwayHole" type="CSGBox3D" parent="Shell"]
+position = Vector3(3, 1.1, 3)
+operation = 2
+size = Vector3(1.6, 2.2, 0.6)
+material = SubResource("Mat_wall")

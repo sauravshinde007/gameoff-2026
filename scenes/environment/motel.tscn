@@ -1,0 +1,14 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/environment/reception.tscn" id="1_reception"]
+[ext_resource type="PackedScene" path="res://scenes/environment/hallway.tscn" id="2_hallway"]
+
+[ext_resource type="PackedScene" path="res://scenes/environment/exterior.tscn" id="3_exterior"]
+
+[node name="Motel" type="Node3D"]
+
+[node name="Reception" parent="." instance=ExtResource("1_reception")]
+
+[node name="Hallway" parent="." instance=ExtResource("2_hallway")]
+
+[node name="Exterior" parent="." instance=ExtResource("3_exterior")]

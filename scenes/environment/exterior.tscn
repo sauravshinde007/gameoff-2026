@@ -1,0 +1,85 @@
+[gd_scene format=3]
+
+[sub_resource type="StandardMaterial3D" id="Mat_ground"]
+albedo_color = Color(0.1, 0.12, 0.1, 1)
+
+[sub_resource type="StandardMaterial3D" id="Mat_lot"]
+albedo_color = Color(0.16, 0.16, 0.18, 1)
+
+[sub_resource type="StandardMaterial3D" id="Mat_line"]
+albedo_color = Color(0.8, 0.8, 0.8, 1)
+
+[sub_resource type="StandardMaterial3D" id="Mat_sign"]
+albedo_color = Color(0.08, 0.08, 0.1, 1)
+
+[sub_resource type="StandardMaterial3D" id="Mat_pole"]
+albedo_color = Color(0.2, 0.2, 0.22, 1)
+
+[node name="Exterior" type="Node3D"]
+
+[node name="Ground" type="CSGBox3D" parent="."]
+position = Vector3(0, -0.25, 0)
+size = Vector3(60, 0.2, 60)
+use_collision = true
+collision_layer = 1
+collision_mask = 0
+material = SubResource("Mat_ground")
+
+[node name="ParkingLot" type="CSGBox3D" parent="."]
+position = Vector3(0, -0.13, -8)
+size = Vector3(12, 0.04, 8)
+material = SubResource("Mat_lot")
+
+[node name="ParkingLine1" type="CSGBox3D" parent="."]
+position = Vector3(-4, -0.105, -9)
+size = Vector3(0.1, 0.01, 4)
+material = SubResource("Mat_line")
+
+[node name="ParkingLine2" type="CSGBox3D" parent="."]
+position = Vector3(-1.33, -0.105, -9)
+size = Vector3(0.1, 0.01, 4)
+material = SubResource("Mat_line")
+
+[node name="ParkingLine3" type="CSGBox3D" parent="."]
+position = Vector3(1.33, -0.105, -9)
+size = Vector3(0.1, 0.01, 4)
+material = SubResource("Mat_line")
+
+[node name="ParkingLine4" type="CSGBox3D" parent="."]
+position = Vector3(4, -0.105, -9)
+size = Vector3(0.1, 0.01, 4)
+material = SubResource("Mat_line")
+
+[node name="SignPole" type="CSGBox3D" parent="."]
+position = Vector3(-1.5, 0.7, -8)
+size = Vector3(0.2, 1.5, 0.2)
+material = SubResource("Mat_pole")
+
+[node name="SignBoard" type="CSGBox3D" parent="."]
+position = Vector3(-1.5, 1.9, -8)
+size = Vector3(2.5, 0.9, 0.2)
+material = SubResource("Mat_sign")
+
+[node name="SignLabel" type="Label3D" parent="."]
+position = Vector3(-1.5, 1.9, -7.88)
+pixel_size = 0.006
+text = "MOTEL"
+font_size = 128
+modulate = Color(1, 0.55, 0.15, 1)
+
+[node name="SignLight" type="OmniLight3D" parent="."]
+position = Vector3(-1.5, 2.2, -7)
+light_color = Color(1, 0.55, 0.2, 1)
+light_energy = 1.0
+omni_range = 6.0
+
+[node name="StreetLightPole" type="CSGBox3D" parent="."]
+position = Vector3(4, 1.75, -9)
+size = Vector3(0.15, 3.5, 0.15)
+material = SubResource("Mat_pole")
+
+[node name="StreetLight" type="OmniLight3D" parent="."]
+position = Vector3(4, 3.6, -9)
+light_color = Color(0.6, 0.7, 1, 1)
+light_energy = 1.5
+omni_range = 10.0

@@ -1,0 +1,33 @@
+[gd_resource type="Resource" script_class="RoomDatabase" format=3 uid="uid://bn3kepk2u43v6"]
+
+[ext_resource type="Script" uid="uid://d2imxmqeiynh0" path="res://scripts/resources/room_database.gd" id="1_db"]
+[ext_resource type="Script" uid="uid://dfdyyo473qhfl" path="res://scripts/resources/room_data.gd" id="2_room"]
+[ext_resource type="Script" uid="uid://dmcwvdslhnsda" path="res://scripts/resources/reservation_data.gd" id="3_res"]
+
+[sub_resource type="Resource" id="Res_0001"]
+script = ExtResource("3_res")
+id = "#0001"
+guest_name = "Ms. Carter"
+
+[sub_resource type="Resource" id="Room_1"]
+script = ExtResource("2_room")
+id = 1
+display_name = "Room 1"
+
+[sub_resource type="Resource" id="Room_2"]
+script = ExtResource("2_room")
+id = 2
+display_name = "Room 2"
+status = 1
+guest_name = "Mr. Hale"
+key_issued = true
+
+[sub_resource type="Resource" id="Room_3"]
+script = ExtResource("2_room")
+id = 3
+display_name = "Room 3"
+
+[resource]
+script = ExtResource("1_db")
+rooms = Array[ExtResource("2_room")]([SubResource("Room_1"), SubResource("Room_2"), SubResource("Room_3")])
+reservations = Array[ExtResource("3_res")]([SubResource("Res_0001")])

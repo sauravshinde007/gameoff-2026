@@ -1,0 +1,92 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/ui/computer_screen.gd" id="1_screen"]
+
+[node name="ComputerScreen" type="CanvasLayer"]
+layer = 10
+script = ExtResource("1_screen")
+
+[node name="Dim" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.75)
+
+[node name="Panel" type="PanelContainer" parent="."]
+unique_name_in_owner = true
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -450.0
+offset_top = -280.0
+offset_right = 450.0
+offset_bottom = 280.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBox" type="VBoxContainer" parent="Panel"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Title" type="Label" parent="Panel/VBox"]
+layout_mode = 2
+text = "MOTEL MANAGEMENT SYSTEM v1.3 - NIGHT DESK"
+horizontal_alignment = 1
+
+[node name="Tabs" type="TabContainer" parent="Panel/VBox"]
+layout_mode = 2
+size_flags_vertical = 3
+current_tab = 0
+
+[node name="Rooms" type="VBoxContainer" parent="Panel/VBox/Tabs"]
+layout_mode = 2
+metadata/_tab_index = 0
+
+[node name="RoomsList" type="ItemList" parent="Panel/VBox/Tabs/Rooms"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Reservations" type="VBoxContainer" parent="Panel/VBox/Tabs"]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 1
+
+[node name="ReservationsList" type="ItemList" parent="Panel/VBox/Tabs/Reservations"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Guest Info" type="VBoxContainer" parent="Panel/VBox/Tabs"]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 2
+
+[node name="InfoLabel" type="Label" parent="Panel/VBox/Tabs/Guest Info"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="StatusLabel" type="Label" parent="Panel/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Ready."
+
+[node name="Buttons" type="HBoxContainer" parent="Panel/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 10
+alignment = 2
+
+[node name="AssignButton" type="Button" parent="Panel/VBox/Buttons"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Assign Selected Room"
+
+[node name="CloseButton" type="Button" parent="Panel/VBox/Buttons"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Close (Esc)"
