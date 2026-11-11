@@ -1,7 +1,7 @@
-[gd_resource type="Resource" script_class="DialogueData" format=3]
+[gd_resource type="Resource" script_class="DialogueData" format=3 uid="uid://c1k2uqet35f62"]
 
-[ext_resource type="Script" path="res://scripts/resources/dialogue_data.gd" id="1_data"]
-[ext_resource type="Script" path="res://scripts/resources/dialogue_line.gd" id="2_line"]
+[ext_resource type="Script" uid="uid://bn3cpmd43uwa5" path="res://scripts/resources/dialogue_data.gd" id="1_data"]
+[ext_resource type="Script" uid="uid://boick2s5pjf7x" path="res://scripts/resources/dialogue_line.gd" id="2_line"]
 
 [sub_resource type="Resource" id="L1"]
 script = ExtResource("2_line")
@@ -17,3 +17,4 @@ text = "Thank you. Goodnight."
 script = ExtResource("1_data")
 id = &"guest_checkin_handover"
 lines = Array[ExtResource("2_line")]([SubResource("L1"), SubResource("L2")])
+choices = null

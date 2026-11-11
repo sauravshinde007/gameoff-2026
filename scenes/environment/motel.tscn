@@ -4,6 +4,7 @@
 [ext_resource type="PackedScene" path="res://scenes/environment/hallway.tscn" id="2_hallway"]
 
 [ext_resource type="PackedScene" path="res://scenes/environment/exterior.tscn" id="3_exterior"]
+[ext_resource type="PackedScene" path="res://scenes/events/room13_incident.tscn" id="4_incident"]
 
 [node name="Motel" type="Node3D"]
 
@@ -12,3 +13,6 @@
 [node name="Hallway" parent="." instance=ExtResource("2_hallway")]
 
 [node name="Exterior" parent="." instance=ExtResource("3_exterior")]
+
+[node name="Room13Incident" parent="." instance=ExtResource("4_incident")]
+door_room2_path = NodePath("../Hallway/Doors/Door2")

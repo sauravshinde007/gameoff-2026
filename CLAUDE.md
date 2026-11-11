@@ -46,7 +46,7 @@ res://
 ```
 
 ## Current milestone
-Phase 3: Horror sequence (see GDD section 11). Phase 1 (greybox + player) and Phase 2 (motel functionality, tasks 1-7) complete. Update this line as phases complete.
+MVP COMPLETE (GDD section 11, Phases 1-4 done): title screen, day intro, night shift, Room 13 incident, ending, restart, pause menu. Remaining work is polish and bug fixes from playtesting only; no new features without approval.
 
 ## Scope reminder
 MVP = one 5-10 minute night shift with one scripted incident (The Room 13 Reservation), playable start to finish, with a restart. Polished and small beats big and broken.

@@ -1,0 +1,44 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/props/cctv_monitor.gd" id="1_monitor"]
+[ext_resource type="Script" path="res://scripts/components/interactable.gd" id="2_inter"]
+[ext_resource type="Script" path="res://scripts/components/world_screen.gd" id="4_ws"]
+[ext_resource type="PackedScene" path="res://scenes/ui/cctv_screen.tscn" id="3_screen"]
+
+[sub_resource type="StandardMaterial3D" id="Mat_body"]
+albedo_color = Color(0.12, 0.12, 0.14, 1)
+
+[sub_resource type="StandardMaterial3D" id="Mat_glow"]
+albedo_color = Color(0.02, 0.08, 0.04, 1)
+emission_enabled = true
+emission = Color(0.05, 0.4, 0.15, 1)
+emission_energy_multiplier = 0.5
+
+[sub_resource type="BoxShape3D" id="Box_area"]
+size = Vector3(0.6, 0.5, 0.5)
+
+[node name="CctvMonitor" type="Node3D"]
+script = ExtResource("1_monitor")
+
+[node name="Body" type="CSGBox3D" parent="."]
+size = Vector3(0.5, 0.4, 0.4)
+material = SubResource("Mat_body")
+
+[node name="ScreenGlow" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.02, -0.2)
+size = Vector3(0.42, 0.3, 0.01)
+material = SubResource("Mat_glow")
+
+[node name="Interactable" type="Area3D" parent="."]
+script = ExtResource("2_inter")
+prompt_text = "Check cameras"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Interactable"]
+shape = SubResource("Box_area")
+
+[node name="WorldScreen" type="Node3D" parent="."]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 0, 0.02, -0.207)
+script = ExtResource("4_ws")
+ui_scene = ExtResource("3_screen")
+screen_size = Vector2(0.44, 0.285)
+viewport_size = Vector2i(1360, 880)

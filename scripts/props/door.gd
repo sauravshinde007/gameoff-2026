@@ -27,15 +27,18 @@ func _ready() -> void:
 	_refresh_prompt()
 
 
-## Phase 3 calls this (e.g. Room 2's handle slowly turning).
-func turn_handle() -> void:
+## Phase 3 calls this (e.g. Room 2's handle slowly turning). seconds < 0 = use handle_turn_seconds.
+func turn_handle(seconds: float = -1.0) -> void:
+	if seconds < 0.0:
+		seconds = handle_turn_seconds
 	if _handle_tween != null:
 		_handle_tween.kill()
+	AudioManager.play_sfx(&"door_handle", global_position)
 	_handle_tween = create_tween()
 	var angle: float = -deg_to_rad(handle_turn_degrees)
-	_handle_tween.tween_property(handle, "rotation:z", angle, handle_turn_seconds)
+	_handle_tween.tween_property(handle, "rotation:z", angle, seconds)
 	_handle_tween.tween_interval(0.4)
-	_handle_tween.tween_property(handle, "rotation:z", 0.0, handle_turn_seconds)
+	_handle_tween.tween_property(handle, "rotation:z", 0.0, seconds)
 
 
 func _apply_size() -> void:
@@ -76,7 +79,10 @@ func _on_room_status_changed(changed_id: int, _status: int) -> void:
 func _on_interacted(_by: Node) -> void:
 	var msg: String
 	if room_id <= 0:
-		msg = "The entrance door is locked."
+		if EventManager.has_flag(&"guest_vanished"):
+			msg = "*The entrance door is still locked.*"
+		else:
+			msg = "The entrance door is locked."
 	else:
 		match RoomManager.get_status(room_id):
 			RoomData.Status.AVAILABLE:
@@ -85,4 +91,5 @@ func _on_interacted(_by: Node) -> void:
 				msg = "Room %d is occupied. Better not disturb them." % room_id
 			_:
 				msg = "Room %d is closed." % room_id
+	AudioManager.play_sfx(&"door_locked", global_position)
 	get_tree().call_group("hud", "show_message", msg)

@@ -1,0 +1,74 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/ui/end_screen.gd" id="1_end"]
+
+[node name="EndScreen" type="CanvasLayer"]
+layer = 60
+script = ExtResource("1_end")
+
+[node name="Background" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="Content" type="CenterContainer" parent="."]
+unique_name_in_owner = true
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBox" type="VBoxContainer" parent="Content"]
+layout_mode = 2
+theme_override_constants/separation = 18
+
+[node name="TimeLabel" type="Label" parent="Content/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 96
+horizontal_alignment = 1
+
+[node name="TitleLabel" type="Label" parent="Content/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.8, 0.85, 0.8, 1)
+theme_override_font_sizes/font_size = 40
+horizontal_alignment = 1
+
+[node name="Gap" type="Control" parent="Content/VBox"]
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 2
+
+[node name="ClosingLabel" type="Label" parent="Content/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7, 0.7, 0.7, 1)
+theme_override_font_sizes/font_size = 28
+horizontal_alignment = 1
+
+[node name="Gap2" type="Control" parent="Content/VBox"]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+
+[node name="Buttons" type="HBoxContainer" parent="Content/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 24
+alignment = 1
+
+[node name="RestartButton" type="Button" parent="Content/VBox/Buttons"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 56)
+layout_mode = 2
+theme_override_font_sizes/font_size = 28
+text = "Restart"
+
+[node name="QuitButton" type="Button" parent="Content/VBox/Buttons"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 56)
+layout_mode = 2
+theme_override_font_sizes/font_size = 28
+text = "Quit"

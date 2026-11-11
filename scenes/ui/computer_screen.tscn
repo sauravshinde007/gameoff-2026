@@ -21,10 +21,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -450.0
-offset_top = -280.0
-offset_right = 450.0
-offset_bottom = 280.0
+offset_left = -560.0
+offset_top = -350.0
+offset_right = 560.0
+offset_bottom = 350.0
 grow_horizontal = 2
 grow_vertical = 2
 
@@ -34,8 +34,11 @@ theme_override_constants/separation = 10
 
 [node name="Title" type="Label" parent="Panel/VBox"]
 layout_mode = 2
+theme_override_font_sizes/font_size = 38
 text = "MOTEL MANAGEMENT SYSTEM v1.3 - NIGHT DESK"
-horizontal_alignment = 1
+
+[node name="TitleLine" type="HSeparator" parent="Panel/VBox"]
+layout_mode = 2
 
 [node name="Tabs" type="TabContainer" parent="Panel/VBox"]
 layout_mode = 2

@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="DialogueData" format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/dialogue_data.gd" id="1_data"]
+[ext_resource type="Script" path="res://scripts/resources/dialogue_line.gd" id="2_line"]
+
+[sub_resource type="Resource" id="L1"]
+script = ExtResource("2_line")
+speaker = "Unknown Guest"
+text = "You forgot to give me my key."
+
+[sub_resource type="Resource" id="L2"]
+script = ExtResource("2_line")
+speaker = "Unknown Guest"
+text = "..."
+
+[sub_resource type="Resource" id="L3"]
+script = ExtResource("2_line")
+speaker = "Unknown Guest"
+text = "I'm already inside."
+
+[resource]
+script = ExtResource("1_data")
+id = &"room13_call_key"
+lines = Array[ExtResource("2_line")]([SubResource("L1"), SubResource("L2"), SubResource("L3")])

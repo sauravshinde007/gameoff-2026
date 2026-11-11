@@ -25,6 +25,10 @@ func set_controls_enabled(enabled: bool) -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED if enabled else Input.MOUSE_MODE_VISIBLE
 
 
+func is_controls_enabled() -> bool:
+	return _controls_enabled
+
+
 func _unhandled_input(event: InputEvent) -> void:
 	if not _controls_enabled:
 		return
@@ -35,8 +39,6 @@ func _unhandled_input(event: InputEvent) -> void:
 			head.rotation.x - motion.relative.y * mouse_sensitivity,
 			-deg_to_rad(max_pitch_degrees),
 			deg_to_rad(max_pitch_degrees))
-	elif event.is_action_pressed("pause"):
-		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	elif event is InputEventMouseButton and event.pressed and Input.mouse_mode != Input.MOUSE_MODE_CAPTURED:
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 

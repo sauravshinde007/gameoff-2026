@@ -1,0 +1,32 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/props/wall_clock.gd" id="1_script"]
+[ext_resource type="Script" path="res://scripts/components/interactable.gd" id="2_inter"]
+
+[sub_resource type="StandardMaterial3D" id="Mat_body"]
+albedo_color = Color(0.85, 0.83, 0.75, 1)
+
+[sub_resource type="BoxShape3D" id="Box_area"]
+size = Vector3(0.4, 0.5, 0.8)
+
+[node name="WallClock" type="Node3D"]
+script = ExtResource("1_script")
+
+[node name="Body" type="CSGBox3D" parent="."]
+size = Vector3(0.1, 0.4, 0.8)
+material = SubResource("Mat_body")
+
+[node name="Face" type="Label3D" parent="."]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, -0.06, 0, 0)
+pixel_size = 0.003
+modulate = Color(0.1, 0.1, 0.1, 1)
+outline_size = 0
+text = "10:00 PM"
+font_size = 96
+
+[node name="Interactable" type="Area3D" parent="."]
+script = ExtResource("2_inter")
+prompt_text = "Check the time"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Interactable"]
+shape = SubResource("Box_area")

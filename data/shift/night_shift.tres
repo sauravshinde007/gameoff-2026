@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="ShiftData" format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/shift_data.gd" id="1_shift"]
+
+[resource]
+script = ExtResource("1_shift")
+start_minute = 1320
+end_minute = 1800
+seconds_per_hour = 60.0
+fast_seconds_per_hour = 3.0

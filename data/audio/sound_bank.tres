@@ -1,0 +1,35 @@
+[gd_resource type="Resource" script_class="SoundBank" format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/sound_bank.gd" id="1_bank"]
+
+[resource]
+script = ExtResource("1_bank")
+sfx = Dictionary[StringName, String]({
+&"type_blip": "res://assets/audio/sfx/type_blip.mp3",
+&"phone_ring": "res://assets/audio/sfx/phone_ring.mp3",
+&"phone_hangup": "res://assets/audio/sfx/phone_hangup.wav",
+&"entrance_bell": "res://assets/audio/sfx/entrance_bell.mp3",
+&"light_buzz": "res://assets/audio/sfx/light_buzz.wav",
+&"light_off": "res://assets/audio/sfx/light_off.wav",
+&"door_open": "res://assets/audio/sfx/door_open.wav",
+&"door_close": "res://assets/audio/sfx/door_close.wav",
+&"door_locked": "res://assets/audio/sfx/door_locked.wav",
+&"door_handle": "res://assets/audio/sfx/door_handle.wav",
+&"footsteps": "res://assets/audio/sfx/footsteps.mp3",
+&"key_pickup": "res://assets/audio/sfx/item_pickup.wav",
+&"item_drop": "res://assets/audio/sfx/item_drop.wav",
+&"computer_beep": "res://assets/audio/sfx/computer_beep.wav",
+&"ui_click": "res://assets/audio/sfx/ui_click.wav",
+&"end_sting": "res://assets/audio/sfx/end_sting"
+})
+loops = Dictionary[StringName, String]({
+&"call_static": "res://assets/audio/sfx/call_static",
+&"day_ambience": "res://assets/audio/music/day_ambience.mp3",
+&"night_ambience": "res://assets/audio/music/night_ambience.mp3",
+&"fluorescent_hum": "res://assets/audio/sfx/light_buzz.wav"
+})
+volume_db = Dictionary[StringName, float]({
+&"type_blip": 6.0,
+&"night_ambience": -18.0,
+&"day_ambience": 6.0
+})

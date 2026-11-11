@@ -5,8 +5,14 @@
 [ext_resource type="PackedScene" path="res://scenes/ui/hud.tscn" id="3_hud"]
 [ext_resource type="PackedScene" path="res://scenes/environment/motel.tscn" id="4_reception"]
 [ext_resource type="PackedScene" path="res://scenes/ui/dialogue_box.tscn" id="5_dialogue"]
-
 [ext_resource type="PackedScene" path="res://scenes/ui/task_list.tscn" id="6_tasks"]
+[ext_resource type="Script" uid="uid://ccm2pnaa64trl" path="res://scripts/components/flicker_light.gd" id="9_flicker"]
+[ext_resource type="Script" path="res://scripts/environment/day_night.gd" id="10_daynight"]
+[ext_resource type="PackedScene" path="res://scenes/ui/screen_fade.tscn" id="11_fade"]
+[ext_resource type="Resource" path="res://data/lighting/day.tres" id="12_day"]
+[ext_resource type="Resource" path="res://data/lighting/night.tres" id="13_night"]
+[ext_resource type="PackedScene" path="res://scenes/ui/end_screen.tscn" id="14_end"]
+[ext_resource type="PackedScene" path="res://scenes/ui/pause_menu.tscn" id="15_pause"]
 
 [sub_resource type="Environment" id="Environment_main"]
 background_mode = 1
@@ -28,6 +34,8 @@ environment = SubResource("Environment_main")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.6, 0)
 shadow_enabled = true
 omni_range = 10.0
+script = ExtResource("9_flicker")
+hum_sfx = &"fluorescent_hum"
 
 [node name="Player" parent="." unique_id=144925829 instance=ExtResource("1_player")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.8)
@@ -35,8 +43,19 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.8)
 [node name="HUD" parent="." unique_id=1481366506 instance=ExtResource("3_hud")]
 
 [node name="Motel" parent="." unique_id=1695575333 instance=ExtResource("4_reception")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0076732635, 0.008154988, -0.0050997734)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.016854286, 2.3841858e-07, -0.0043256283)
 
 [node name="DialogueBox" parent="." unique_id=2134859266 instance=ExtResource("5_dialogue")]
 
-[node name="TaskList" parent="." instance=ExtResource("6_tasks")]
+[node name="TaskList" parent="." unique_id=959052237 instance=ExtResource("6_tasks")]
+
+[node name="ScreenFade" parent="." instance=ExtResource("11_fade")]
+
+[node name="DayNight" type="Node" parent="."]
+script = ExtResource("10_daynight")
+day_preset = ExtResource("12_day")
+night_preset = ExtResource("13_night")
+
+[node name="EndScreen" parent="." instance=ExtResource("14_end")]
+
+[node name="PauseMenu" parent="." instance=ExtResource("15_pause")]

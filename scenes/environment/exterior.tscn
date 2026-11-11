@@ -1,5 +1,7 @@
 [gd_scene format=3]
 
+[ext_resource type="Script" path="res://scripts/components/flicker_light.gd" id="1_flicker"]
+
 [sub_resource type="StandardMaterial3D" id="Mat_ground"]
 albedo_color = Color(0.1, 0.12, 0.1, 1)
 
@@ -68,6 +70,14 @@ font_size = 128
 modulate = Color(1, 0.55, 0.15, 1)
 
 [node name="SignLight" type="OmniLight3D" parent="."]
+script = ExtResource("1_flicker")
+group_name = &"exterior_lights"
+auto_flicker = true
+auto_min_gap = 5.0
+auto_max_gap = 14.0
+auto_flicker_seconds = 0.7
+min_interval = 0.06
+max_interval = 0.25
 position = Vector3(-1.5, 2.2, -7)
 light_color = Color(1, 0.55, 0.2, 1)
 light_energy = 1.0
@@ -78,7 +88,7 @@ position = Vector3(4, 1.75, -9)
 size = Vector3(0.15, 3.5, 0.15)
 material = SubResource("Mat_pole")
 
-[node name="StreetLight" type="OmniLight3D" parent="."]
+[node name="StreetLight" type="OmniLight3D" parent="." groups=["exterior_lights"]]
 position = Vector3(4, 3.6, -9)
 light_color = Color(0.6, 0.7, 1, 1)
 light_energy = 1.5

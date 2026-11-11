@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="DialogueData" format=3 uid="uid://yjblfb2ovufk"]
+
+[ext_resource type="Script" uid="uid://bn3cpmd43uwa5" path="res://scripts/resources/dialogue_data.gd" id="1_data"]
+[ext_resource type="Script" uid="uid://boick2s5pjf7x" path="res://scripts/resources/dialogue_line.gd" id="2_line"]
+
+[sub_resource type="Resource" id="L1"]
+script = ExtResource("2_line")
+speaker = "Guest"
+text = "Please check your system. I'm sure it's there."
+
+[resource]
+script = ExtResource("1_data")
+id = &"room13_remind"
+lines = Array[ExtResource("2_line")]([SubResource("L1")])
+choices = null

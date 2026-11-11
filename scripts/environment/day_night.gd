@@ -1,0 +1,44 @@
+class_name DayNight
+extends Node
+## Applies a LightingPreset to the world environment and the light groups
+## (reception_lights, hallway_lights, exterior_lights), plus the desk_lamp group. Starts in the day look.
+
+@export var day_preset: LightingPreset
+@export var night_preset: LightingPreset
+@export var start_with_day: bool = true
+
+
+func _ready() -> void:
+	add_to_group(&"day_night")
+	apply(day_preset if start_with_day else night_preset)
+
+
+func apply(preset: LightingPreset) -> void:
+	var env: Environment = get_viewport().world_3d.environment
+	env.background_color = preset.background_color
+	env.ambient_light_color = preset.ambient_color
+	env.ambient_light_energy = preset.ambient_energy
+	env.fog_light_color = preset.fog_color
+	env.fog_density = preset.fog_density
+	for light: Node in get_tree().get_nodes_in_group(&"reception_lights"):
+		if not light.is_in_group(&"desk_lamp"):
+			(light as Light3D).light_color = preset.reception_light_color
+	_scale_group(&"reception_lights", preset.reception_light_scale)
+	_scale_group(&"hallway_lights", preset.hallway_light_scale)
+	_scale_group(&"exterior_lights", preset.exterior_light_scale)
+	for lamp: Node in get_tree().get_nodes_in_group(&"desk_lamp"):
+		(lamp as FlickerLight).set_energy_scale(1.0 if preset.desk_lamp else 0.0)
+	AudioManager.set_ambience(preset.ambience)
+
+
+func _scale_group(group: StringName, scale: float) -> void:
+	for node: Node in get_tree().get_nodes_in_group(group):
+		if node.is_in_group(&"desk_lamp"):
+			continue
+		if node is FlickerLight:
+			(node as FlickerLight).set_energy_scale(scale)
+		elif node is Light3D:
+			var light: Light3D = node
+			if not light.has_meta(&"authored_energy"):
+				light.set_meta(&"authored_energy", light.light_energy)
+			light.light_energy = float(light.get_meta(&"authored_energy")) * scale

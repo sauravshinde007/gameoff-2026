@@ -6,3 +6,5 @@ extends Resource
 @export var lines: Array[DialogueLine] = []
 ## If non-empty, shown after the last line. dialogue_finished reports the picked index.
 @export var choices: PackedStringArray = PackedStringArray()
+## Optional looping sound (AudioManager loop name) played while this dialogue runs, e.g. phone static.
+@export var loop_sfx: StringName = &""

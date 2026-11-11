@@ -4,10 +4,12 @@ extends CanvasLayer
 
 signal closed
 
-const GREEN: Color = Color(0.35, 1.0, 0.45)
-const GREEN_DIM: Color = Color(0.15, 0.5, 0.2)
-const ERROR_RED: Color = Color(1.0, 0.35, 0.3)
-const BG: Color = Color(0.02, 0.07, 0.03)
+const GREEN: Color = Color(0.93, 0.96, 1.0)  # text / lines (white-blue)
+const GREEN_DIM: Color = Color(0.0, 0.2, 0.62)  # selected rows, pressed buttons
+const ERROR_RED: Color = Color(1.0, 0.86, 0.3)  # errors (yellow reads better on blue)
+const BG: Color = Color(0.0, 0.3, 0.82)  # screen blue
+const BEZEL: Color = Color(0.86, 0.83, 0.72)  # cream monitor frame
+const SCREEN_FONT: Font = preload("res://assets/fonts/screen_font.tres")
 
 @onready var panel: PanelContainer = %Panel
 @onready var rooms_list: ItemList = %RoomsList
@@ -36,17 +38,16 @@ func open() -> void:
 	if visible:
 		return
 	visible = true
+	AudioManager.play_sfx(&"computer_beep")
 	_select_first_pending_if_needed()
 	_refresh()
 	_set_status("Ready.", false)
-	get_tree().call_group("player", "set_controls_enabled", false)
 
 
 func close() -> void:
 	if not visible:
 		return
 	visible = false
-	get_tree().call_group("player", "set_controls_enabled", true)
 	closed.emit()
 
 
@@ -67,6 +68,7 @@ func _on_room_selected(index: int) -> void:
 
 func _on_reservation_selected(index: int) -> void:
 	_selected_reservation_id = reservations_list.get_item_metadata(index)
+	_mark_viewed(_selected_reservation_id)
 	_refresh_info()
 	_update_selection_status()
 
@@ -78,6 +80,10 @@ func _on_assign_pressed() -> void:
 		return
 	if res.status != ReservationData.Status.PENDING:
 		_set_status("ERROR: Reservation %s is not pending." % res.id, true)
+		return
+	_mark_viewed(res.id)
+	if res.room_id > 0 and RoomManager.get_room(res.room_id) == null:
+		_set_status("ERROR: Room %d does not exist." % res.room_id, true)
 		return
 	var room: RoomData = RoomManager.get_room(_selected_room_id)
 	if room == null:
@@ -94,6 +100,11 @@ func _on_assign_pressed() -> void:
 		_set_status("OK: %s assigned to %s. Issue key." % [res.guest_name, room.display_name], false)
 	else:
 		_set_status("ERROR: Assignment refused.", true)
+
+
+## Reports "this reservation was looked at" as a story flag, e.g. viewed_res_0013.
+func _mark_viewed(reservation_id: String) -> void:
+	EventManager.set_flag(StringName("viewed_res_" + reservation_id.trim_prefix("#")))
 
 
 func _update_selection_status() -> void:
@@ -119,15 +130,17 @@ func _refresh() -> void:
 		return
 	rooms_list.clear()
 	for room: RoomData in RoomManager.get_rooms():
-		var line: String = "%-8s %-13s %s" % [room.display_name, _room_status_text(room.status), room.guest_name]
-		var idx: int = rooms_list.add_item(line)
+		var row: String = "%s   |   %s" % [room.display_name, _room_status_text(room.status)]
+		if not room.guest_name.is_empty():
+			row += "   |   " + room.guest_name
+		var idx: int = rooms_list.add_item(row)
 		rooms_list.set_item_metadata(idx, room.id)
 		if room.id == _selected_room_id:
 			rooms_list.select(idx)
 	reservations_list.clear()
 	for res: ReservationData in RoomManager.get_reservations():
-		var line: String = "%-7s %-14s %s" % [res.id, res.guest_name, _reservation_status_text(res.status)]
-		var idx: int = reservations_list.add_item(line)
+		var row: String = "%s   |   %s   |   %s" % [res.id, res.guest_name, _reservation_status_text(res.status)]
+		var idx: int = reservations_list.add_item(row)
 		reservations_list.set_item_metadata(idx, res.id)
 		if res.id == _selected_reservation_id:
 			reservations_list.select(idx)
@@ -142,8 +155,16 @@ func _refresh_info() -> void:
 	var room: RoomData = RoomManager.get_room(res.room_id)
 	info_label.text = "Reservation ID: %s\nGuest: %s\nRoom: %s\nStatus: %s" % [
 		res.id, res.guest_name,
-		room.display_name if room != null else "not assigned",
+		_room_text(res, room),
 		_reservation_status_text(res.status)]
+
+
+func _room_text(res: ReservationData, room: RoomData) -> String:
+	if room != null:
+		return room.display_name
+	if res.room_id > 0:
+		return str(res.room_id)
+	return "not assigned"
 
 
 func _room_status_text(status: RoomData.Status) -> String:
@@ -166,6 +187,8 @@ func _reservation_status_text(status: ReservationData.Status) -> String:
 
 func _set_status(text: String, is_error: bool) -> void:
 	status_label.text = text
+	if is_error:
+		AudioManager.play_sfx(&"computer_beep")
 	status_label.add_theme_color_override("font_color", ERROR_RED if is_error else GREEN)
 
 
@@ -180,12 +203,15 @@ func _box(bg: Color, border: Color, border_width: int = 1) -> StyleBoxFlat:
 
 func _make_theme() -> Theme:
 	var t: Theme = Theme.new()
-	var font: SystemFont = SystemFont.new()
-	font.font_names = PackedStringArray(["Monospace", "DejaVu Sans Mono", "Courier New"])
-	t.default_font = font
-	t.default_font_size = 18
+	t.default_font = SCREEN_FONT
+	t.default_font_size = 24
+	t.set_font_size("font_size", "Label", 24)
+	var line: StyleBoxLine = StyleBoxLine.new()
+	line.color = GREEN
+	line.thickness = 3
+	t.set_stylebox("separator", "HSeparator", line)
 	t.set_color("font_color", "Label", GREEN)
-	t.set_stylebox("panel", "PanelContainer", _box(BG, GREEN, 2))
+	t.set_stylebox("panel", "PanelContainer", _box(BG, BEZEL, 14))
 	for state: String in ["normal", "hover", "pressed", "disabled", "focus"]:
 		var bg: Color = BG if state == "normal" else GREEN_DIM
 		t.set_stylebox(state, "Button", _box(bg, GREEN))

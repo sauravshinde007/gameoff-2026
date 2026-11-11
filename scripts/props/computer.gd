@@ -1,9 +1,9 @@
 class_name Computer
 extends Node3D
-## Reception computer. Interact opens the management terminal UI.
+## Reception computer. Interact zooms the camera to the screen and opens the terminal UI.
 
 @onready var interactable: Interactable = $Interactable
-@onready var screen: ComputerScreen = $ComputerScreen
+@onready var screen: WorldScreen = $WorldScreen
 
 
 func _ready() -> void:

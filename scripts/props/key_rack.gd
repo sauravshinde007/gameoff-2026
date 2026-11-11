@@ -38,6 +38,7 @@ func _refresh() -> void:
 func _on_hook_interacted(_by: Node, room_id: int) -> void:
 	var msg: String
 	if RoomManager.take_key(room_id):
+		AudioManager.play_sfx(&"key_pickup", global_position)
 		msg = "Took the key to Room %d." % room_id
 	elif RoomManager.issued_key_room_id != 0:
 		msg = "Already holding a key."
