@@ -12,12 +12,13 @@ signal checked_in(reservation_id: String)
 @export var dialogue_handover: DialogueData
 ## World-space waypoints the guest walks through after check-in.
 @export var leave_path: PackedVector3Array = PackedVector3Array([Vector3(3, 0, 1.5), Vector3(3, 0, 5.2)])
-@export var walk_speed: float = 1.8
+@export var walk_speed: float = 2.8
 ## Task completed when the key is handed over.
 @export var check_in_task_id: StringName = &"check_in_guest"
 
 @onready var interactable: Interactable = $Interactable
 @onready var body_shape: CollisionShape3D = $CollisionShape3D
+@onready var model: RetroModel = get_node_or_null(^"Model") as RetroModel
 
 var _asked: bool = false
 var _handing_over: bool = false
@@ -64,6 +65,8 @@ func _on_dialogue_finished(id: StringName, _choice: int) -> void:
 func _leave() -> void:
 	interactable.enabled = false
 	body_shape.set_deferred("disabled", true)
+	if model != null:
+		model.play(&"walk")
 	var tween: Tween = create_tween()
 	for point: Vector3 in leave_path:
 		tween.tween_callback(_face.bind(point))

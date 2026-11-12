@@ -20,6 +20,12 @@ func apply(preset: LightingPreset) -> void:
 	env.ambient_light_energy = preset.ambient_energy
 	env.fog_light_color = preset.fog_color
 	env.fog_density = preset.fog_density
+	env.adjustment_enabled = true
+	env.adjustment_brightness = preset.grade_brightness
+	env.adjustment_contrast = preset.grade_contrast
+	env.adjustment_saturation = preset.grade_saturation
+	for filter: Node in get_tree().get_nodes_in_group(&"retro_filter"):
+		(filter as RetroFilter).set_look(preset.retro_tint, preset.retro_vignette)
 	for light: Node in get_tree().get_nodes_in_group(&"reception_lights"):
 		if not light.is_in_group(&"desk_lamp"):
 			(light as Light3D).light_color = preset.reception_light_color

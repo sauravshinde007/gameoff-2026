@@ -17,10 +17,14 @@ extends CanvasLayer
 @export var player_font_size: int = 26
 @export var npc_color: Color = Color(1, 1, 1)
 @export var player_color: Color = Color(0.8, 0.88, 1.0)
+## Speaker name drawn above NPC lines (not shown for the player).
+@export var name_color: Color = Color(1, 0.85, 0.4)
+@export var name_gap: float = 0.05
 
 const SUBTITLE_FONT: Font = preload("res://assets/fonts/subtitle_font.tres")
 
 @onready var text_label: Label = %TextLabel
+@onready var name_label: Label = %NameLabel
 @onready var choices_box: VBoxContainer = %ChoicesBox
 @onready var hint_label: Label = %HintLabel
 
@@ -39,6 +43,8 @@ func _ready() -> void:
 	_setup_talk_sound()
 	text_label.add_theme_font_override("font", SUBTITLE_FONT)
 	hint_label.add_theme_font_override("font", SUBTITLE_FONT)
+	name_label.add_theme_font_override("font", SUBTITLE_FONT)
+	name_label.add_theme_color_override("font_color", name_color)
 	DialogueManager.dialogue_started.connect(_on_started)
 	DialogueManager.line_shown.connect(_on_line)
 	DialogueManager.choices_shown.connect(_on_choices)
@@ -106,6 +112,11 @@ func _on_line(speaker: String, text: String) -> void:
 	text_label.add_theme_font_size_override("font_size", player_font_size if is_player else npc_font_size)
 	text_label.add_theme_color_override("font_color", player_color if is_player else npc_color)
 	text_label.text = text
+	var show_name: bool = not is_player and speaker != ""
+	name_label.visible = show_name
+	name_label.text = speaker
+	name_label.anchor_bottom = y
+	name_label.anchor_top = y - name_gap
 	_start_typing()
 
 
@@ -123,6 +134,7 @@ func _on_finished(_id: StringName, _choice: int) -> void:
 	_talk_player.stop()
 	set_process(false)
 	_clear_choices()
+	name_label.visible = false
 	visible = false
 	get_tree().call_group("player", "set_controls_enabled", true)
 

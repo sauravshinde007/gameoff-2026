@@ -13,12 +13,18 @@
 [ext_resource type="Resource" path="res://data/lighting/night.tres" id="13_night"]
 [ext_resource type="PackedScene" path="res://scenes/ui/end_screen.tscn" id="14_end"]
 [ext_resource type="PackedScene" path="res://scenes/ui/pause_menu.tscn" id="15_pause"]
+[ext_resource type="PackedScene" path="res://scenes/ui/retro_filter.tscn" id="99_retro"]
 
 [sub_resource type="Environment" id="Environment_main"]
 background_mode = 1
 background_color = Color(0.05, 0.05, 0.08, 1)
 ambient_light_source = 2
 ambient_light_color = Color(0.3, 0.3, 0.35, 1)
+tonemap_mode = 2
+glow_enabled = true
+glow_intensity = 0.5
+glow_bloom = 0.05
+adjustment_enabled = true
 fog_enabled = true
 fog_light_color = Color(0.1, 0.1, 0.14, 1)
 fog_density = 0.03
@@ -50,6 +56,8 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.016854286, 2.3841858e-07, -
 [node name="TaskList" parent="." unique_id=959052237 instance=ExtResource("6_tasks")]
 
 [node name="ScreenFade" parent="." instance=ExtResource("11_fade")]
+
+[node name="RetroFilter" parent="." instance=ExtResource("99_retro")]
 
 [node name="DayNight" type="Node" parent="."]
 script = ExtResource("10_daynight")

@@ -2,9 +2,7 @@
 
 [ext_resource type="Script" path="res://scripts/props/key_rack.gd" id="1_rack"]
 [ext_resource type="Script" path="res://scripts/components/interactable.gd" id="2_inter"]
-
-[sub_resource type="StandardMaterial3D" id="Mat_board"]
-albedo_color = Color(0.45, 0.3, 0.18, 1)
+[ext_resource type="Material" path="res://assets/materials/wood.tres" id="mat_wood"]
 
 [sub_resource type="StandardMaterial3D" id="Mat_key"]
 albedo_color = Color(0.8, 0.65, 0.25, 1)
@@ -17,7 +15,7 @@ script = ExtResource("1_rack")
 
 [node name="Board" type="CSGBox3D" parent="."]
 size = Vector3(1, 0.6, 0.08)
-material = SubResource("Mat_board")
+material = ExtResource("mat_wood")
 
 [node name="Hook1" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.3, 0, 0.04)

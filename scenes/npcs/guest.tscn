@@ -2,16 +2,12 @@
 
 [ext_resource type="Script" path="res://scripts/npcs/guest.gd" id="1_guest"]
 [ext_resource type="Script" path="res://scripts/components/interactable.gd" id="2_inter"]
+[ext_resource type="PackedScene" path="res://assets/models/characters/guest.glb" id="7_model"]
+[ext_resource type="Script" path="res://scripts/components/retro_model.gd" id="8_retro"]
 [ext_resource type="Resource" path="res://data/dialogue/guest_checkin_ask.tres" id="3_ask"]
 [ext_resource type="Resource" path="res://data/dialogue/guest_checkin_remind_room.tres" id="4_room"]
 [ext_resource type="Resource" path="res://data/dialogue/guest_checkin_remind_key.tres" id="5_key"]
 [ext_resource type="Resource" path="res://data/dialogue/guest_checkin_handover.tres" id="6_hand"]
-
-[sub_resource type="StandardMaterial3D" id="Mat_coat"]
-albedo_color = Color(0.25, 0.3, 0.45, 1)
-
-[sub_resource type="StandardMaterial3D" id="Mat_skin"]
-albedo_color = Color(0.85, 0.7, 0.6, 1)
 
 [sub_resource type="CapsuleShape3D" id="Cap_body"]
 radius = 0.3
@@ -26,21 +22,15 @@ dialogue_ask = ExtResource("3_ask")
 dialogue_remind_room = ExtResource("4_room")
 dialogue_remind_key = ExtResource("5_key")
 dialogue_handover = ExtResource("6_hand")
+walk_speed = 2.8
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
 shape = SubResource("Cap_body")
 
-[node name="Body" type="CSGCylinder3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, 0)
-radius = 0.3
-height = 1.5
-material = SubResource("Mat_coat")
-
-[node name="Head" type="CSGSphere3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7, 0)
-radius = 0.2
-material = SubResource("Mat_skin")
+[node name="Model" parent="." instance=ExtResource("7_model")]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 0, 0, 0)
+script = ExtResource("8_retro")
 
 [node name="Interactable" type="Area3D" parent="."]
 script = ExtResource("2_inter")

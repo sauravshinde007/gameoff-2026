@@ -3,12 +3,9 @@
 [ext_resource type="PackedScene" path="res://scenes/props/door.tscn" id="1_door"]
 [ext_resource type="Script" path="res://scripts/components/flicker_light.gd" id="9_flicker"]
 [ext_resource type="Script" path="res://scripts/props/cctv_camera.gd" id="10_cam"]
-
-[sub_resource type="StandardMaterial3D" id="Mat_wall"]
-albedo_color = Color(0.55, 0.55, 0.58, 1)
-
-[sub_resource type="StandardMaterial3D" id="Mat_floor"]
-albedo_color = Color(0.3, 0.3, 0.32, 1)
+[ext_resource type="Material" path="res://assets/materials/wall.tres" id="mat_wall"]
+[ext_resource type="Material" path="res://assets/materials/carpet.tres" id="mat_floor"]
+[ext_resource type="Material" path="res://assets/materials/concrete.tres" id="mat_ceiling"]
 
 [node name="Hallway" type="Node3D"]
 
@@ -18,45 +15,45 @@ use_collision = true
 [node name="Floor" type="CSGBox3D" parent="Shell"]
 position = Vector3(3, -0.1, 7.2)
 size = Vector3(2.2, 0.2, 8.2)
-material = SubResource("Mat_floor")
+material = ExtResource("mat_floor")
 
 [node name="WallWest" type="CSGBox3D" parent="Shell"]
 position = Vector3(2.0, 1.5, 7.2)
 size = Vector3(0.2, 3, 8.2)
-material = SubResource("Mat_wall")
+material = ExtResource("mat_wall")
 
 [node name="WallEast" type="CSGBox3D" parent="Shell"]
 position = Vector3(4.0, 1.5, 7.2)
 size = Vector3(0.2, 3, 8.2)
-material = SubResource("Mat_wall")
+material = ExtResource("mat_wall")
 
 [node name="WallEnd" type="CSGBox3D" parent="Shell"]
 position = Vector3(3, 1.5, 11.2)
 size = Vector3(2.2, 3, 0.2)
-material = SubResource("Mat_wall")
+material = ExtResource("mat_wall")
 
 [node name="Ceiling" type="CSGBox3D" parent="Shell"]
 position = Vector3(3, 3.1, 7.2)
 size = Vector3(2.2, 0.2, 8.2)
-material = SubResource("Mat_wall")
+material = ExtResource("mat_ceiling")
 
 [node name="Room1Hole" type="CSGBox3D" parent="Shell"]
 position = Vector3(2.0, 1.05, 5.2)
 size = Vector3(0.6, 2.1, 1.0)
 operation = 2
-material = SubResource("Mat_wall")
+material = ExtResource("mat_wall")
 
 [node name="Room2Hole" type="CSGBox3D" parent="Shell"]
 position = Vector3(4.0, 1.05, 7.1)
 size = Vector3(0.6, 2.1, 1.0)
 operation = 2
-material = SubResource("Mat_wall")
+material = ExtResource("mat_wall")
 
 [node name="Room3Hole" type="CSGBox3D" parent="Shell"]
 position = Vector3(2.0, 1.05, 9.0)
 size = Vector3(0.6, 2.1, 1.0)
 operation = 2
-material = SubResource("Mat_wall")
+material = ExtResource("mat_wall")
 
 [node name="Doors" type="Node3D" parent="."]
 
@@ -83,7 +80,7 @@ script = ExtResource("9_flicker")
 group_name = &"hallway_lights"
 hum_sfx = &"fluorescent_hum"
 position = Vector3(3, 2.6, 5.0)
-omni_range = 5.0
+omni_range = 4.0
 shadow_enabled = true
 light_energy = 0.8
 
@@ -92,7 +89,7 @@ script = ExtResource("9_flicker")
 group_name = &"hallway_lights"
 hum_sfx = &"fluorescent_hum"
 position = Vector3(3, 2.6, 9.0)
-omni_range = 5.0
+omni_range = 4.0
 shadow_enabled = true
 light_energy = 0.8
 

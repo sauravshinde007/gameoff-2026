@@ -1,0 +1,150 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/ui/npc_viewer.gd" id="1_viewer"]
+[ext_resource type="PackedScene" path="res://scenes/npcs/guest.tscn" id="2_guest"]
+[ext_resource type="PackedScene" path="res://scenes/npcs/mysterious_guest.tscn" id="3_myst"]
+[ext_resource type="PackedScene" path="res://scenes/ui/retro_filter.tscn" id="99_retro"]
+
+[sub_resource type="Environment" id="Env_viewer"]
+background_mode = 1
+background_color = Color(0.06, 0.06, 0.07, 1)
+ambient_light_source = 2
+ambient_light_color = Color(0.55, 0.55, 0.6, 1)
+ambient_light_energy = 0.6
+tonemap_mode = 2
+
+[sub_resource type="PlaneMesh" id="Plane_floor"]
+size = Vector2(6, 6)
+
+[sub_resource type="StandardMaterial3D" id="Mat_floor"]
+albedo_color = Color(0.16, 0.16, 0.17, 1)
+roughness = 1.0
+
+[node name="NpcViewer" type="Node3D"]
+script = ExtResource("1_viewer")
+npc_scenes = Array[PackedScene]([ExtResource("2_guest"), ExtResource("3_myst")])
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Env_viewer")
+
+[node name="KeyLight" type="SpotLight3D" parent="."]
+transform = Transform3D(0.866025, -0.25, 0.433013, 0, 0.866025, 0.5, -0.5, -0.433013, 0.75, 1.2, 2.6, 2.0)
+light_energy = 4.0
+shadow_enabled = true
+spot_range = 8.0
+spot_angle = 35.0
+
+[node name="FillLight" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5, 1.6, 1.2)
+light_color = Color(0.75, 0.8, 0.9, 1)
+light_energy = 0.4
+omni_range = 5.0
+
+[node name="Floor" type="MeshInstance3D" parent="."]
+mesh = SubResource("Plane_floor")
+surface_material_override/0 = SubResource("Mat_floor")
+
+[node name="Stage" type="Node3D" parent="."]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 0, 0, 0)
+
+[node name="Pivot" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+
+[node name="Camera3D" type="Camera3D" parent="Pivot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 3)
+fov = 45.0
+current = true
+
+[node name="RetroFilter" parent="." instance=ExtResource("99_retro")]
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="Panel" type="PanelContainer" parent="UI"]
+offset_left = 24.0
+offset_top = 24.0
+offset_right = 384.0
+offset_bottom = 620.0
+
+[node name="VBox" type="VBoxContainer" parent="UI/Panel"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Title" type="Label" parent="UI/Panel/VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 28
+text = "NPC Viewer"
+
+[node name="NpcList" type="ItemList" parent="UI/Panel/VBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 140)
+layout_mode = 2
+theme_override_font_sizes/font_size = 22
+
+[node name="AnimLabel" type="Label" parent="UI/Panel/VBox"]
+layout_mode = 2
+text = "Animation"
+
+[node name="AnimOption" type="OptionButton" parent="UI/Panel/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="SpeedLabel" type="Label" parent="UI/Panel/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Speed 1.00"
+
+[node name="SpeedSlider" type="HSlider" parent="UI/Panel/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+max_value = 2.0
+step = 0.05
+value = 1.0
+
+[node name="Views" type="HBoxContainer" parent="UI/Panel/VBox"]
+layout_mode = 2
+
+[node name="FaceButton" type="Button" parent="UI/Panel/VBox/Views"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Face"
+
+[node name="BodyButton" type="Button" parent="UI/Panel/VBox/Views"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Full body"
+
+[node name="LightButton" type="Button" parent="UI/Panel/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Light: Day"
+
+[node name="SpinCheck" type="CheckBox" parent="UI/Panel/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Turntable spin"
+
+[node name="BackButton" type="Button" parent="UI/Panel/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Back to title"
+
+[node name="InfoLabel" type="Label" parent="UI/Panel/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.6, 0.6, 0.6, 1)
+theme_override_font_sizes/font_size = 14
+autowrap_mode = 3
+
+[node name="Help" type="Label" parent="UI"]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 24.0
+offset_top = -48.0
+offset_right = 900.0
+offset_bottom = -16.0
+grow_vertical = 0
+theme_override_colors/font_color = Color(0.6, 0.6, 0.6, 1)
+text = "Drag: orbit   Wheel: zoom   Left/Right: next NPC   Esc: back"

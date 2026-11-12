@@ -5,7 +5,7 @@
 
 [sub_resource type="Resource" id="L1"]
 script = ExtResource("2_line")
-speaker = "Guest"
+speaker = "Stranger"
 text = "Please check your system. I'm sure it's there."
 
 [resource]

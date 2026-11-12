@@ -1,12 +1,10 @@
 [gd_scene format=3]
 
 [ext_resource type="Script" path="res://scripts/components/flicker_light.gd" id="1_flicker"]
+[ext_resource type="Material" path="res://assets/materials/asphalt.tres" id="mat_lot"]
 
 [sub_resource type="StandardMaterial3D" id="Mat_ground"]
 albedo_color = Color(0.1, 0.12, 0.1, 1)
-
-[sub_resource type="StandardMaterial3D" id="Mat_lot"]
-albedo_color = Color(0.16, 0.16, 0.18, 1)
 
 [sub_resource type="StandardMaterial3D" id="Mat_line"]
 albedo_color = Color(0.8, 0.8, 0.8, 1)
@@ -30,7 +28,7 @@ material = SubResource("Mat_ground")
 [node name="ParkingLot" type="CSGBox3D" parent="."]
 position = Vector3(0, -0.13, -8)
 size = Vector3(12, 0.04, 8)
-material = SubResource("Mat_lot")
+material = ExtResource("mat_lot")
 
 [node name="ParkingLine1" type="CSGBox3D" parent="."]
 position = Vector3(-4, -0.105, -9)

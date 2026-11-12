@@ -5,12 +5,12 @@
 
 [sub_resource type="Resource" id="L1"]
 script = ExtResource("2_line")
-speaker = "Room 2"
+speaker = "Mr. Doyle"
 text = "Hello? Front desk? This is Room 2."
 
 [sub_resource type="Resource" id="L2"]
 script = ExtResource("2_line")
-speaker = "Room 2"
+speaker = "Mr. Doyle"
 text = "Could you send up some extra towels? There are none in the bathroom."
 
 [sub_resource type="Resource" id="L3"]
@@ -20,7 +20,7 @@ text = "Of course. Someone will bring them up shortly."
 
 [sub_resource type="Resource" id="L4"]
 script = ExtResource("2_line")
-speaker = "Room 2"
+speaker = "Mr. Doyle"
 text = "Thank you."
 
 [resource]

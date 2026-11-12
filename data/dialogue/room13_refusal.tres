@@ -10,7 +10,7 @@ text = "I'm sorry, but we don't have a Room 13."
 
 [sub_resource type="Resource" id="L2"]
 script = ExtResource("2_line")
-speaker = "Guest"
+speaker = "Stranger"
 text = "Are you sure?"
 
 [sub_resource type="Resource" id="L3"]
@@ -20,7 +20,7 @@ text = "Yes. This motel only has three rooms."
 
 [sub_resource type="Resource" id="L4"]
 script = ExtResource("2_line")
-speaker = "Guest"
+speaker = "Stranger"
 text = "That's strange. I stayed here yesterday."
 
 [resource]

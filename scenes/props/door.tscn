@@ -2,9 +2,7 @@
 
 [ext_resource type="Script" path="res://scripts/props/door.gd" id="1_door"]
 [ext_resource type="Script" path="res://scripts/components/interactable.gd" id="2_inter"]
-
-[sub_resource type="StandardMaterial3D" id="Mat_door"]
-albedo_color = Color(0.35, 0.2, 0.1, 1)
+[ext_resource type="Material" path="res://assets/materials/wood.tres" id="mat_wood"]
 
 [sub_resource type="StandardMaterial3D" id="Mat_handle"]
 albedo_color = Color(0.7, 0.6, 0.3, 1)
@@ -16,7 +14,7 @@ script = ExtResource("1_door")
 
 [node name="Leaf" type="CSGBox3D" parent="Hinge"]
 use_collision = true
-material = SubResource("Mat_door")
+material = ExtResource("mat_wood")
 
 [node name="Label" type="Label3D" parent="Hinge/Leaf"]
 pixel_size = 0.003

@@ -60,6 +60,14 @@ size_flags_horizontal = 4
 theme_override_font_sizes/font_size = 28
 text = "Start"
 
+[node name="NpcViewerButton" type="Button" parent="Center/VBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(280, 56)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 28
+text = "NPC Viewer"
+
 [node name="QuitButton" type="Button" parent="Center/VBox"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(280, 56)

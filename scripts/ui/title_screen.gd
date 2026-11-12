@@ -2,12 +2,14 @@ extends Control
 ## Title screen: Start fades to black, then loads the motel.
 
 const MAIN_SCENE: String = "res://scenes/main.tscn"
+const NPC_VIEWER_SCENE: String = "res://scenes/ui/npc_viewer.tscn"
 
 @export var ambience: StringName = &"day_ambience"
 @export var fade_seconds: float = 1.2
 
 @onready var start_button: Button = %StartButton
 @onready var quit_button: Button = %QuitButton
+@onready var npc_viewer_button: Button = %NpcViewerButton
 @onready var fade: ColorRect = %Fade
 
 var _starting: bool = false
@@ -19,6 +21,9 @@ func _ready() -> void:
 	%SubtitleLabel.add_theme_font_override("font", preload("res://assets/fonts/subtitle_font.tres"))
 	start_button.pressed.connect(_on_start_pressed)
 	quit_button.pressed.connect(_on_quit_pressed)
+	# Dev tool: only in editor/debug builds, never in the exported game.
+	npc_viewer_button.visible = OS.is_debug_build()
+	npc_viewer_button.pressed.connect(_on_npc_viewer_pressed)
 	AudioManager.set_ambience(ambience)
 	start_button.grab_focus()
 	fade.modulate.a = 1.0
@@ -34,6 +39,11 @@ func _on_start_pressed() -> void:
 	t.tween_property(fade, "modulate:a", 1.0, fade_seconds)
 	await t.finished
 	get_tree().change_scene_to_file(MAIN_SCENE)
+
+
+func _on_npc_viewer_pressed() -> void:
+	AudioManager.play_sfx(&"ui_click")
+	get_tree().change_scene_to_file(NPC_VIEWER_SCENE)
 
 
 func _on_quit_pressed() -> void:

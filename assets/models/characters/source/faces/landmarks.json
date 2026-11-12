@@ -1,0 +1,10 @@
+{
+  "guest": {
+    "eye_left": [553, 492], "eye_right": [783, 492],
+    "mouth": [676, 722], "chin": [676, 860], "hairline": [668, 258]
+  },
+  "mysterious": {
+    "eye_left": [530, 470], "eye_right": [773, 470],
+    "mouth": [654, 742], "chin": [654, 868], "hairline": [655, 252]
+  }
+}

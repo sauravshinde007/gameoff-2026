@@ -2,16 +2,12 @@
 
 [ext_resource type="Script" path="res://scripts/npcs/mysterious_guest.gd" id="1_guest"]
 [ext_resource type="Script" path="res://scripts/components/interactable.gd" id="2_inter"]
+[ext_resource type="PackedScene" path="res://assets/models/characters/mysterious_guest.glb" id="7_model"]
+[ext_resource type="Script" path="res://scripts/components/retro_model.gd" id="8_retro"]
 [ext_resource type="Resource" path="res://data/dialogue/room13_arrive.tres" id="3_arrive"]
 [ext_resource type="Resource" path="res://data/dialogue/room13_remind.tres" id="4_remind"]
 [ext_resource type="Resource" path="res://data/dialogue/room13_prompt.tres" id="5_prompt"]
 [ext_resource type="Resource" path="res://data/dialogue/room13_refusal.tres" id="6_refusal"]
-
-[sub_resource type="StandardMaterial3D" id="Mat_coat"]
-albedo_color = Color(0.06, 0.06, 0.08, 1)
-
-[sub_resource type="StandardMaterial3D" id="Mat_skin"]
-albedo_color = Color(0.7, 0.72, 0.7, 1)
 
 [sub_resource type="CapsuleShape3D" id="Cap_body"]
 radius = 0.3
@@ -31,16 +27,10 @@ dialogue_refusal = ExtResource("6_refusal")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
 shape = SubResource("Cap_body")
 
-[node name="Body" type="CSGCylinder3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, 0)
-radius = 0.3
-height = 1.5
-material = SubResource("Mat_coat")
-
-[node name="Head" type="CSGSphere3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7, 0)
-radius = 0.2
-material = SubResource("Mat_skin")
+[node name="Model" parent="." instance=ExtResource("7_model")]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 0, 0, 0)
+script = ExtResource("8_retro")
+anim_speed = 0.35
 
 [node name="Interactable" type="Area3D" parent="."]
 script = ExtResource("2_inter")
