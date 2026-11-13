@@ -41,9 +41,10 @@ func _set_present(present: bool) -> void:
 	area_shape.set_deferred("disabled", not present)
 
 
-func _on_interacted(_by: Node) -> void:
+func _on_interacted(by: Node) -> void:
 	if DialogueManager.is_active():
 		return
+	NpcFacing.face(self, by as Node3D)
 	if not _asked:
 		_start(dialogue_arrive)
 	elif not EventManager.has_flag(viewed_flag):

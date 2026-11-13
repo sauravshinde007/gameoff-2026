@@ -6,5 +6,9 @@
   "mysterious": {
     "eye_left": [530, 470], "eye_right": [773, 470],
     "mouth": [654, 742], "chin": [654, 868], "hairline": [655, 252]
+  },
+  "player": {
+    "eye_left": [515, 510], "eye_right": [725, 510],
+    "mouth": [620, 745], "chin": [620, 890], "hairline": [624, 285]
   }
 }

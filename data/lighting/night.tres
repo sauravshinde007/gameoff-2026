@@ -1,6 +1,7 @@
 [gd_resource type="Resource" script_class="LightingPreset" format=3]
 
 [ext_resource type="Script" path="res://scripts/resources/lighting_preset.gd" id="1_preset"]
+[ext_resource type="Texture2D" path="res://assets/textures/sky/full_moon_night.png" id="2_sky"]
 
 [resource]
 script = ExtResource("1_preset")
@@ -9,6 +10,9 @@ ambient_color = Color(0.18, 0.22, 0.24, 1)
 ambient_energy = 0.45
 fog_color = Color(0.06, 0.08, 0.08, 1)
 fog_density = 0.06
+sky_panorama = ExtResource("2_sky")
+sky_energy = 1.0
+sky_fog_affect = 0.35
 grade_brightness = 0.95
 grade_contrast = 1.2
 grade_saturation = 0.65

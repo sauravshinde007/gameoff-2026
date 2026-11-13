@@ -33,6 +33,15 @@ BASES = os.path.join(psx.ROOT, "assets", "models", "characters", "source", "retr
 RETRO = {
     "guest": dict(psx.PSX["guest"], body="female", anim_from="woman", sleeve_t=0.97),
     "mysterious": dict(psx.PSX["mysterious"], body="male", anim_from="man", sleeve_t=0.97),
+    # Player: pencil skirt to mid-thigh (skirt_t: 0 hip joint .. 1 knee), bare legs, shirt
+    # collar and button placket, black shoes. These keys are optional; NPCs don't use them.
+    # skirt_mesh: real skirt tube (not just paint). hair_mesh_bottom_z: long hair down to here.
+    # hair_rgb: sRGB hair colour from the face photo.
+    "player": dict(psx.PSX["player"], body="female", anim_from="woman", sleeve_t=0.97,
+                   skirt_t=0.5, skirt_mesh=True,
+                   hair_mesh_bottom_z=1.22, hair_rgb=(0.27, 0.19, 0.15),
+                   v_neck=0.13, collar=(0.11, 0.016, 0.028), placket=(0.07, 0.011, 0.018),
+                   shoes=("Leather026.jpg", (0.12, 0.12, 0.12), 4.0)),
 }
 
 # Source (PSX mannequin) bone -> target (retro base) bone. Sides are checked by position.
@@ -56,6 +65,8 @@ def parse_args() -> argparse.Namespace:
     p.add_argument("--tex", type=int, default=1024)
     p.add_argument("--face", default="", help="front face photo; 'none' to skip")
     p.add_argument("--landmarks", default="")
+    p.add_argument("--headless", action="store_true",
+                   help="drop the head (first-person body: nothing in front of the camera)")
     return p.parse_args(argv)
 
 
@@ -123,6 +134,8 @@ def measure_target(rig, mesh) -> None:
         "MQ_HEAD_W": 2.0 * max(abs(v.x) for v in head),
         "MQ_HEAD_Y": (min(v.y for v in head), max(v.y for v in head)),
         "HAIR_MIN_Z": head0 + (top - head0) * 0.45,
+        "HIP_Z": b["thigh_l"].head_local.z,
+        "KNEE_Z": b["calf_l"].head_local.z,
     }
     for k, val in values.items():
         setattr(psx, k, val)
@@ -177,6 +190,9 @@ def bake_body(mesh, v: dict, skin: tuple, size: int):
     N.link(arm.outputs["Color"], sep.inputs[0])
     arm_t, is_arm = sep.outputs[0], sep.outputs[1]
     front_y = psx.MQ_HEAD_Y[0] * 0.2 + 0.02      # chest front, relative to this body
+    # Front half of the body. The upper chest and neck base sit behind front_y, so shapes that
+    # must reach up to the neck (shirt V, tie, open collar) use this instead.
+    front_half = sum(psx.MQ_HEAD_Y) * 0.5
 
     col = N.noisy(pos, skin, 40.0, 0.06)
     torso = mul(mul(gt(z, psx.TROUSER_TOP), lt(z, psx.NECK_Z)), lt(is_arm, 0.5))
@@ -188,15 +204,56 @@ def bake_body(mesh, v: dict, skin: tuple, size: int):
         top_col = N.mix(inner, top_col, N.noisy(pos, v["inner"], 80.0, 0.15))
     if v["tie"]:
         v_top = psx.NECK_Z - 0.23
-        vwidth = N.math("MULTIPLY", N.math("SUBTRACT", z, v_top), 0.45)
-        vmask = mul(mul(lt(ax, vwidth), lt(y, front_y)), gt(z, v_top))
+        # Shirt V, no wider than the neck at the top (wider would wrap over the shoulders).
+        vwidth = N.math("MINIMUM", N.math("MULTIPLY", N.math("SUBTRACT", z, v_top), 0.45), 0.062)
+        vmask = mul(mul(lt(ax, vwidth), lt(y, front_half)), gt(z, v_top))
         top_col = N.mix(vmask, top_col, N.noisy(pos, v["inner"], 80.0, 0.1))
-        tie = mul(mul(lt(ax, 0.018), lt(y, front_y)), gt(z, psx.NECK_Z - 0.33))
+        tie = mul(mul(lt(ax, 0.018), lt(y, front_half)), gt(z, psx.NECK_Z - 0.33))
         top_col = N.mix(mul(tie, lt(z, psx.NECK_Z)), top_col, (0.05, 0.03, 0.03))
+    open_v = None
+    placket_top = psx.NECK_Z - 0.02
+    if "v_neck" in v:
+        # Open collar: a V of bare skin from the neck down v_neck metres, front only.
+        v_bot = psx.NECK_Z - v["v_neck"]
+        v_half = N.math("ADD", N.math("MULTIPLY", N.math("SUBTRACT", z, v_bot), 0.5), 0.004)
+        open_v = mul(mul(lt(ax, v_half), gt(z, v_bot)), lt(y, front_half))
+        placket_top = v_bot
+    if "placket" in v:
+        # Button-up shirt: darker strip down the front centre with small buttons on it.
+        front = mul(lt(ax, 0.009), lt(y, front_y))
+        strip = mul(front, lt(z, placket_top))
+        top_col = N.mix(strip, top_col, v["placket"])
+        step = 0.07
+        dot = lt(N.math("ABSOLUTE", N.math("SUBTRACT", N.math("FRACT", N.math(
+            "DIVIDE", z, step)), 0.5)), 0.12)
+        top_col = N.mix(mul(mul(strip, dot), lt(ax, 0.006)), top_col, (0.06, 0.05, 0.05))
+    if "collar" in v and open_v is not None:
+        # Open collar: a band round the back of the neck, continuing as flaps along both
+        # edges of the V.
+        v_bot = psx.NECK_Z - v["v_neck"]
+        band = mul(mul(gt(z, psx.NECK_Z - 0.035), lt(ax, 0.09)), gt(y, front_half))
+        top_col = N.mix(band, top_col, N.noisy(pos, v["collar"], 80.0, 0.08))
+        edge = N.math("ADD", N.math("MULTIPLY", N.math("SUBTRACT", z, v_bot), 0.5), 0.004)
+        flap = mul(mul(gt(ax, edge), lt(ax, N.math("ADD", edge, 0.024))),
+                   mul(gt(z, v_bot + 0.015), lt(z, psx.NECK_Z + 0.01)))
+        top_col = N.mix(mul(flap, lt(y, front_half)), top_col,
+                        N.noisy(pos, v["collar"], 80.0, 0.08))
+    elif "collar" in v:
+        # Pointed shirt collar: two lighter flaps meeting in a V below the neck.
+        c_top = psx.NECK_Z + 0.01
+        c_bot = psx.NECK_Z - 0.09
+        width = N.math("ADD", N.math("MULTIPLY", N.math("SUBTRACT", z, c_bot), 0.9), 0.012)
+        flap = mul(mul(lt(ax, width), gt(ax, 0.004)), mul(gt(z, c_bot), lt(z, c_top)))
+        top_col = N.mix(mul(flap, lt(y, front_y)), top_col, N.noisy(pos, v["collar"], 80.0, 0.08))
+    if open_v is not None:
+        top_mask = mul(top_mask, N.math("SUBTRACT", 1.0, open_v))   # skin shows in the V
     col = N.mix(top_mask, col, top_col)
-    trousers = mul(mul(lt(z, psx.TROUSER_TOP), gt(z, psx.SHOE_TOP)), lt(is_arm, 0.5))
-    col = N.mix(trousers, col, N.fabric(pos, v["trousers"]))
-    col = N.mix(lt(z, psx.SHOE_TOP), col, N.fabric(pos, psx.SHOES))
+    legs = mul(mul(lt(z, psx.TROUSER_TOP), gt(z, psx.SHOE_TOP)), lt(is_arm, 0.5))
+    if "skirt_t" in v:
+        hem = psx.HIP_Z + (psx.KNEE_Z - psx.HIP_Z) * v["skirt_t"]
+        legs = mul(legs, gt(z, hem))      # below the hem: bare skin (already in col)
+    col = N.mix(legs, col, N.fabric(pos, v["trousers"]))
+    col = N.mix(lt(z, psx.SHOE_TOP), col, N.fabric(pos, v.get("shoes", psx.SHOES)))
 
     emit = N.new("ShaderNodeEmission")
     N.link(col, emit.inputs[0])
@@ -217,6 +274,174 @@ def push_hair(mesh, hair) -> None:
     psx._push_onto_hair(mesh, hair)
     for i, co in keep.items():
         mesh.data.vertices[i].co = co
+
+
+# ---------------------------------------------------------------- extra geometry
+# Separate pieces joined onto the body after the texture bake. They take their colour from one
+# point of the baked texture, so they read as flat PS1-style shapes.
+
+HAIR_GROUP = "hair_part"      # tags the long-hair vertices (not a bone; ignored by the export)
+
+
+def _uv_at(mesh, pick) -> tuple:
+    """UV of the first loop on the vertex chosen by pick(world_pos) -> score (highest wins)."""
+    best = max(mesh.data.vertices, key=lambda vert: pick(mesh.matrix_world @ vert.co))
+    uv = mesh.data.uv_layers.active.data
+    for loop in mesh.data.loops:
+        if loop.vertex_index == best.index:
+            return tuple(uv[loop.index].uv)
+    return (0.0, 0.0)
+
+
+def _uv_of_colour(mesh, rgb: tuple, block: int = 4) -> tuple:
+    """UV of the centre of the block x block texel area of the baked texture whose average
+    colour is closest to rgb (sRGB 0..1). Block-averaged so mipmaps don't shift the colour."""
+    import numpy as np
+    img = next(n.image for n in mesh.data.materials[0].node_tree.nodes
+               if n.type == "TEX_IMAGE" and n.image)
+    w, h = img.size
+    px = np.empty(w * h * 4, dtype=np.float32)
+    img.pixels.foreach_get(px)
+    px = px.reshape(h, w, 4)[: h - h % block, : w - w % block, :3]
+    avg = px.reshape(h // block, block, w // block, block, 3).mean(axis=(1, 3))
+    dist = ((avg - np.array(rgb, dtype=np.float32)) ** 2).sum(axis=2)
+    by, bx = np.unravel_index(int(np.argmin(dist)), dist.shape)
+    return ((bx + 0.5) * block / w, (by + 0.5) * block / h)
+
+
+def _join_part(mesh, bm, name: str, uv: tuple, weights) -> None:
+    """Add bm (world space, rest pose) to mesh: every loop gets uv, and weights(pos) gives each
+    vertex its {group name: weight}. Clears bm."""
+    me = bpy.data.meshes.new(name)
+    bm.to_mesh(me)
+    bm.free()
+    obj = bpy.data.objects.new(name, me)
+    bpy.context.scene.collection.objects.link(obj)
+    while me.uv_layers:                  # drop source UVs (e.g. the MPFB hair's own)
+        me.uv_layers.remove(me.uv_layers[0])
+    layer = me.uv_layers.new(name=mesh.data.uv_layers.active.name)
+    for d in layer.data:
+        d.uv = uv
+    groups = {}
+    for vert in me.vertices:
+        for g, w in weights(vert.co).items():
+            if w <= 0.0:
+                continue
+            if g not in groups:
+                groups[g] = obj.vertex_groups.new(name=g)
+            groups[g].add([vert.index], w, "REPLACE")
+    me.materials.append(mesh.data.materials[0])
+    bpy.ops.object.select_all(action="DESELECT")
+    obj.select_set(True)
+    mesh.select_set(True)
+    bpy.context.view_layer.objects.active = mesh
+    bpy.ops.object.join()
+
+
+def add_long_hair(mesh, hair, bottom_z: float, rgb: tuple) -> None:
+    """Long straight hair: the MPFB hair cards down to bottom_z, simplified and made two-sided
+    (solid slabs instead of alpha cards), coloured from the baked texel closest to rgb."""
+    dg = bpy.context.evaluated_depsgraph_get()
+    bm = bmesh.new()
+    bm.from_object(hair, dg)
+    bm.transform(hair.matrix_world)
+    bmesh.ops.delete(bm, geom=[vert for vert in bm.verts if vert.co.z < bottom_z], context="VERTS")
+    me = bpy.data.meshes.new("hair_tmp")
+    bm.to_mesh(me)
+    bm.free()
+    tmp = bpy.data.objects.new("hair_tmp", me)
+    bpy.context.scene.collection.objects.link(tmp)
+    dec = tmp.modifiers.new("dec", "DECIMATE")
+    dec.ratio = 0.35
+    sol = tmp.modifiers.new("sol", "SOLIDIFY")
+    sol.thickness = 0.006
+    sol.offset = 0.0
+    bpy.context.view_layer.update()
+    bm = bmesh.new()
+    bm.from_object(tmp, bpy.context.evaluated_depsgraph_get())
+    bpy.data.objects.remove(tmp, do_unlink=True)
+    for f in bm.faces:
+        f.smooth = False
+    uv = _uv_of_colour(mesh, rgb)
+    neck = psx.NECK_Z
+
+    def weights(pos):
+        t = min(1.0, max(0.0, (pos.z - (neck - 0.12)) / 0.14))
+        return {"head": t, "spine_02": 1.0 - t, HAIR_GROUP: 1.0}
+
+    n = len(bm.verts)
+    _join_part(mesh, bm, "long_hair", uv, weights)
+    print(f"[make_retro_character] long hair: {n} vertices")
+
+
+def add_skirt(rig, mesh, v: dict) -> None:
+    """Pencil skirt: one tube around both thighs from the waist to the hem, so the legs don't
+    read as shorts. Outline per height = convex outline of the body there (arms excluded)."""
+    top = psx.TROUSER_TOP + 0.03
+    hem = psx.HIP_Z + (psx.KNEE_Z - psx.HIP_Z) * v["skirt_t"]
+    groups = {g.index: g.name for g in mesh.vertex_groups}
+    pts = []
+    for vert in mesh.data.vertices:
+        best = max(vert.groups, key=lambda g: g.weight, default=None)
+        if best is None or groups.get(best.group, "").startswith(ARM_CHAIN):
+            continue
+        pts.append(mesh.matrix_world @ vert.co)
+    rings, sides, pad = 7, 16, 0.006
+    top_band = [p for p in pts if abs(p.z - top) < 0.025] or pts
+    cy = sum(p.y for p in top_band) / len(top_band)
+    dirs = [Vector((math.cos(2.0 * math.pi * k / sides), math.sin(2.0 * math.pi * k / sides), 0.0))
+            for k in range(sides)]
+    radii = []
+    for i in range(rings):
+        z = top + (hem - top) * i / (rings - 1)
+        band = [p for p in pts if abs(p.z - z) < 0.025] or pts
+        r = [max((p - Vector((0.0, cy, z))).dot(d) for p in band) + pad for d in dirs]
+        # Smooth around the ring, then never wider than the ring above: a pencil skirt tapers.
+        r = [(r[k - 1] + 2.0 * r[k] + r[(k + 1) % sides]) / 4.0 for k in range(sides)]
+        if radii:
+            r = [min(a, b) for a, b in zip(r, radii[-1])]
+        radii.append(r)
+    bm = bmesh.new()
+    ring_verts = []
+    for i, r in enumerate(radii):
+        z = top + (hem - top) * i / (rings - 1)
+        ring_verts.append([bm.verts.new((d.x * rk, cy + d.y * rk, z)) for d, rk in zip(dirs, r)])
+    for i in range(rings - 1):
+        for k in range(sides):
+            a, b = ring_verts[i][k], ring_verts[i][(k + 1) % sides]
+            c, d = ring_verts[i + 1][(k + 1) % sides], ring_verts[i + 1][k]
+            bm.faces.new((a, b, c, d))
+    bmesh.ops.recalc_face_normals(bm, faces=bm.faces)
+    for f in bm.faces:
+        f.smooth = False
+    left_x = rig.data.bones["thigh_l"].head_local.x
+    uv = _uv_at(mesh, lambda pos: -abs(pos.z - (top + hem) * 0.5) * 10.0 - abs(abs(pos.x) - abs(left_x))
+                - abs(pos.y + 0.05))      # front of a thigh, mid-skirt: baked skirt fabric
+
+    def weights(pos):
+        f = min(1.0, max(0.0, (top - pos.z) / max(top - hem, 0.01)))
+        side = min(1.0, max(0.0, 0.5 + pos.x / (2.0 * abs(left_x)) * (1.0 if left_x > 0 else -1.0)))
+        return {"pelvis": 1.0 - f, "thigh_l": f * side, "thigh_r": f * (1.0 - side)}
+
+    _join_part(mesh, bm, "skirt", uv, weights)
+    print(f"[make_retro_character] skirt: hem z {hem:.3f}")
+
+
+def remove_head(mesh) -> None:
+    """First-person body: delete the head and hair (vertices mostly skinned to head/neck, and
+    the long hair)."""
+    drop = {mesh.vertex_groups[n].index for n in ("head", "neck") if n in mesh.vertex_groups}
+    hair = mesh.vertex_groups[HAIR_GROUP].index if HAIR_GROUP in mesh.vertex_groups else -1
+    bm = bmesh.new()
+    bm.from_mesh(mesh.data)
+    deform = bm.verts.layers.deform.active
+    gone = [vert for vert in bm.verts
+            if sum(w for g, w in vert[deform].items() if g in drop) > 0.5
+            or vert[deform].get(hair, 0.0) > 0.0]
+    bmesh.ops.delete(bm, geom=gone, context="VERTS")
+    bm.to_mesh(mesh.data)
+    bm.free()
+    print(f"[make_retro_character] headless: removed {len(gone)} vertices")
 
 
 # ---------------------------------------------------------------- retarget
@@ -345,6 +570,10 @@ def main() -> None:
                                        psx._load_landmarks(args.variant, photo, args.landmarks),
                                        args.tex, hair=sources[2])
     psx.composite(mesh, body_img, head_img, args.tex)
+    if "hair_mesh_bottom_z" in v:
+        add_long_hair(mesh, sources[2], v["hair_mesh_bottom_z"], v["hair_rgb"])
+    if v.get("skirt_mesh"):
+        add_skirt(rig, mesh, v)
     for o in list(bpy.data.objects):
         if o not in (rig, mesh, src):
             o.hide_render = True
@@ -355,6 +584,8 @@ def main() -> None:
     for o in list(bpy.data.objects):
         if o not in (rig, mesh):
             bpy.data.objects.remove(o, do_unlink=True)
+    if args.headless:
+        remove_head(mesh)
     if args.out:
         psx.export_glb(rig, mesh, os.path.abspath(args.out))
     print(f"[make_retro_character] {args.variant}: actions {len(bpy.data.actions)}")

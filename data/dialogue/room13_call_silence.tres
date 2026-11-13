@@ -1,7 +1,7 @@
-[gd_resource type="Resource" script_class="DialogueData" format=3]
+[gd_resource type="Resource" script_class="DialogueData" format=3 uid="uid://cd0wc0hu778h1"]
 
-[ext_resource type="Script" path="res://scripts/resources/dialogue_data.gd" id="1_data"]
-[ext_resource type="Script" path="res://scripts/resources/dialogue_line.gd" id="2_line"]
+[ext_resource type="Script" uid="uid://bn3cpmd43uwa5" path="res://scripts/resources/dialogue_data.gd" id="1_data"]
+[ext_resource type="Script" uid="uid://boick2s5pjf7x" path="res://scripts/resources/dialogue_line.gd" id="2_line"]
 
 [sub_resource type="Resource" id="L1"]
 script = ExtResource("2_line")
@@ -10,16 +10,15 @@ text = "Front desk. Hello?"
 
 [sub_resource type="Resource" id="L2"]
 script = ExtResource("2_line")
-speaker = ""
 text = "...static..."
 
 [sub_resource type="Resource" id="L3"]
 script = ExtResource("2_line")
-speaker = ""
 text = "*The line goes dead.*"
 
 [resource]
 script = ExtResource("1_data")
 id = &"room13_call_silence"
-loop_sfx = &"call_static"
 lines = Array[ExtResource("2_line")]([SubResource("L1"), SubResource("L2"), SubResource("L3")])
+choices = null
+loop_sfx = &"call_static"

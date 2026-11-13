@@ -4,30 +4,20 @@
 [ext_resource type="Script" path="res://scripts/components/interactable.gd" id="2_inter"]
 [ext_resource type="Script" path="res://scripts/components/world_screen.gd" id="4_ws"]
 [ext_resource type="PackedScene" path="res://scenes/ui/computer_screen.tscn" id="3_screen"]
-
-[sub_resource type="StandardMaterial3D" id="Mat_body"]
-albedo_color = Color(0.12, 0.12, 0.14, 1)
-
-[sub_resource type="StandardMaterial3D" id="Mat_glow"]
-albedo_color = Color(0.04, 0.1, 0.25, 1)
-emission_enabled = true
-emission = Color(0.15, 0.45, 1, 1)
-emission_energy_multiplier = 2.5
+[ext_resource type="PackedScene" path="res://assets/models/props/pc.glb" id="5_model"]
+[ext_resource type="Script" path="res://scripts/components/retro_model.gd" id="6_retro"]
 
 [sub_resource type="BoxShape3D" id="Box_area"]
-size = Vector3(0.6, 0.5, 0.5)
+size = Vector3(0.9, 0.5, 0.5)
 
 [node name="Computer" type="Node3D"]
 script = ExtResource("1_computer")
 
-[node name="Body" type="CSGBox3D" parent="."]
-size = Vector3(0.5, 0.4, 0.4)
-material = SubResource("Mat_body")
-
-[node name="ScreenGlow" type="CSGBox3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.02, -0.2)
-size = Vector3(0.42, 0.3, 0.01)
-material = SubResource("Mat_glow")
+; CRT monitor + tower. The model faces +Z, so it is turned to face -Z (the player's side), and
+; shifted so the monitor glass is centred on this node. Its origin is the desk surface (y = -0.2).
+[node name="Model" parent="." instance=ExtResource("5_model")]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, -0.1275, -0.2, 0)
+script = ExtResource("6_retro")
 
 [node name="Interactable" type="Area3D" parent="."]
 script = ExtResource("2_inter")
@@ -37,8 +27,8 @@ prompt_text = "Use computer"
 shape = SubResource("Box_area")
 
 [node name="WorldScreen" type="Node3D" parent="."]
-transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 0, 0.02, -0.207)
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 0, 0.0835, -0.227)
 script = ExtResource("4_ws")
 ui_scene = ExtResource("3_screen")
-screen_size = Vector2(0.42, 0.3)
+screen_size = Vector2(0.34, 0.243)
 viewport_size = Vector2i(1260, 900)

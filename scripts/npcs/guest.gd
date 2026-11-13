@@ -30,9 +30,10 @@ func _ready() -> void:
 	DialogueManager.dialogue_finished.connect(_on_dialogue_finished)
 
 
-func _on_interacted(_by: Node) -> void:
+func _on_interacted(by: Node) -> void:
 	if _done or DialogueManager.is_active():
 		return
+	NpcFacing.face(self, by as Node3D)
 	var res: ReservationData = RoomManager.get_reservation(reservation_id)
 	if res == null:
 		return

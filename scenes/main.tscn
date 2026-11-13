@@ -7,7 +7,7 @@
 [ext_resource type="PackedScene" path="res://scenes/ui/dialogue_box.tscn" id="5_dialogue"]
 [ext_resource type="PackedScene" path="res://scenes/ui/task_list.tscn" id="6_tasks"]
 [ext_resource type="Script" uid="uid://ccm2pnaa64trl" path="res://scripts/components/flicker_light.gd" id="9_flicker"]
-[ext_resource type="Script" path="res://scripts/environment/day_night.gd" id="10_daynight"]
+[ext_resource type="Script" uid="uid://do3l2qikn6xrw" path="res://scripts/environment/day_night.gd" id="10_daynight"]
 [ext_resource type="PackedScene" path="res://scenes/ui/screen_fade.tscn" id="11_fade"]
 [ext_resource type="Resource" path="res://data/lighting/day.tres" id="12_day"]
 [ext_resource type="Resource" path="res://data/lighting/night.tres" id="13_night"]
@@ -15,8 +15,18 @@
 [ext_resource type="PackedScene" path="res://scenes/ui/pause_menu.tscn" id="15_pause"]
 [ext_resource type="PackedScene" path="res://scenes/ui/retro_filter.tscn" id="99_retro"]
 
+[sub_resource type="PanoramaSkyMaterial" id="Mat_sky"]
+filter = false
+
+[sub_resource type="Sky" id="Sky_main"]
+sky_material = SubResource("Mat_sky")
+radiance_size = 0
+
 [sub_resource type="Environment" id="Environment_main"]
-background_mode = 1
+background_mode = 2
+sky = SubResource("Sky_main")
+sky_rotation = Vector3(0, 3.14159, 0)
+reflected_light_source = 1
 background_color = Color(0.05, 0.05, 0.08, 1)
 ambient_light_source = 2
 ambient_light_color = Color(0.3, 0.3, 0.35, 1)
@@ -24,11 +34,11 @@ tonemap_mode = 2
 glow_enabled = true
 glow_intensity = 0.5
 glow_bloom = 0.05
-adjustment_enabled = true
 fog_enabled = true
 fog_light_color = Color(0.1, 0.1, 0.14, 1)
 fog_density = 0.03
 fog_height_density = 4.4356
+adjustment_enabled = true
 
 [node name="Main" type="Node3D" unique_id=1266530711]
 script = ExtResource("2_main")
@@ -49,21 +59,21 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.8)
 [node name="HUD" parent="." unique_id=1481366506 instance=ExtResource("3_hud")]
 
 [node name="Motel" parent="." unique_id=1695575333 instance=ExtResource("4_reception")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.016854286, 2.3841858e-07, -0.0043256283)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.02386403, 2.3841858e-07, -0.0037920475)
 
 [node name="DialogueBox" parent="." unique_id=2134859266 instance=ExtResource("5_dialogue")]
 
 [node name="TaskList" parent="." unique_id=959052237 instance=ExtResource("6_tasks")]
 
-[node name="ScreenFade" parent="." instance=ExtResource("11_fade")]
+[node name="ScreenFade" parent="." unique_id=197064989 instance=ExtResource("11_fade")]
 
-[node name="RetroFilter" parent="." instance=ExtResource("99_retro")]
+[node name="RetroFilter" parent="." unique_id=977749559 instance=ExtResource("99_retro")]
 
-[node name="DayNight" type="Node" parent="."]
+[node name="DayNight" type="Node" parent="." unique_id=254467826]
 script = ExtResource("10_daynight")
 day_preset = ExtResource("12_day")
 night_preset = ExtResource("13_night")
 
-[node name="EndScreen" parent="." instance=ExtResource("14_end")]
+[node name="EndScreen" parent="." unique_id=1156824740 instance=ExtResource("14_end")]
 
-[node name="PauseMenu" parent="." instance=ExtResource("15_pause")]
+[node name="PauseMenu" parent="." unique_id=2013554142 instance=ExtResource("15_pause")]

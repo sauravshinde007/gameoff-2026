@@ -28,11 +28,12 @@ func _ready() -> void:
 
 
 ## Plays a looping animation by name. Ignored if the model has no such animation.
-func play(anim: StringName) -> void:
+## blend: cross-fade time in seconds from the current animation (-1 = AnimationPlayer default).
+func play(anim: StringName, blend: float = -1.0) -> void:
 	if _anim == null or not _anim.has_animation(anim):
 		return
 	_anim.get_animation(anim).loop_mode = Animation.LOOP_LINEAR
-	_anim.play(anim)
+	_anim.play(anim, blend)
 
 
 ## Names of every animation the model has (empty if it has no AnimationPlayer).

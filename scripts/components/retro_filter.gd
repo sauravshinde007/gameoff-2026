@@ -12,11 +12,11 @@ const SHADER: Shader = preload("res://assets/shaders/retro_screen.gdshader")
 		if is_node_ready():
 			_rect.visible = enabled
 			_update_scaling()
-## Height of the low-resolution picture in pixels. 240 is the PS1's usual.
-@export_range(120, 1080) var lines: int = 240:
+## Height of the low-resolution picture in pixels. 240 is the PS1's usual; higher = sharper.
+@export_range(120, 1080) var lines: int = 400:
 	set(value):
 		lines = value
-		_apply(&"lines", float(value))
+		_apply(&"lines", float(screen_lines if _focus else value))
 		if is_node_ready():
 			_update_scaling()
 @export var dither: bool = true:
@@ -27,11 +27,11 @@ const SHADER: Shader = preload("res://assets/shaders/retro_screen.gdshader")
 	set(value):
 		color_bits = value
 		_apply(&"color_bits", value)
-@export_range(0.0, 1.0) var softness: float = 0.35:
+@export_range(0.0, 1.0) var softness: float = 0.15:
 	set(value):
 		softness = value
 		_apply(&"softness", value)
-@export_range(0.0, 0.02) var fringe: float = 0.004:
+@export_range(0.0, 0.02) var fringe: float = 0.002:
 	set(value):
 		fringe = value
 		_apply(&"fringe", value)
@@ -47,6 +47,12 @@ const SHADER: Shader = preload("res://assets/shaders/retro_screen.gdshader")
 ## not sparkle when the picture is snapped to the pixel grid. 0 renders it at full resolution.
 @export_range(0.0, 4.0) var supersample: float = 2.0
 
+## While the player is up close to an in-world screen (computer, CCTV monitor) the picture is
+## drawn at this height with no softening or dither, so its text stays readable.
+@export_range(120, 1080) var screen_lines: int = 1080
+@export var screen_dither: bool = false
+
+var _focus: bool = false
 var _rect: ColorRect
 var _mat: ShaderMaterial
 
@@ -75,6 +81,15 @@ func _exit_tree() -> void:
 	get_viewport().scaling_3d_scale = 1.0
 
 
+## WorldScreen calls this (via the "retro_filter" group) when it zooms in/out.
+func set_screen_focus(on: bool) -> void:
+	_focus = on
+	_apply(&"lines", float(screen_lines if on else lines))
+	_apply(&"dither", dither and (screen_dither or not on))
+	_apply(&"softness", 0.0 if on else softness)
+	_update_scaling()
+
+
 func set_look(new_tint: Color, new_vignette: float) -> void:
 	tint = new_tint
 	vignette = new_vignette
@@ -91,4 +106,5 @@ func _update_scaling() -> void:
 		vp.scaling_3d_scale = 1.0
 		return
 	var window_height: float = float(get_window().size.y)
-	vp.scaling_3d_scale = clampf(lines * supersample / maxf(window_height, 1.0), 0.25, 1.0)
+	var h: int = screen_lines if _focus else lines
+	vp.scaling_3d_scale = clampf(h * supersample / maxf(window_height, 1.0), 0.25, 1.0)

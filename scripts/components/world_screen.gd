@@ -71,6 +71,7 @@ func open() -> void:
 	_saved_fov = _camera.fov
 	get_tree().call_group("player", "set_controls_enabled", false)
 	_quad.visible = true
+	get_tree().call_group(&"retro_filter", "set_screen_focus", true)
 	_viewport.render_target_update_mode = SubViewport.UPDATE_ALWAYS
 	_ui.call(&"open")
 	get_tree().call_group("hud", "show_message", leave_hint, hint_seconds)
@@ -89,6 +90,7 @@ func _on_ui_closed() -> void:
 	_camera.transform = _saved_local
 	_camera.fov = _saved_fov
 	_quad.visible = false
+	get_tree().call_group(&"retro_filter", "set_screen_focus", false)
 	_active = false
 	_leaving = false
 	get_tree().call_group("player", "set_controls_enabled", true)

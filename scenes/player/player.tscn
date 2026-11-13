@@ -2,6 +2,10 @@
 
 [ext_resource type="Script" path="res://scripts/player/player.gd" id="1_player"]
 [ext_resource type="Script" path="res://scripts/player/interactor.gd" id="2_interactor"]
+[ext_resource type="Script" path="res://scripts/player/player_body.gd" id="3_body"]
+[ext_resource type="PackedScene" path="res://assets/models/characters/player.glb" id="4_full"]
+[ext_resource type="PackedScene" path="res://assets/models/characters/player_fp.glb" id="5_fp"]
+[ext_resource type="Script" path="res://scripts/components/retro_model.gd" id="6_retro"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_player"]
 radius = 0.4
@@ -21,10 +25,26 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6, 0)
 
 [node name="Camera3D" type="Camera3D" parent="Head"]
 current = true
-cull_mask = 1048573
+cull_mask = 1048569
 
 [node name="Interactor" type="RayCast3D" parent="Head/Camera3D"]
 target_position = Vector3(0, 0, -1.8)
 collision_mask = 5
 collide_with_areas = true
 script = ExtResource("2_interactor")
+
+[node name="Body" type="Node3D" parent="." node_paths=PackedStringArray("full_model", "fp_model")]
+script = ExtResource("3_body")
+full_model = NodePath("FullModel")
+fp_model = NodePath("FpModel")
+
+[node name="FullModel" parent="Body" instance=ExtResource("4_full")]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 0, 0, 0)
+script = ExtResource("6_retro")
+render_layers = 4
+
+[node name="FpModel" parent="Body" instance=ExtResource("5_fp")]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 0, 0, 0.12)
+script = ExtResource("6_retro")
+render_layers = 8
+cast_shadows = false

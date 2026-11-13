@@ -20,6 +20,8 @@ func apply(preset: LightingPreset) -> void:
 	env.ambient_light_energy = preset.ambient_energy
 	env.fog_light_color = preset.fog_color
 	env.fog_density = preset.fog_density
+	env.fog_sky_affect = preset.sky_fog_affect
+	_apply_sky(env, preset)
 	env.adjustment_enabled = true
 	env.adjustment_brightness = preset.grade_brightness
 	env.adjustment_contrast = preset.grade_contrast
@@ -35,6 +37,15 @@ func apply(preset: LightingPreset) -> void:
 	for lamp: Node in get_tree().get_nodes_in_group(&"desk_lamp"):
 		(lamp as FlickerLight).set_energy_scale(1.0 if preset.desk_lamp else 0.0)
 	AudioManager.set_ambience(preset.ambience)
+
+
+func _apply_sky(env: Environment, preset: LightingPreset) -> void:
+	if env.sky == null or not env.sky.sky_material is PanoramaSkyMaterial:
+		return
+	var mat: PanoramaSkyMaterial = env.sky.sky_material
+	if preset.sky_panorama != null:
+		mat.panorama = preset.sky_panorama
+	mat.energy_multiplier = preset.sky_energy
 
 
 func _scale_group(group: StringName, scale: float) -> void:

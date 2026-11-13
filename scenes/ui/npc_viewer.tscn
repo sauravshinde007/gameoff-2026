@@ -3,6 +3,7 @@
 [ext_resource type="Script" path="res://scripts/ui/npc_viewer.gd" id="1_viewer"]
 [ext_resource type="PackedScene" path="res://scenes/npcs/guest.tscn" id="2_guest"]
 [ext_resource type="PackedScene" path="res://scenes/npcs/mysterious_guest.tscn" id="3_myst"]
+[ext_resource type="PackedScene" path="res://scenes/player/player_model.tscn" id="4_player"]
 [ext_resource type="PackedScene" path="res://scenes/ui/retro_filter.tscn" id="99_retro"]
 
 [sub_resource type="Environment" id="Env_viewer"]
@@ -22,7 +23,7 @@ roughness = 1.0
 
 [node name="NpcViewer" type="Node3D"]
 script = ExtResource("1_viewer")
-npc_scenes = Array[PackedScene]([ExtResource("2_guest"), ExtResource("3_myst")])
+npc_scenes = Array[PackedScene]([ExtResource("2_guest"), ExtResource("3_myst"), ExtResource("4_player")])
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Env_viewer")

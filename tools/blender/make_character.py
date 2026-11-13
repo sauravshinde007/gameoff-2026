@@ -42,6 +42,21 @@ VARIANTS = {
         "tie": False,
         "head_tilt": 0.0,
     },
+    "player": {                    # the new night manager (player character)
+        "gender": 0.0, "age": 0.4, "weight": 0.45,
+        "skin": "young_caucasian_female", "skin_sat": 0.9, "skin_bright": 1.0,
+        "shoe_top": 0.07, "trouser_top": 0.97, "top_top": 1.46,
+        "sleeve_x": 0.43,          # long sleeves, only hands bare
+        "inner_strip_x": 0.0,
+        "hair_front_z": 1.655, "hair_back_z": 1.53,
+        "trousers": ("Fabric075.jpg", (0.05, 0.05, 0.055), 5.0),
+        "top": ("Fabric075.jpg", (0.42, 0.06, 0.09), 5.0),
+        "inner": (0.82, 0.8, 0.74),
+        "shoes": ("Leather026.jpg", (0.15, 0.15, 0.15), 4.0),
+        "hair": (0.19, 0.11, 0.08),
+        "tie": False,
+        "head_tilt": 0.0,
+    },
     "mysterious": {
         "gender": 1.0, "age": 0.8, "weight": 0.3,
         "skin": "old_caucasian_male", "skin_sat": 0.35, "skin_bright": 0.8,

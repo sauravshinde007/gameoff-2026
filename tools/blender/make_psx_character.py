@@ -46,6 +46,16 @@ PSX = {
         "top": ("Fabric075.jpg", (1.25, 0.95, 0.62), 5.0),
         "inner": (0.86, 0.82, 0.74),
     },
+    "player": {                       # the new night manager (player character)
+        "mannequin": "woman",
+        "hair_asset": "long01",           # long, straight, brown
+        "sleeve_x": 0.66,                 # long sleeves to the wrist
+        "inner_strip_x": 0.0,
+        "tie": False,
+        "trousers": ("Fabric075.jpg", (0.05, 0.05, 0.055), 5.0),   # black pencil skirt
+        "top": ("Fabric075.jpg", (0.42, 0.06, 0.09), 5.0),         # burgundy button-up shirt
+        "inner": (0.86, 0.82, 0.74),
+    },
     "mysterious": {
         "hair_asset": "short04",
         "sleeve_x": 0.73,                 # long sleeves to the wrist

@@ -2,6 +2,8 @@
 
 [ext_resource type="Script" path="res://scripts/components/flicker_light.gd" id="1_flicker"]
 [ext_resource type="Material" path="res://assets/materials/asphalt.tres" id="mat_lot"]
+[ext_resource type="PackedScene" path="res://assets/models/props/car.glb" id="2_car"]
+[ext_resource type="Script" path="res://scripts/components/retro_model.gd" id="3_retro"]
 
 [sub_resource type="StandardMaterial3D" id="Mat_ground"]
 albedo_color = Color(0.1, 0.12, 0.1, 1)
@@ -49,6 +51,12 @@ material = SubResource("Mat_line")
 position = Vector3(4, -0.105, -9)
 size = Vector3(0.1, 0.01, 4)
 material = SubResource("Mat_line")
+
+; Parked nose-in (nose toward the motel) in the parking bay next to the sign. Origin = bottom
+; centre of the car; the lot surface is at y = -0.11.
+[node name="Car" parent="." instance=ExtResource("2_car")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.67, -0.11, -9)
+script = ExtResource("3_retro")
 
 [node name="SignPole" type="CSGBox3D" parent="."]
 position = Vector3(-1.5, 0.7, -8)

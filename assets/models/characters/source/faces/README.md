@@ -6,6 +6,7 @@ Source art only: the game loads the baked `.glb`, not these files.
 ## Files
 - `guest_front.png` — Ms. Carter (check-in guest)
 - `mysterious_front.png` — the Room 13 Stranger
+- `player_front.png` — the player (the new night manager)
 - `landmarks.json` — pixel positions (origin top-left) of facial points in each photo:
 
 ```json
@@ -34,10 +35,21 @@ no glasses, hands or jewellery covering the face.
   slicked-back thin dark hair, sunken cheeks, faint unsettling calm, neutral expression,
   mouth closed, looking straight into the camera, flat soft even studio lighting, plain grey
   background, sharp focus, photorealistic"
+- player: "Passport-style frontal photo of an attractive young woman around 23, fair Caucasian
+  skin with a light warm undertone, soft natural features, long straight chestnut-brown hair
+  parted in the centre and falling behind her shoulders so the whole face is unobstructed,
+  clear hazel-brown eyes, subtle natural makeup, a faint hint of nervous curiosity, neutral
+  expression, mouth closed, looking straight into the camera, wearing a burgundy collared shirt,
+  flat soft even studio lighting, plain grey background, sharp focus, photorealistic"
 
 ## Rebuild
 ```
 blender -b -P tools/blender/make_retro_character.py -- --variant guest --out assets/models/characters/guest.glb
 blender -b -P tools/blender/make_retro_character.py -- --variant mysterious --out assets/models/characters/mysterious_guest.glb
+blender -b -P tools/blender/make_retro_character.py -- --variant player --out assets/models/characters/player.glb
+blender -b -P tools/blender/make_retro_character.py -- --variant player --headless --out assets/models/characters/player_fp.glb
 ```
+The player needs both: `player.glb` is the full body (CCTV, shadows), `player_fp.glb` is the
+headless first-person body (`scripts/player/player_body.gd`).
+
 A variant with no `<variant>_front.png` builds with the stock MakeHuman face.

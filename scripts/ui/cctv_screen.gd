@@ -62,7 +62,7 @@ func _process(_delta: float) -> void:
 	var cam: CctvCamera = _cams[_index]
 	feed_camera.global_transform = cam.global_transform
 	feed_camera.fov = cam.fov
-	feed_camera.cull_mask = cam.cull_mask & ~WorldScreen.LAYER_MASK
+	feed_camera.cull_mask = cam.cull_mask & ~WorldScreen.LAYER_MASK & ~PlayerBody.FP_LAYER_MASK
 	time_label.text = ShiftManager.get_time_text()
 	var phase: float = fmod(Time.get_ticks_msec() / 1000.0, rec_blink_seconds * 2.0)
 	rec_label.modulate.a = 1.0 if phase < rec_blink_seconds else 0.0

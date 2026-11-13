@@ -9,6 +9,13 @@ extends Resource
 @export var ambient_energy: float = 1.0
 @export var fog_color: Color = Color(0.1, 0.1, 0.14)
 @export var fog_density: float = 0.03
+@export_group("Sky")
+## Equirectangular (2:1) sky panorama, seen through the windows (PSX Sky Sampler).
+@export var sky_panorama: Texture2D
+## Sky brightness multiplier.
+@export var sky_energy: float = 1.0
+## How much the fog covers the sky (0 = sky fully visible, 1 = only fog colour).
+@export_range(0.0, 1.0) var sky_fog_affect: float = 0.3
 @export_group("Grade")
 ## Environment colour adjustment (1.0 = unchanged).
 @export var grade_brightness: float = 1.0
