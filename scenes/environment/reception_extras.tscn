@@ -1,0 +1,94 @@
+[gd_scene format=3]
+
+[ext_resource type="Material" path="res://assets/materials/wood.tres" id="m_wood"]
+[ext_resource type="Material" path="res://assets/materials/concrete.tres" id="m_concrete"]
+
+[sub_resource type="StandardMaterial3D" id="m_sofa"]
+albedo_color = Color(0.3, 0.38, 0.32, 1)
+
+[sub_resource type="StandardMaterial3D" id="m_cork"]
+albedo_color = Color(0.55, 0.4, 0.25, 1)
+
+[sub_resource type="StandardMaterial3D" id="m_paper"]
+albedo_color = Color(0.9, 0.88, 0.75, 1)
+
+[sub_resource type="StandardMaterial3D" id="m_metal"]
+albedo_color = Color(0.12, 0.12, 0.14, 1)
+
+[node name="ReceptionExtras" type="Node3D"]
+
+[node name="Seating" type="Node3D" parent="."]
+
+[node name="SofaBase" type="CSGBox3D" parent="Seating"]
+position = Vector3(-3.5, 0.2, 2.05)
+size = Vector3(0.8, 0.4, 1.5)
+use_collision = true
+material = SubResource("m_sofa")
+
+[node name="SofaBack" type="CSGBox3D" parent="Seating"]
+position = Vector3(-3.8, 0.65, 2.05)
+size = Vector3(0.2, 0.5, 1.5)
+use_collision = true
+material = SubResource("m_sofa")
+
+[node name="SofaArmA" type="CSGBox3D" parent="Seating"]
+position = Vector3(-3.5, 0.5, 1.4)
+size = Vector3(0.8, 0.2, 0.15)
+material = SubResource("m_sofa")
+
+[node name="SofaArmB" type="CSGBox3D" parent="Seating"]
+position = Vector3(-3.5, 0.5, 2.7)
+size = Vector3(0.8, 0.2, 0.15)
+material = SubResource("m_sofa")
+
+[node name="SideTable" type="CSGBox3D" parent="Seating"]
+position = Vector3(-3.6, 0.25, 0.9)
+size = Vector3(0.4, 0.5, 0.4)
+use_collision = true
+material = ExtResource("m_wood")
+
+[node name="NoticeBoard" type="Node3D" parent="."]
+position = Vector3(-3.93, 1.6, -2)
+
+[node name="Board" type="CSGBox3D" parent="NoticeBoard"]
+position = Vector3(0, 0, 0)
+size = Vector3(0.06, 0.8, 1.2)
+material = SubResource("m_cork")
+
+[node name="Frame" type="CSGBox3D" parent="NoticeBoard"]
+position = Vector3(0, 0, 0)
+size = Vector3(0.04, 0.88, 1.28)
+material = ExtResource("m_wood")
+
+[node name="Note1" type="CSGBox3D" parent="NoticeBoard"]
+position = Vector3(0.04, 0.12, -0.3)
+size = Vector3(0.02, 0.22, 0.18)
+material = SubResource("m_paper")
+
+[node name="Note2" type="CSGBox3D" parent="NoticeBoard"]
+position = Vector3(0.04, -0.1, 0.1)
+size = Vector3(0.02, 0.22, 0.18)
+material = SubResource("m_paper")
+
+[node name="Note3" type="CSGBox3D" parent="NoticeBoard"]
+position = Vector3(0.04, 0.15, 0.35)
+size = Vector3(0.02, 0.22, 0.18)
+material = SubResource("m_paper")
+
+[node name="CoffeeStation" type="Node3D" parent="."]
+
+[node name="Counter" type="CSGBox3D" parent="CoffeeStation"]
+position = Vector3(3.6, 0.45, 1)
+size = Vector3(0.55, 0.9, 1.2)
+use_collision = true
+material = ExtResource("m_wood")
+
+[node name="Machine" type="CSGBox3D" parent="CoffeeStation"]
+position = Vector3(3.65, 1.12, 1.15)
+size = Vector3(0.3, 0.45, 0.3)
+material = SubResource("m_metal")
+
+[node name="Carafe" type="CSGBox3D" parent="CoffeeStation"]
+position = Vector3(3.45, 1, 1.15)
+size = Vector3(0.1, 0.2, 0.1)
+material = SubResource("m_paper")

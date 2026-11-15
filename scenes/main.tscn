@@ -3,7 +3,7 @@
 [ext_resource type="PackedScene" path="res://scenes/player/player.tscn" id="1_player"]
 [ext_resource type="Script" uid="uid://q6oaq4j47nth" path="res://scripts/main.gd" id="2_main"]
 [ext_resource type="PackedScene" path="res://scenes/ui/hud.tscn" id="3_hud"]
-[ext_resource type="PackedScene" path="res://scenes/environment/motel.tscn" id="4_reception"]
+[ext_resource type="PackedScene" path="res://scenes/environment/motel_property.tscn" id="4_reception"]
 [ext_resource type="PackedScene" path="res://scenes/ui/dialogue_box.tscn" id="5_dialogue"]
 [ext_resource type="PackedScene" path="res://scenes/ui/task_list.tscn" id="6_tasks"]
 [ext_resource type="Script" uid="uid://ccm2pnaa64trl" path="res://scripts/components/flicker_light.gd" id="9_flicker"]
@@ -37,7 +37,6 @@ glow_bloom = 0.05
 fog_enabled = true
 fog_light_color = Color(0.1, 0.1, 0.14, 1)
 fog_density = 0.03
-fog_height_density = 4.4356
 adjustment_enabled = true
 
 [node name="Main" type="Node3D" unique_id=1266530711]

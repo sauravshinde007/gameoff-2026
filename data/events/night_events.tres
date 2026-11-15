@@ -10,12 +10,6 @@ id = &"towel_call"
 trigger_minute = 1350
 phone_call = ExtResource("3_towels")
 
-[sub_resource type="Resource" id="Ev_room13"]
-script = ExtResource("2_event")
-id = &"room13"
-trigger_minute = 1455
-required_tasks = Array[StringName]([&"check_in_guest"])
-
 [resource]
 script = ExtResource("1_db")
-events = Array[ExtResource("2_event")]([SubResource("Ev_towels"), SubResource("Ev_room13")])
+events = Array[ExtResource("2_event")]([SubResource("Ev_towels")])

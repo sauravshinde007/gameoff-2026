@@ -23,7 +23,7 @@ sfx = Dictionary[StringName, String]({
 &"end_sting": "res://assets/audio/sfx/end_sting"
 })
 loops = Dictionary[StringName, String]({
-&"call_static": "res://assets/audio/sfx/call_static",
+&"call_static": "res://assets/audio/sfx/call_static.mp3",
 &"day_ambience": "res://assets/audio/music/day_ambience.mp3",
 &"night_ambience": "res://assets/audio/music/night_ambience.mp3",
 &"fluorescent_hum": "res://assets/audio/sfx/light_buzz.wav"

@@ -1,0 +1,44 @@
+[gd_scene format=3]
+
+
+[sub_resource type="StandardMaterial3D" id="p_body"]
+albedo_color = Color(0.82, 0.86, 0.9, 1)
+
+[sub_resource type="StandardMaterial3D" id="p_dark"]
+albedo_color = Color(0.1, 0.1, 0.12, 1)
+
+[sub_resource type="StandardMaterial3D" id="p_blue"]
+albedo_color = Color(0.3, 0.55, 0.8, 1)
+
+[sub_resource type="StandardMaterial3D" id="p_chute"]
+albedo_color = Color(0.2, 0.22, 0.25, 1)
+
+[node name="IceMachine" type="Node3D"]
+
+[node name="Body" type="CSGBox3D" parent="."]
+position = Vector3(0, 0.95, 0)
+size = Vector3(0.9, 1.9, 0.7)
+use_collision = true
+material = SubResource("p_body")
+
+[node name="Door" type="CSGBox3D" parent="."]
+position = Vector3(0, 0.8, 0.355)
+size = Vector3(0.7, 0.9, 0.02)
+material = SubResource("p_blue")
+
+[node name="Chute" type="CSGBox3D" parent="."]
+position = Vector3(0, 0.35, 0.34)
+size = Vector3(0.4, 0.2, 0.1)
+material = SubResource("p_chute")
+
+[node name="Panel" type="CSGBox3D" parent="."]
+position = Vector3(0, 1.65, 0.355)
+size = Vector3(0.7, 0.2, 0.02)
+material = SubResource("p_dark")
+
+[node name="Label" type="Label3D" parent="."]
+position = Vector3(0, 1.65, 0.37)
+pixel_size = 0.004
+text = "ICE"
+font_size = 64
+modulate = Color(0.7, 0.9, 1, 1)

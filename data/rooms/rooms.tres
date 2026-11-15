@@ -12,12 +12,12 @@ guest_name = "Ms. Carter"
 [sub_resource type="Resource" id="Room_1"]
 script = ExtResource("2_room")
 id = 1
-display_name = "Room 1"
+display_name = "Room 01"
 
 [sub_resource type="Resource" id="Room_2"]
 script = ExtResource("2_room")
 id = 2
-display_name = "Room 2"
+display_name = "Room 02"
 status = 1
 guest_name = "Mr. Hale"
 key_issued = true
@@ -25,9 +25,24 @@ key_issued = true
 [sub_resource type="Resource" id="Room_3"]
 script = ExtResource("2_room")
 id = 3
-display_name = "Room 3"
+display_name = "Room 03"
+
+[sub_resource type="Resource" id="Room_4"]
+script = ExtResource("2_room")
+id = 4
+display_name = "Room 04"
+
+[sub_resource type="Resource" id="Room_5"]
+script = ExtResource("2_room")
+id = 5
+display_name = "Room 05"
+
+[sub_resource type="Resource" id="Room_6"]
+script = ExtResource("2_room")
+id = 6
+display_name = "Room 06"
 
 [resource]
 script = ExtResource("1_db")
-rooms = Array[ExtResource("2_room")]([SubResource("Room_1"), SubResource("Room_2"), SubResource("Room_3")])
+rooms = Array[ExtResource("2_room")]([SubResource("Room_1"), SubResource("Room_2"), SubResource("Room_3"), SubResource("Room_4"), SubResource("Room_5"), SubResource("Room_6")])
 reservations = Array[ExtResource("3_res")]([SubResource("Res_0001")])

@@ -11,6 +11,8 @@ extends Node3D
 ## Replaces the albedo texture on every surface. Lets several NPCs share one body mesh
 ## and differ only by their painted texture (clothes, face, hair). Empty = keep the model's own.
 @export var skin_texture: Texture2D
+## Multiplies every surface's colour (e.g. to paint the same car model in different colours).
+@export var tint: Color = Color.WHITE
 ## Render layers for every mesh (e.g. 2 = only CCTV cameras see it).
 @export_flags_3d_render var render_layers: int = 1
 @export var cast_shadows: bool = true
@@ -64,6 +66,7 @@ func _retro_materials(node: Node) -> void:
 				copy.texture_filter = texture_filter
 				if skin_texture != null:
 					copy.albedo_texture = skin_texture
+				copy.albedo_color = copy.albedo_color * tint
 				copy.roughness = 1.0
 				copy.metallic_specular = 0.1
 				mesh_node.set_surface_override_material(i, copy)

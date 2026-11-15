@@ -20,12 +20,6 @@ id = &"no_occupied_rooms"
 text = "Do not assign occupied rooms."
 is_rule = true
 
-[sub_resource type="Resource" id="T_room13"]
-script = ExtResource("2_task")
-id = &"room13_unavailable"
-text = "If someone asks for Room 13, tell them it is unavailable."
-is_rule = true
-
 [sub_resource type="Resource" id="T_door"]
 script = ExtResource("2_task")
 id = &"no_door_after_midnight"
@@ -44,10 +38,9 @@ text = "Check the guest register."
 
 [resource]
 script = ExtResource("1_db")
-tasks = Array[ExtResource("2_task")]([SubResource("T_lights"), SubResource("T_phone"), SubResource("T_occupied"), SubResource("T_room13"), SubResource("T_door"), SubResource("T_checkin"), SubResource("T_register")])
+tasks = Array[ExtResource("2_task")]([SubResource("T_lights"), SubResource("T_phone"), SubResource("T_occupied"), SubResource("T_door"), SubResource("T_checkin"), SubResource("T_register")])
 note_title = "NIGHT SHIFT INSTRUCTIONS"
 note_text = "1. Keep the reception lights on.
 2. Answer the telephone.
 3. Do not assign occupied rooms.
-4. If someone asks for Room 13, tell them it is unavailable.
-5. Never open the entrance door after midnight unless you recognize the guest."
+4. Never open the entrance door after midnight unless you recognize the guest."

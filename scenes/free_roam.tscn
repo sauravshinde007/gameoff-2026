@@ -1,0 +1,82 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/player/player.tscn" id="1_player"]
+[ext_resource type="Script" path="res://scripts/free_roam.gd" id="2_main"]
+[ext_resource type="PackedScene" path="res://scenes/ui/hud.tscn" id="3_hud"]
+[ext_resource type="PackedScene" path="res://scenes/environment/motel_property.tscn" id="4_reception"]
+[ext_resource type="PackedScene" path="res://scenes/ui/dialogue_box.tscn" id="5_dialogue"]
+[ext_resource type="Script" uid="uid://ccm2pnaa64trl" path="res://scripts/components/flicker_light.gd" id="9_flicker"]
+[ext_resource type="Script" uid="uid://do3l2qikn6xrw" path="res://scripts/environment/day_night.gd" id="10_daynight"]
+[ext_resource type="Resource" path="res://data/lighting/day.tres" id="12_day"]
+[ext_resource type="Resource" path="res://data/lighting/night.tres" id="13_night"]
+[ext_resource type="PackedScene" path="res://scenes/ui/pause_menu.tscn" id="15_pause"]
+[ext_resource type="PackedScene" path="res://scenes/ui/retro_filter.tscn" id="99_retro"]
+
+[sub_resource type="PanoramaSkyMaterial" id="Mat_sky"]
+filter = false
+
+[sub_resource type="Sky" id="Sky_main"]
+sky_material = SubResource("Mat_sky")
+radiance_size = 0
+
+[sub_resource type="Environment" id="Environment_main"]
+background_mode = 2
+sky = SubResource("Sky_main")
+sky_rotation = Vector3(0, 3.14159, 0)
+reflected_light_source = 1
+background_color = Color(0.05, 0.05, 0.08, 1)
+ambient_light_source = 2
+ambient_light_color = Color(0.3, 0.3, 0.35, 1)
+tonemap_mode = 2
+glow_enabled = true
+glow_intensity = 0.5
+glow_bloom = 0.05
+fog_enabled = true
+fog_light_color = Color(0.1, 0.1, 0.14, 1)
+fog_density = 0.03
+adjustment_enabled = true
+
+[node name="FreeRoam" type="Node3D"]
+script = ExtResource("2_main")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_main")
+
+[node name="MainLight" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.6, 0)
+shadow_enabled = true
+omni_range = 10.0
+script = ExtResource("9_flicker")
+hum_sfx = &"fluorescent_hum"
+
+[node name="Player" parent="." instance=ExtResource("1_player")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.8)
+
+[node name="HUD" parent="." instance=ExtResource("3_hud")]
+
+[node name="Motel" parent="." instance=ExtResource("4_reception")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.02386403, 2.3841858e-07, -0.0037920475)
+
+[node name="DialogueBox" parent="." instance=ExtResource("5_dialogue")]
+
+[node name="RetroFilter" parent="." instance=ExtResource("99_retro")]
+
+[node name="DayNight" type="Node" parent="."]
+script = ExtResource("10_daynight")
+day_preset = ExtResource("12_day")
+night_preset = ExtResource("13_night")
+
+[node name="PauseMenu" parent="." instance=ExtResource("15_pause")]
+
+[node name="HelpLayer" type="CanvasLayer" parent="."]
+layer = 5
+
+[node name="HelpLabel" type="Label" parent="HelpLayer"]
+unique_name_in_owner = true
+offset_left = 16.0
+offset_top = 12.0
+offset_right = 600.0
+offset_bottom = 40.0
+theme_override_colors/font_color = Color(0.85, 0.9, 0.85, 0.8)
+theme_override_font_sizes/font_size = 18
+text = "FREE ROAM"

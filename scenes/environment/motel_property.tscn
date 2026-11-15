@@ -1,0 +1,1190 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/environment/reception.tscn" id="reception"]
+[ext_resource type="PackedScene" path="res://scenes/environment/guest_rooms/guest_room_shell.tscn" id="room"]
+[ext_resource type="PackedScene" path="res://scenes/props/door.tscn" id="door"]
+[ext_resource type="PackedScene" path="res://scenes/environment/service/laundry_room.tscn" id="laundry"]
+[ext_resource type="PackedScene" path="res://scenes/environment/service/storage_room.tscn" id="storage"]
+[ext_resource type="PackedScene" path="res://scenes/environment/service/owners_office.tscn" id="office"]
+[ext_resource type="PackedScene" path="res://scenes/environment/service/staff_corridor.tscn" id="corridor"]
+[ext_resource type="PackedScene" path="res://scenes/environment/modules/walkway_pillar.tscn" id="pillar"]
+[ext_resource type="PackedScene" path="res://scenes/environment/modules/window_unit.tscn" id="window"]
+[ext_resource type="PackedScene" path="res://scenes/environment/modules/door_frame.tscn" id="frame"]
+[ext_resource type="PackedScene" path="res://scenes/environment/guest_rooms/guest_room_base.tscn" id="base"]
+[ext_resource type="PackedScene" path="res://scenes/environment/reception_extras.tscn" id="extras"]
+[ext_resource type="Material" path="res://assets/materials/wall.tres" id="m_wall"]
+[ext_resource type="Material" path="res://assets/materials/concrete.tres" id="m_concrete"]
+[ext_resource type="Material" path="res://assets/materials/asphalt.tres" id="m_asphalt"]
+[ext_resource type="Material" path="res://assets/materials/wood.tres" id="m_wood"]
+[ext_resource type="PackedScene" path="res://scenes/environment/modules/fence_run.tscn" id="fence"]
+[ext_resource type="PackedScene" path="res://scenes/props/vehicles/parked_car.tscn" id="car"]
+[ext_resource type="PackedScene" path="res://scenes/props/exterior/vending_machine.tscn" id="vend"]
+[ext_resource type="PackedScene" path="res://scenes/props/exterior/ice_machine.tscn" id="ice"]
+[ext_resource type="PackedScene" path="res://scenes/props/exterior/motel_sign.tscn" id="sign"]
+[ext_resource type="PackedScene" path="res://scenes/props/exterior/trash_bin.tscn" id="bin"]
+[ext_resource type="PackedScene" path="res://scenes/props/exterior/dumpster.tscn" id="dump"]
+[ext_resource type="PackedScene" path="res://scenes/props/exterior/generator_unit.tscn" id="gen"]
+[ext_resource type="PackedScene" path="res://scenes/environment/modules/highway.tscn" id="hwy"]
+[ext_resource type="PackedScene" path="res://scenes/props/vehicles/ggbot/car07_brown.tscn" id="v_car07_brown"]
+[ext_resource type="PackedScene" path="res://scenes/props/vehicles/ggbot/car04_lightgrey.tscn" id="v_car04_lightgrey"]
+[ext_resource type="PackedScene" path="res://scenes/props/vehicles/ggbot/car02_red.tscn" id="v_car02_red"]
+[ext_resource type="PackedScene" path="res://scenes/props/vehicles/ggbot/car06.tscn" id="v_car06"]
+[ext_resource type="PackedScene" path="res://scenes/props/vehicles/ggbot/car05_grey.tscn" id="v_car05_grey"]
+[ext_resource type="PackedScene" path="res://scenes/environment/trees/tree01.tscn" id="f_tree01"]
+[ext_resource type="PackedScene" path="res://scenes/environment/trees/tree04.tscn" id="f_tree04"]
+[ext_resource type="PackedScene" path="res://scenes/environment/trees/tree05.tscn" id="f_tree05"]
+[ext_resource type="PackedScene" path="res://scenes/environment/trees/tree07.tscn" id="f_tree07"]
+[ext_resource type="PackedScene" path="res://scenes/environment/trees/tree08.tscn" id="f_tree08"]
+[ext_resource type="PackedScene" path="res://scenes/environment/trees/tree09.tscn" id="f_tree09"]
+[ext_resource type="PackedScene" path="res://scenes/environment/trees/tree10.tscn" id="f_tree10"]
+[ext_resource type="PackedScene" path="res://scenes/environment/trees/tree12.tscn" id="f_tree12"]
+[ext_resource type="PackedScene" path="res://scenes/environment/trees/tree15.tscn" id="f_tree15"]
+[ext_resource type="PackedScene" path="res://scenes/environment/trees/tree18.tscn" id="f_tree18"]
+[ext_resource type="PackedScene" path="res://scenes/environment/trees/tree19.tscn" id="f_tree19"]
+[ext_resource type="PackedScene" path="res://scenes/environment/trees/tree23.tscn" id="f_tree23"]
+[ext_resource type="PackedScene" path="res://scenes/environment/trees/tree25.tscn" id="f_tree25"]
+[ext_resource type="PackedScene" path="res://scenes/environment/trees/tree26.tscn" id="f_tree26"]
+[ext_resource type="PackedScene" path="res://scenes/environment/trees/tree31.tscn" id="f_tree31"]
+[ext_resource type="PackedScene" path="res://scenes/environment/trees/bush02.tscn" id="f_bush02"]
+[ext_resource type="PackedScene" path="res://scenes/environment/trees/bush04.tscn" id="f_bush04"]
+[ext_resource type="PackedScene" path="res://scenes/environment/trees/bush06.tscn" id="f_bush06"]
+[ext_resource type="Script" path="res://scripts/props/cctv_camera.gd" id="cctv"]
+[ext_resource type="PackedScene" path="res://scenes/props/exterior/street_lamp.tscn" id="lamp"]
+
+[sub_resource type="StandardMaterial3D" id="m_ground"]
+albedo_color = Color(0.16, 0.2, 0.12, 1)
+
+[sub_resource type="StandardMaterial3D" id="m_fence"]
+albedo_color = Color(0.3, 0.26, 0.2, 1)
+
+[sub_resource type="StandardMaterial3D" id="m_line"]
+albedo_color = Color(0.85, 0.85, 0.85, 1)
+
+[sub_resource type="StandardMaterial3D" id="m_pole"]
+albedo_color = Color(0.2, 0.2, 0.22, 1)
+
+[sub_resource type="StandardMaterial3D" id="m_red"]
+albedo_color = Color(0.75, 0.15, 0.12, 1)
+
+[sub_resource type="BoxShape3D" id="shape_gate"]
+size = Vector3(7.8, 2.4, 0.3)
+
+[sub_resource type="StandardMaterial3D" id="m_pallet"]
+albedo_color = Color(0.5, 0.38, 0.22, 1)
+
+[node name="MotelProperty" type="Node3D"]
+
+[node name="Reception" parent="." instance=ExtResource("reception")]
+
+[node name="OfficeDoorHole" type="CSGBox3D" parent="Reception/Shell"]
+position = Vector3(-4, 1.075, 0)
+size = Vector3(0.6, 2.15, 1)
+operation = 2
+material = ExtResource("m_wall")
+
+[node name="WindowWideLeft" type="CSGBox3D" parent="Reception/Shell"]
+position = Vector3(-2.6, 1.5, -3)
+size = Vector3(2, 1.6, 0.6)
+operation = 2
+material = ExtResource("m_wall")
+
+[node name="WindowWideMid" type="CSGBox3D" parent="Reception/Shell"]
+position = Vector3(0, 1.5, -3)
+size = Vector3(2.4, 1.6, 0.6)
+operation = 2
+material = ExtResource("m_wall")
+
+[node name="SideWindowHole" type="CSGBox3D" parent="Reception/Shell"]
+position = Vector3(4, 1.5, -1.8)
+size = Vector3(0.6, 1.2, 1.4)
+operation = 2
+material = ExtResource("m_wall")
+
+[node name="WindowFrontLeft" parent="Reception" instance=ExtResource("window")]
+position = Vector3(-2.6, 1.5, -3)
+rotation = Vector3(0, 3.14159, 0)
+size = Vector2(2, 1.6)
+lit = true
+
+[node name="WindowFrontMid" parent="Reception" instance=ExtResource("window")]
+position = Vector3(0, 1.5, -3)
+rotation = Vector3(0, 3.14159, 0)
+size = Vector2(2.4, 1.6)
+lit = true
+
+[node name="WindowSide" parent="Reception" instance=ExtResource("window")]
+position = Vector3(4, 1.5, -1.8)
+rotation = Vector3(0, 1.5708, 0)
+size = Vector2(1.4, 1.2)
+lit = true
+
+[node name="Extras" parent="." instance=ExtResource("extras")]
+
+[node name="Porch" type="Node3D" parent="."]
+
+[node name="PorchFloor" type="CSGBox3D" parent="Porch"]
+position = Vector3(0, -0.1, -4)
+size = Vector3(8.2, 0.2, 1.8)
+use_collision = true
+material = ExtResource("m_concrete")
+
+[node name="PorchRoof" type="CSGBox3D" parent="Porch"]
+position = Vector3(0, 2.9, -4)
+size = Vector3(8.4, 0.2, 2)
+use_collision = true
+material = ExtResource("m_concrete")
+
+[node name="PorchFascia" type="CSGBox3D" parent="Porch"]
+position = Vector3(0, 2.85, -5.03)
+size = Vector3(8.4, 0.3, 0.12)
+material = ExtResource("m_wood")
+
+[node name="PorchPost1" parent="Porch" instance=ExtResource("pillar")]
+position = Vector3(-3.9, 0, -4.85)
+
+[node name="PorchPost2" parent="Porch" instance=ExtResource("pillar")]
+position = Vector3(3.9, 0, -4.85)
+
+[node name="PorchLight" type="OmniLight3D" parent="Porch" groups=["reception_lights"]]
+position = Vector3(0, 2.6, -4)
+omni_range = 6.0
+light_energy = 0.8
+
+[node name="Site" type="Node3D" parent="."]
+
+[node name="Ground" type="CSGBox3D" parent="Site"]
+position = Vector3(-2.9, -0.12, -8.5)
+size = Vector3(90, 0.2, 90)
+use_collision = true
+material = SubResource("m_ground")
+
+[node name="CourtyardAsphalt" type="CSGBox3D" parent="Site"]
+position = Vector3(-7.95, -0.03, -10.85)
+size = Vector3(24.1, 0.04, 15.5)
+material = ExtResource("m_asphalt")
+
+[node name="DrivewayAsphalt" type="CSGBox3D" parent="Site"]
+position = Vector3(-14, -0.03, 3.45)
+size = Vector3(8, 0.04, 13.1)
+material = ExtResource("m_asphalt")
+
+[node name="ServiceYardPad" type="CSGBox3D" parent="Site"]
+position = Vector3(9.15, -0.03, 5.6)
+size = Vector3(10.1, 0.04, 5)
+material = ExtResource("m_concrete")
+
+[node name="ParkingBays" type="Node3D" parent="Site"]
+
+[node name="BayLine1" type="CSGBox3D" parent="Site/ParkingBays"]
+position = Vector3(-17.4, -0.006, -11.55)
+size = Vector3(0.1, 0.01, 5.5)
+material = SubResource("m_line")
+
+[node name="BayLine2" type="CSGBox3D" parent="Site/ParkingBays"]
+position = Vector3(-14.6, -0.006, -11.55)
+size = Vector3(0.1, 0.01, 5.5)
+material = SubResource("m_line")
+
+[node name="BayLine3" type="CSGBox3D" parent="Site/ParkingBays"]
+position = Vector3(-11.8, -0.006, -11.55)
+size = Vector3(0.1, 0.01, 5.5)
+material = SubResource("m_line")
+
+[node name="BayLine4" type="CSGBox3D" parent="Site/ParkingBays"]
+position = Vector3(-9, -0.006, -11.55)
+size = Vector3(0.1, 0.01, 5.5)
+material = SubResource("m_line")
+
+[node name="BayLine5" type="CSGBox3D" parent="Site/ParkingBays"]
+position = Vector3(-6.2, -0.006, -11.55)
+size = Vector3(0.1, 0.01, 5.5)
+material = SubResource("m_line")
+
+[node name="BayLine6" type="CSGBox3D" parent="Site/ParkingBays"]
+position = Vector3(-3.4, -0.006, -11.55)
+size = Vector3(0.1, 0.01, 5.5)
+material = SubResource("m_line")
+
+[node name="BayLine7" type="CSGBox3D" parent="Site/ParkingBays"]
+position = Vector3(-0.6, -0.006, -11.55)
+size = Vector3(0.1, 0.01, 5.5)
+material = SubResource("m_line")
+
+[node name="EastWing" type="Node3D" parent="."]
+
+[node name="Room01" parent="EastWing" instance=ExtResource("room")]
+position = Vector3(9.1, 0, -5.35)
+room_number = 1
+curtains_closed = false
+rotation = Vector3(0, -1.5708, 0)
+
+[node name="Door" parent="EastWing/Room01" instance=ExtResource("door")]
+position = Vector3(0, 1.05, 3)
+room_id = 1
+openable = true
+
+[node name="Interior" parent="EastWing/Room01" instance=ExtResource("base")]
+
+[node name="Room02" parent="EastWing" instance=ExtResource("room")]
+position = Vector3(9.1, 0, -9.85)
+room_number = 2
+curtains_closed = true
+window_lit = true
+rotation = Vector3(0, -1.5708, 0)
+
+[node name="Door" parent="EastWing/Room02" instance=ExtResource("door")]
+position = Vector3(0, 1.05, 3)
+room_id = 2
+openable = false
+
+[node name="Room03" parent="EastWing" instance=ExtResource("room")]
+position = Vector3(9.1, 0, -14.35)
+room_number = 3
+curtains_closed = false
+rotation = Vector3(0, -1.5708, 0)
+
+[node name="Door" parent="EastWing/Room03" instance=ExtResource("door")]
+position = Vector3(0, 1.05, 3)
+room_id = 3
+openable = true
+
+[node name="Interior" parent="EastWing/Room03" instance=ExtResource("base")]
+mirrored = true
+bedspread_color = Color(0.2, 0.42, 0.3, 1)
+rug_color = Color(0.4, 0.3, 0.2, 1)
+suitcase = true
+
+[node name="NorthWing" type="Node3D" parent="."]
+
+[node name="Room04" parent="NorthWing" instance=ExtResource("room")]
+position = Vector3(3.85, 0, -21.6)
+room_number = 4
+curtains_closed = true
+
+[node name="Door" parent="NorthWing/Room04" instance=ExtResource("door")]
+position = Vector3(0, 1.05, 3)
+room_id = 4
+openable = false
+
+[node name="Room05" parent="NorthWing" instance=ExtResource("room")]
+position = Vector3(-0.65, 0, -21.6)
+room_number = 5
+curtains_closed = false
+
+[node name="Door" parent="NorthWing/Room05" instance=ExtResource("door")]
+position = Vector3(0, 1.05, 3)
+room_id = 5
+openable = true
+
+[node name="Interior" parent="NorthWing/Room05" instance=ExtResource("base")]
+bedspread_color = Color(0.25, 0.32, 0.55, 1)
+rug_color = Color(0.35, 0.2, 0.3, 1)
+armchair = true
+
+[node name="Room06" parent="NorthWing" instance=ExtResource("room")]
+position = Vector3(-5.15, 0, -21.6)
+room_number = 6
+curtains_closed = true
+window_lit = true
+
+[node name="Door" parent="NorthWing/Room06" instance=ExtResource("door")]
+position = Vector3(0, 1.05, 3)
+room_id = 6
+openable = false
+
+[node name="Walkways" type="Node3D" parent="."]
+
+[node name="EastFloor" type="CSGBox3D" parent="Walkways"]
+position = Vector3(5.1, -0.1, -9.85)
+size = Vector3(2, 0.2, 13.5)
+use_collision = true
+material = ExtResource("m_concrete")
+
+[node name="NorthFloor" type="CSGBox3D" parent="Walkways"]
+position = Vector3(-0.65, -0.1, -17.6)
+size = Vector3(13.5, 0.2, 2)
+use_collision = true
+material = ExtResource("m_concrete")
+
+[node name="EastRoof" type="CSGBox3D" parent="Walkways"]
+position = Vector3(5.1, 2.9, -9.85)
+size = Vector3(2, 0.2, 13.5)
+use_collision = true
+material = ExtResource("m_concrete")
+
+[node name="NorthRoof" type="CSGBox3D" parent="Walkways"]
+position = Vector3(-0.65, 2.9, -17.6)
+size = Vector3(13.5, 0.2, 2)
+use_collision = true
+material = ExtResource("m_concrete")
+
+[node name="EastFascia" type="CSGBox3D" parent="Walkways"]
+position = Vector3(4.05, 2.85, -9.85)
+size = Vector3(0.12, 0.3, 13.5)
+material = ExtResource("m_wood")
+
+[node name="NorthFascia" type="CSGBox3D" parent="Walkways"]
+position = Vector3(-0.65, 2.85, -16.55)
+size = Vector3(13.5, 0.3, 0.12)
+material = ExtResource("m_wood")
+
+[node name="CornerRail" type="CSGBox3D" parent="Walkways"]
+position = Vector3(6.1, 0.5, -17.6)
+size = Vector3(0.2, 1, 2)
+use_collision = true
+material = SubResource("m_fence")
+
+[node name="Pillar1" parent="Walkways" instance=ExtResource("pillar")]
+position = Vector3(4.2, 0, -3.2)
+
+[node name="Pillar2" parent="Walkways" instance=ExtResource("pillar")]
+position = Vector3(4.2, 0, -7.6)
+
+[node name="Pillar3" parent="Walkways" instance=ExtResource("pillar")]
+position = Vector3(4.2, 0, -12.1)
+
+[node name="Pillar4" parent="Walkways" instance=ExtResource("pillar")]
+position = Vector3(4.2, 0, -16.5)
+
+[node name="Pillar5" parent="Walkways" instance=ExtResource("pillar")]
+position = Vector3(5.9, 0, -16.7)
+
+[node name="Pillar6" parent="Walkways" instance=ExtResource("pillar")]
+position = Vector3(1.6, 0, -16.7)
+
+[node name="Pillar7" parent="Walkways" instance=ExtResource("pillar")]
+position = Vector3(-2.9, 0, -16.7)
+
+[node name="Pillar8" parent="Walkways" instance=ExtResource("pillar")]
+position = Vector3(-7.3, 0, -16.7)
+
+[node name="WalkLight1" type="OmniLight3D" parent="Walkways" groups=["hallway_lights"]]
+position = Vector3(5.1, 2.6, -6)
+omni_range = 5.5
+light_energy = 0.9
+light_color = Color(1, 0.85, 0.62, 1)
+
+[node name="WalkLight2" type="OmniLight3D" parent="Walkways" groups=["hallway_lights"]]
+position = Vector3(5.1, 2.6, -12.5)
+omni_range = 5.5
+light_energy = 0.9
+light_color = Color(1, 0.85, 0.62, 1)
+
+[node name="WalkLight3" type="OmniLight3D" parent="Walkways" groups=["hallway_lights"]]
+position = Vector3(3, 2.6, -17.6)
+omni_range = 5.5
+light_energy = 0.9
+light_color = Color(1, 0.85, 0.62, 1)
+
+[node name="WalkLight4" type="OmniLight3D" parent="Walkways" groups=["hallway_lights"]]
+position = Vector3(-1, 2.6, -17.6)
+omni_range = 5.5
+light_energy = 0.9
+light_color = Color(1, 0.85, 0.62, 1)
+
+[node name="WalkLight5" type="OmniLight3D" parent="Walkways" groups=["hallway_lights"]]
+position = Vector3(-5, 2.6, -17.6)
+omni_range = 5.5
+light_energy = 0.9
+light_color = Color(1, 0.85, 0.62, 1)
+
+[node name="Service" type="Node3D" parent="."]
+
+[node name="StaffCorridor" parent="Service" instance=ExtResource("corridor")]
+
+[node name="LaundryRoom" parent="Service" instance=ExtResource("laundry")]
+position = Vector3(-0.5, 0, 5.5)
+rotation = Vector3(0, 1.5708, 0)
+
+[node name="StorageRoom" parent="Service" instance=ExtResource("storage")]
+position = Vector3(-5, 0, 5.5)
+rotation = Vector3(0, 1.5708, 0)
+
+[node name="OwnersOffice" parent="Service" instance=ExtResource("office")]
+position = Vector3(-6.5, 0, 0)
+rotation = Vector3(0, 1.5708, 0)
+
+[node name="Doors" type="Node3D" parent="Service"]
+
+[node name="OfficeDoorFrame" parent="Service/Doors" instance=ExtResource("frame")]
+position = Vector3(-4, 0, 0)
+rotation = Vector3(0, 1.5708, 0)
+
+[node name="OfficeDoor" parent="Service/Doors" instance=ExtResource("door")]
+position = Vector3(-4, 1.05, 0)
+rotation = Vector3(0, 1.5708, 0)
+openable = true
+door_name = "Owner's Office"
+
+[node name="LaundryDoorFrame" parent="Service/Doors" instance=ExtResource("frame")]
+position = Vector3(2, 0, 5.5)
+rotation = Vector3(0, 1.5708, 0)
+
+[node name="LaundryDoor" parent="Service/Doors" instance=ExtResource("door")]
+position = Vector3(2, 1.05, 5.5)
+rotation = Vector3(0, 1.5708, 0)
+openable = true
+door_name = "Laundry"
+
+[node name="StorageDoorFrame" parent="Service/Doors" instance=ExtResource("frame")]
+position = Vector3(-3, 0, 5.5)
+rotation = Vector3(0, 1.5708, 0)
+
+[node name="StorageDoor" parent="Service/Doors" instance=ExtResource("door")]
+position = Vector3(-3, 1.05, 5.5)
+rotation = Vector3(0, 1.5708, 0)
+openable = true
+door_name = "Storage"
+
+[node name="ServiceDoorFrame" parent="Service/Doors" instance=ExtResource("frame")]
+position = Vector3(4, 0, 5.5)
+rotation = Vector3(0, -1.5708, 0)
+
+[node name="ServiceDoor" parent="Service/Doors" instance=ExtResource("door")]
+position = Vector3(4, 1.05, 5.5)
+rotation = Vector3(0, -1.5708, 0)
+openable = true
+door_name = "Service Door"
+
+[node name="Boundary" type="Node3D" parent="."]
+
+[node name="West" parent="Boundary" instance=ExtResource("fence")]
+position = Vector3(-20.15, 0, -8.5)
+length = 37.6
+height = 2.2
+rotation = Vector3(0, 1.5708, 0)
+
+[node name="East" parent="Boundary" instance=ExtResource("fence")]
+position = Vector3(14.35, 0, -8.5)
+length = 37.6
+height = 2.2
+rotation = Vector3(0, 1.5708, 0)
+
+[node name="North" parent="Boundary" instance=ExtResource("fence")]
+position = Vector3(-2.9, 0, -27.15)
+length = 35.1
+height = 2.2
+
+[node name="SouthWest" parent="Boundary" instance=ExtResource("fence")]
+position = Vector3(-19.15, 0, 10.15)
+length = 2.3
+height = 1
+style = 1
+
+[node name="SouthEast" parent="Boundary" instance=ExtResource("fence")]
+position = Vector3(2.25, 0, 10.15)
+length = 24.5
+height = 1
+style = 1
+
+[node name="AlleyFence" parent="Boundary" instance=ExtResource("fence")]
+position = Vector3(13.15, 0, -3.1)
+length = 2.1
+height = 2
+
+[node name="NorthStripSeal" parent="Boundary" instance=ExtResource("fence")]
+position = Vector3(-7.4, 0, -25.8)
+length = 2.4
+height = 2
+rotation = Vector3(0, 1.5708, 0)
+
+[node name="SouthSeal" parent="Boundary" instance=ExtResource("fence")]
+position = Vector3(-7, 0, 9)
+length = 2
+height = 2
+rotation = Vector3(0, 1.5708, 0)
+
+[node name="YardFenceNorth" parent="Boundary" instance=ExtResource("fence")]
+position = Vector3(10.15, 0, 3.1)
+length = 8.1
+height = 2
+
+[node name="YardFenceSouth" parent="Boundary" instance=ExtResource("fence")]
+position = Vector3(9.15, 0, 8.1)
+length = 10.1
+height = 2
+
+[node name="Gate" type="Node3D" parent="Boundary"]
+
+[node name="PostWest" type="CSGBox3D" parent="Boundary/Gate"]
+position = Vector3(-18.1, 0.6, 10.15)
+size = Vector3(0.2, 1.2, 0.2)
+use_collision = true
+material = SubResource("m_pole")
+
+[node name="PostEast" type="CSGBox3D" parent="Boundary/Gate"]
+position = Vector3(-9.9, 0.6, 10.15)
+size = Vector3(0.2, 1.2, 0.2)
+use_collision = true
+material = SubResource("m_pole")
+
+[node name="Bar" type="CSGBox3D" parent="Boundary/Gate"]
+position = Vector3(-14, 1, 10.15)
+size = Vector3(7.8, 0.12, 0.08)
+material = SubResource("m_red")
+
+[node name="Blocker" type="StaticBody3D" parent="Boundary/Gate"]
+position = Vector3(-14, 1.2, 10.15)
+
+[node name="Shape" type="CollisionShape3D" parent="Boundary/Gate/Blocker"]
+shape = SubResource("shape_gate")
+
+[node name="Paths" type="Node3D" parent="."]
+
+[node name="SpinePath" type="CSGBox3D" parent="Paths"]
+position = Vector3(1, -0.005, -10.8)
+size = Vector3(2, 0.02, 11.6)
+material = ExtResource("m_concrete")
+
+[node name="PorchApron" type="CSGBox3D" parent="Paths"]
+position = Vector3(0, -0.005, -5.7)
+size = Vector3(8.2, 0.02, 1.6)
+material = ExtResource("m_concrete")
+
+[node name="FrontWalk" type="CSGBox3D" parent="Paths"]
+position = Vector3(-5.2, -0.005, -16)
+size = Vector3(10.4, 0.02, 1.2)
+material = ExtResource("m_concrete")
+
+[node name="Nook" type="Node3D" parent="."]
+
+[node name="NookFloor" type="CSGBox3D" parent="Nook"]
+position = Vector3(-8.9, -0.1, -17.6)
+size = Vector3(3, 0.2, 2)
+use_collision = true
+material = ExtResource("m_concrete")
+
+[node name="NookRoof" type="CSGBox3D" parent="Nook"]
+position = Vector3(-8.9, 2.9, -17.6)
+size = Vector3(3, 0.2, 2)
+use_collision = true
+material = ExtResource("m_concrete")
+
+[node name="NookWall" type="CSGBox3D" parent="Nook"]
+position = Vector3(-8.9, 1.5, -18.6)
+size = Vector3(3, 3, 0.2)
+use_collision = true
+material = ExtResource("m_wall")
+
+[node name="NookEnd" type="CSGBox3D" parent="Nook"]
+position = Vector3(-10.4, 1.5, -17.6)
+size = Vector3(0.2, 3, 2)
+use_collision = true
+material = ExtResource("m_wall")
+
+[node name="NookFascia" type="CSGBox3D" parent="Nook"]
+position = Vector3(-8.9, 2.85, -16.55)
+size = Vector3(3, 0.3, 0.12)
+material = ExtResource("m_wood")
+
+[node name="NookPillar" parent="Nook" instance=ExtResource("pillar")]
+position = Vector3(-10.3, 0, -16.7)
+
+[node name="Vending" parent="Nook" instance=ExtResource("vend")]
+position = Vector3(-9.7, 0, -17.95)
+
+[node name="IceMachine" parent="Nook" instance=ExtResource("ice")]
+position = Vector3(-8.1, 0, -18.2)
+
+[node name="NookLight" type="OmniLight3D" parent="Nook" groups=["hallway_lights"]]
+position = Vector3(-8.9, 2.6, -17.4)
+omni_range = 4.5
+light_energy = 0.8
+
+[node name="Vehicles" type="Node3D" parent="."]
+
+[node name="Bay1" parent="Vehicles" instance=ExtResource("v_car07_brown")]
+position = Vector3(-16, 0, -11.5)
+rotation = Vector3(0, 3.14159, 0)
+
+[node name="Bay2" parent="Vehicles" instance=ExtResource("car")]
+position = Vector3(-13.2, 0, -11.5)
+rotation = Vector3(0, 3.14159, 0)
+
+[node name="Bay4" parent="Vehicles" instance=ExtResource("v_car04_lightgrey")]
+position = Vector3(-7.6, 0, -11.5)
+
+[node name="Bay5" parent="Vehicles" instance=ExtResource("v_car02_red")]
+position = Vector3(-4.8, 0, -11.5)
+rotation = Vector3(0, 3.14159, 0)
+
+[node name="Bay6" parent="Vehicles" instance=ExtResource("v_car06")]
+position = Vector3(-2, 0, -11.5)
+rotation = Vector3(0, 3.14159, 0)
+
+[node name="Driveway" parent="Vehicles" instance=ExtResource("v_car05_grey")]
+position = Vector3(-16.6, 0, 1.5)
+
+[node name="MotelSign" parent="." instance=ExtResource("sign")]
+position = Vector3(-8.6, 0, 8.6)
+
+[node name="RearYard" type="Node3D" parent="."]
+
+[node name="Generator" parent="RearYard" instance=ExtResource("gen")]
+position = Vector3(12.6, 0, 4.4)
+
+[node name="Dumpster" parent="RearYard" instance=ExtResource("dump")]
+position = Vector3(11.8, 0, 7.4)
+
+[node name="BinA" parent="RearYard" instance=ExtResource("bin")]
+position = Vector3(8.4, 0, 7.5)
+
+[node name="BinB" parent="RearYard" instance=ExtResource("bin")]
+position = Vector3(9.2, 0, 7.5)
+
+[node name="PalletStack" type="CSGBox3D" parent="RearYard"]
+position = Vector3(6.8, 0.15, 7.2)
+size = Vector3(1, 0.3, 1)
+use_collision = true
+material = SubResource("m_pallet")
+
+[node name="ElectricalBox" type="CSGBox3D" parent="RearYard"]
+position = Vector3(4.15, 1.5, 7.2)
+size = Vector3(0.1, 0.6, 0.4)
+material = SubResource("m_pole")
+
+[node name="PropaneTank" type="CSGCylinder3D" parent="RearYard"]
+position = Vector3(13.4, 0.4, 6)
+radius = 0.25
+height = 0.8
+use_collision = true
+material = SubResource("m_pole")
+
+[node name="ServiceLight" type="OmniLight3D" parent="RearYard" groups=["exterior_lights"]]
+position = Vector3(4.6, 2.4, 5.5)
+omni_range = 4.5
+light_energy = 0.6
+light_color = Color(1, 0.8, 0.5, 1)
+
+[node name="Highway" parent="." instance=ExtResource("hwy")]
+
+[node name="Trees" type="Node3D" parent="."]
+
+[node name="T1" parent="Trees" instance=ExtResource("f_tree15")]
+position = Vector3(-18.6, 0, -24)
+rotation = Vector3(0, 2.63, 0)
+scale = Vector3(0.390159, 0.390159, 0.390159)
+trunk_radius = 0.9
+
+[node name="T2" parent="Trees" instance=ExtResource("f_tree19")]
+position = Vector3(-10.5, 0, -23.5)
+rotation = Vector3(0, 1.36, 0)
+scale = Vector3(0.397492, 0.397492, 0.397492)
+trunk_radius = 0.9
+
+[node name="T3" parent="Trees" instance=ExtResource("f_tree10")]
+position = Vector3(-18.6, 0, 3)
+rotation = Vector3(0, 6.05, 0)
+scale = Vector3(0.396958, 0.396958, 0.396958)
+trunk_radius = 0.9
+
+[node name="T4" parent="Trees" instance=ExtResource("f_tree15")]
+position = Vector3(8, 0, -25)
+rotation = Vector3(0, 1.48, 0)
+scale = Vector3(0.40061, 0.40061, 0.40061)
+trunk_radius = 0.9
+
+[node name="T5" parent="Trees" instance=ExtResource("f_tree04")]
+position = Vector3(13, 0, -9)
+rotation = Vector3(0, 5.86, 0)
+scale = Vector3(0.341695, 0.341695, 0.341695)
+trunk_radius = 0.9
+
+[node name="T6" parent="Trees" instance=ExtResource("f_bush04")]
+position = Vector3(-19, 0, -21)
+rotation = Vector3(0, 4.98, 0)
+scale = Vector3(0.206926, 0.206926, 0.206926)
+
+[node name="T7" parent="Trees" instance=ExtResource("f_bush02")]
+position = Vector3(-17.5, 0, -26)
+rotation = Vector3(0, 4.36, 0)
+scale = Vector3(0.29215, 0.29215, 0.29215)
+
+[node name="T8" parent="Trees" instance=ExtResource("f_bush04")]
+position = Vector3(-12, 0, -26.3)
+rotation = Vector3(0, 4.64, 0)
+scale = Vector3(0.299756, 0.299756, 0.299756)
+
+[node name="T9" parent="Trees" instance=ExtResource("f_bush04")]
+position = Vector3(-19, 0, 6.5)
+rotation = Vector3(0, 0.21, 0)
+scale = Vector3(0.261589, 0.261589, 0.261589)
+
+[node name="T10" parent="Trees" instance=ExtResource("f_bush04")]
+position = Vector3(13.4, 0, -16)
+rotation = Vector3(0, 4.36, 0)
+scale = Vector3(0.254015, 0.254015, 0.254015)
+
+[node name="T11" parent="Trees" instance=ExtResource("f_bush06")]
+position = Vector3(13.5, 0, 1.5)
+rotation = Vector3(0, 2.31, 0)
+scale = Vector3(0.295196, 0.295196, 0.295196)
+
+[node name="T12" parent="Trees" instance=ExtResource("f_bush02")]
+position = Vector3(-1, 0, -26.2)
+rotation = Vector3(0, 0.56, 0)
+scale = Vector3(0.274102, 0.274102, 0.274102)
+
+[node name="T13" parent="Trees" instance=ExtResource("f_tree12")]
+position = Vector3(-25.23, 0, -36.96)
+rotation = Vector3(0, 3.04, 0)
+scale = Vector3(0.58573, 0.58573, 0.58573)
+
+[node name="T14" parent="Trees" instance=ExtResource("f_tree18")]
+position = Vector3(17.25, 0, -32.93)
+rotation = Vector3(0, 1.24, 0)
+scale = Vector3(0.518656, 0.518656, 0.518656)
+
+[node name="T15" parent="Trees" instance=ExtResource("f_tree08")]
+position = Vector3(-24.7, 0, -29.39)
+rotation = Vector3(0, 2.99, 0)
+scale = Vector3(0.530619, 0.530619, 0.530619)
+
+[node name="T16" parent="Trees" instance=ExtResource("f_tree25")]
+position = Vector3(19.81, 0, -26.6)
+rotation = Vector3(0, 5.99, 0)
+scale = Vector3(0.572997, 0.572997, 0.572997)
+
+[node name="T17" parent="Trees" instance=ExtResource("f_tree19")]
+position = Vector3(-24.01, 0, -24.36)
+rotation = Vector3(0, 0.59, 0)
+scale = Vector3(0.506709, 0.506709, 0.506709)
+
+[node name="T18" parent="Trees" instance=ExtResource("f_tree26")]
+position = Vector3(19.37, 0, -19.01)
+rotation = Vector3(0, 3.76, 0)
+scale = Vector3(0.517529, 0.517529, 0.517529)
+
+[node name="T19" parent="Trees" instance=ExtResource("f_tree10")]
+position = Vector3(-24.09, 0, -17.86)
+rotation = Vector3(0, 4.21, 0)
+scale = Vector3(0.528177, 0.528177, 0.528177)
+
+[node name="T20" parent="Trees" instance=ExtResource("f_tree10")]
+position = Vector3(19.01, 0, -13.33)
+rotation = Vector3(0, 1.54, 0)
+scale = Vector3(0.732426, 0.732426, 0.732426)
+
+[node name="T21" parent="Trees" instance=ExtResource("f_tree09")]
+position = Vector3(-22.67, 0, -11.15)
+rotation = Vector3(0, 4.29, 0)
+scale = Vector3(0.593719, 0.593719, 0.593719)
+
+[node name="T22" parent="Trees" instance=ExtResource("f_tree31")]
+position = Vector3(19.2, 0, -7.2)
+rotation = Vector3(0, 6.21, 0)
+scale = Vector3(0.601754, 0.601754, 0.601754)
+
+[node name="T23" parent="Trees" instance=ExtResource("f_tree26")]
+position = Vector3(-25.85, 0, -5.82)
+rotation = Vector3(0, 4.19, 0)
+scale = Vector3(0.626533, 0.626533, 0.626533)
+
+[node name="T24" parent="Trees" instance=ExtResource("f_tree26")]
+position = Vector3(20.25, 0, -2.51)
+rotation = Vector3(0, 4.86, 0)
+scale = Vector3(0.70132, 0.70132, 0.70132)
+
+[node name="T25" parent="Trees" instance=ExtResource("f_tree07")]
+position = Vector3(-23.93, 0, 0.67)
+rotation = Vector3(0, 0.22, 0)
+scale = Vector3(0.664607, 0.664607, 0.664607)
+
+[node name="T26" parent="Trees" instance=ExtResource("f_tree15")]
+position = Vector3(17.49, 0, 3.79)
+rotation = Vector3(0, 4.68, 0)
+scale = Vector3(0.745862, 0.745862, 0.745862)
+
+[node name="T27" parent="Trees" instance=ExtResource("f_tree31")]
+position = Vector3(-23.92, 0, 5.5)
+rotation = Vector3(0, 4.58, 0)
+scale = Vector3(0.631407, 0.631407, 0.631407)
+
+[node name="T28" parent="Trees" instance=ExtResource("f_tree15")]
+position = Vector3(16.61, 0, 9.42)
+rotation = Vector3(0, 3.78, 0)
+scale = Vector3(0.720363, 0.720363, 0.720363)
+
+[node name="T29" parent="Trees" instance=ExtResource("f_tree19")]
+position = Vector3(-23.7, 0, 12.16)
+rotation = Vector3(0, 3.7, 0)
+scale = Vector3(0.534699, 0.534699, 0.534699)
+
+[node name="T30" parent="Trees" instance=ExtResource("f_tree05")]
+position = Vector3(17.06, 0, 16.44)
+rotation = Vector3(0, 0.15, 0)
+scale = Vector3(0.738494, 0.738494, 0.738494)
+
+[node name="T31" parent="Trees" instance=ExtResource("f_tree25")]
+position = Vector3(-21.81, 0, -32.08)
+rotation = Vector3(0, 2.55, 0)
+scale = Vector3(0.564299, 0.564299, 0.564299)
+
+[node name="T32" parent="Trees" instance=ExtResource("f_tree01")]
+position = Vector3(-15.08, 0, -33.12)
+rotation = Vector3(0, 1.17, 0)
+scale = Vector3(0.59924, 0.59924, 0.59924)
+
+[node name="T33" parent="Trees" instance=ExtResource("f_tree01")]
+position = Vector3(-9.72, 0, -32.64)
+rotation = Vector3(0, 0.79, 0)
+scale = Vector3(0.663831, 0.663831, 0.663831)
+
+[node name="T34" parent="Trees" instance=ExtResource("f_tree18")]
+position = Vector3(-3.92, 0, -30.8)
+rotation = Vector3(0, 1.14, 0)
+scale = Vector3(0.6553, 0.6553, 0.6553)
+
+[node name="T35" parent="Trees" instance=ExtResource("f_tree04")]
+position = Vector3(2.71, 0, -30.31)
+rotation = Vector3(0, 3.17, 0)
+scale = Vector3(0.650974, 0.650974, 0.650974)
+
+[node name="T36" parent="Trees" instance=ExtResource("f_tree25")]
+position = Vector3(8.49, 0, -29.73)
+rotation = Vector3(0, 0.4, 0)
+scale = Vector3(0.61597, 0.61597, 0.61597)
+
+[node name="T37" parent="Trees" instance=ExtResource("f_tree19")]
+position = Vector3(14.53, 0, -30.2)
+rotation = Vector3(0, 3.8, 0)
+scale = Vector3(0.741, 0.741, 0.741)
+
+[node name="T38" parent="Trees" instance=ExtResource("f_tree12")]
+position = Vector3(-45.51, 0, 27.22)
+rotation = Vector3(0, 1.85, 0)
+scale = Vector3(0.775189, 0.775189, 0.775189)
+
+[node name="T39" parent="Trees" instance=ExtResource("f_tree31")]
+position = Vector3(-38.49, 0, 28.75)
+rotation = Vector3(0, 3.78, 0)
+scale = Vector3(0.574641, 0.574641, 0.574641)
+
+[node name="T40" parent="Trees" instance=ExtResource("f_tree31")]
+position = Vector3(-30.98, 0, 29.67)
+rotation = Vector3(0, 4.39, 0)
+scale = Vector3(0.627539, 0.627539, 0.627539)
+
+[node name="T41" parent="Trees" instance=ExtResource("f_tree07")]
+position = Vector3(-23.45, 0, 28.8)
+rotation = Vector3(0, 2.23, 0)
+scale = Vector3(0.794212, 0.794212, 0.794212)
+
+[node name="T42" parent="Trees" instance=ExtResource("f_tree01")]
+position = Vector3(-16.36, 0, 30.97)
+rotation = Vector3(0, 3.93, 0)
+scale = Vector3(0.712928, 0.712928, 0.712928)
+
+[node name="T43" parent="Trees" instance=ExtResource("f_tree04")]
+position = Vector3(-7.88, 0, 30.89)
+rotation = Vector3(0, 4.43, 0)
+scale = Vector3(0.719974, 0.719974, 0.719974)
+
+[node name="T44" parent="Trees" instance=ExtResource("f_tree08")]
+position = Vector3(-1.06, 0, 28.57)
+rotation = Vector3(0, 0.31, 0)
+scale = Vector3(0.606371, 0.606371, 0.606371)
+
+[node name="T45" parent="Trees" instance=ExtResource("f_tree25")]
+position = Vector3(6.37, 0, 27.24)
+rotation = Vector3(0, 2.86, 0)
+scale = Vector3(0.73094, 0.73094, 0.73094)
+
+[node name="T46" parent="Trees" instance=ExtResource("f_tree08")]
+position = Vector3(13.47, 0, 27.93)
+rotation = Vector3(0, 1.09, 0)
+scale = Vector3(0.559358, 0.559358, 0.559358)
+
+[node name="T47" parent="Trees" instance=ExtResource("f_tree09")]
+position = Vector3(21.25, 0, 29.02)
+rotation = Vector3(0, 4.76, 0)
+scale = Vector3(0.706702, 0.706702, 0.706702)
+
+[node name="T48" parent="Trees" instance=ExtResource("f_tree19")]
+position = Vector3(29.34, 0, 30.29)
+rotation = Vector3(0, 5.76, 0)
+scale = Vector3(0.611327, 0.611327, 0.611327)
+
+[node name="T49" parent="Trees" instance=ExtResource("f_tree04")]
+position = Vector3(36.27, 0, 29.07)
+rotation = Vector3(0, 1.27, 0)
+scale = Vector3(0.590468, 0.590468, 0.590468)
+
+[node name="Distant" type="Node3D" parent="."]
+
+[node name="T50" parent="Distant" instance=ExtResource("f_tree12")]
+position = Vector3(-46, 0, -50.38)
+rotation = Vector3(0, 3.47, 0)
+scale = Vector3(1.07271, 1.07271, 1.07271)
+tint = Color(0.4, 0.46, 0.46, 1)
+
+[node name="T51" parent="Distant" instance=ExtResource("f_tree07")]
+position = Vector3(-46, 0, 33.24)
+rotation = Vector3(0, 2.36, 0)
+scale = Vector3(1.30998, 1.30998, 1.30998)
+tint = Color(0.4, 0.46, 0.46, 1)
+
+[node name="T52" parent="Distant" instance=ExtResource("f_tree01")]
+position = Vector3(-37, 0, -49.71)
+rotation = Vector3(0, 1.05, 0)
+scale = Vector3(1.49542, 1.49542, 1.49542)
+tint = Color(0.4, 0.46, 0.46, 1)
+
+[node name="T53" parent="Distant" instance=ExtResource("f_tree12")]
+position = Vector3(-37, 0, 34.3)
+rotation = Vector3(0, 4.03, 0)
+scale = Vector3(1.16765, 1.16765, 1.16765)
+tint = Color(0.4, 0.46, 0.46, 1)
+
+[node name="T54" parent="Distant" instance=ExtResource("f_tree07")]
+position = Vector3(-28, 0, -49.41)
+rotation = Vector3(0, 0.18, 0)
+scale = Vector3(1.041, 1.041, 1.041)
+tint = Color(0.4, 0.46, 0.46, 1)
+
+[node name="T55" parent="Distant" instance=ExtResource("f_tree05")]
+position = Vector3(-28, 0, 34.54)
+rotation = Vector3(0, 3.18, 0)
+scale = Vector3(1.44986, 1.44986, 1.44986)
+tint = Color(0.4, 0.46, 0.46, 1)
+
+[node name="T56" parent="Distant" instance=ExtResource("f_tree12")]
+position = Vector3(-19, 0, -47.19)
+rotation = Vector3(0, 2.38, 0)
+scale = Vector3(1.13871, 1.13871, 1.13871)
+tint = Color(0.4, 0.46, 0.46, 1)
+
+[node name="T57" parent="Distant" instance=ExtResource("f_tree09")]
+position = Vector3(-19, 0, 35.82)
+rotation = Vector3(0, 2.89, 0)
+scale = Vector3(1.20084, 1.20084, 1.20084)
+tint = Color(0.4, 0.46, 0.46, 1)
+
+[node name="T58" parent="Distant" instance=ExtResource("f_tree12")]
+position = Vector3(-10, 0, -49.33)
+rotation = Vector3(0, 2.42, 0)
+scale = Vector3(1.08717, 1.08717, 1.08717)
+tint = Color(0.4, 0.46, 0.46, 1)
+
+[node name="T59" parent="Distant" instance=ExtResource("f_tree05")]
+position = Vector3(-10, 0, 33.82)
+rotation = Vector3(0, 1.35, 0)
+scale = Vector3(1.48759, 1.48759, 1.48759)
+tint = Color(0.4, 0.46, 0.46, 1)
+
+[node name="T60" parent="Distant" instance=ExtResource("f_tree12")]
+position = Vector3(-1, 0, -47.75)
+rotation = Vector3(0, 4.42, 0)
+scale = Vector3(1.46737, 1.46737, 1.46737)
+tint = Color(0.4, 0.46, 0.46, 1)
+
+[node name="T61" parent="Distant" instance=ExtResource("f_tree10")]
+position = Vector3(-1, 0, 33.06)
+rotation = Vector3(0, 2.5, 0)
+scale = Vector3(1.29001, 1.29001, 1.29001)
+tint = Color(0.4, 0.46, 0.46, 1)
+
+[node name="T62" parent="Distant" instance=ExtResource("f_tree09")]
+position = Vector3(8, 0, -48.21)
+rotation = Vector3(0, 0.05, 0)
+scale = Vector3(1.12011, 1.12011, 1.12011)
+tint = Color(0.4, 0.46, 0.46, 1)
+
+[node name="T63" parent="Distant" instance=ExtResource("f_tree01")]
+position = Vector3(8, 0, 34.63)
+rotation = Vector3(0, 1.2, 0)
+scale = Vector3(1.48642, 1.48642, 1.48642)
+tint = Color(0.4, 0.46, 0.46, 1)
+
+[node name="T64" parent="Distant" instance=ExtResource("f_tree01")]
+position = Vector3(17, 0, -47.85)
+rotation = Vector3(0, 0.85, 0)
+scale = Vector3(1.18502, 1.18502, 1.18502)
+tint = Color(0.4, 0.46, 0.46, 1)
+
+[node name="T65" parent="Distant" instance=ExtResource("f_tree09")]
+position = Vector3(17, 0, 35.38)
+rotation = Vector3(0, 0.31, 0)
+scale = Vector3(1.26471, 1.26471, 1.26471)
+tint = Color(0.4, 0.46, 0.46, 1)
+
+[node name="T66" parent="Distant" instance=ExtResource("f_tree09")]
+position = Vector3(26, 0, -46.94)
+rotation = Vector3(0, 1.53, 0)
+scale = Vector3(1.44127, 1.44127, 1.44127)
+tint = Color(0.4, 0.46, 0.46, 1)
+
+[node name="T67" parent="Distant" instance=ExtResource("f_tree10")]
+position = Vector3(26, 0, 34.72)
+rotation = Vector3(0, 5.55, 0)
+scale = Vector3(1.46258, 1.46258, 1.46258)
+tint = Color(0.4, 0.46, 0.46, 1)
+
+[node name="T68" parent="Distant" instance=ExtResource("f_tree10")]
+position = Vector3(35, 0, -46.09)
+rotation = Vector3(0, 2.74, 0)
+scale = Vector3(1.03651, 1.03651, 1.03651)
+tint = Color(0.4, 0.46, 0.46, 1)
+
+[node name="T69" parent="Distant" instance=ExtResource("f_tree12")]
+position = Vector3(35, 0, 35.5)
+rotation = Vector3(0, 0.37, 0)
+scale = Vector3(1.09415, 1.09415, 1.09415)
+tint = Color(0.4, 0.46, 0.46, 1)
+
+[node name="T70" parent="Distant" instance=ExtResource("f_tree10")]
+position = Vector3(-46.63, 0, -42)
+rotation = Vector3(0, 3.09, 0)
+scale = Vector3(1.26778, 1.26778, 1.26778)
+tint = Color(0.4, 0.46, 0.46, 1)
+
+[node name="T71" parent="Distant" instance=ExtResource("f_tree12")]
+position = Vector3(40.36, 0, -42)
+rotation = Vector3(0, 1.69, 0)
+scale = Vector3(1.169, 1.169, 1.169)
+tint = Color(0.4, 0.46, 0.46, 1)
+
+[node name="T72" parent="Distant" instance=ExtResource("f_tree07")]
+position = Vector3(-45.71, 0, -33)
+rotation = Vector3(0, 0.06, 0)
+scale = Vector3(1.31999, 1.31999, 1.31999)
+tint = Color(0.4, 0.46, 0.46, 1)
+
+[node name="T73" parent="Distant" instance=ExtResource("f_tree12")]
+position = Vector3(40.61, 0, -33)
+rotation = Vector3(0, 3.21, 0)
+scale = Vector3(1.03382, 1.03382, 1.03382)
+tint = Color(0.4, 0.46, 0.46, 1)
+
+[node name="T74" parent="Distant" instance=ExtResource("f_tree05")]
+position = Vector3(-46.36, 0, -24)
+rotation = Vector3(0, 2.21, 0)
+scale = Vector3(1.1801, 1.1801, 1.1801)
+tint = Color(0.4, 0.46, 0.46, 1)
+
+[node name="T75" parent="Distant" instance=ExtResource("f_tree10")]
+position = Vector3(39.32, 0, -24)
+rotation = Vector3(0, 4.28, 0)
+scale = Vector3(1.24753, 1.24753, 1.24753)
+tint = Color(0.4, 0.46, 0.46, 1)
+
+[node name="T76" parent="Distant" instance=ExtResource("f_tree05")]
+position = Vector3(-46.31, 0, -15)
+rotation = Vector3(0, 1.46, 0)
+scale = Vector3(1.01622, 1.01622, 1.01622)
+tint = Color(0.4, 0.46, 0.46, 1)
+
+[node name="T77" parent="Distant" instance=ExtResource("f_tree07")]
+position = Vector3(39.72, 0, -15)
+rotation = Vector3(0, 4.34, 0)
+scale = Vector3(1.20421, 1.20421, 1.20421)
+tint = Color(0.4, 0.46, 0.46, 1)
+
+[node name="T78" parent="Distant" instance=ExtResource("f_tree10")]
+position = Vector3(-46.46, 0, -6)
+rotation = Vector3(0, 2.04, 0)
+scale = Vector3(1.21174, 1.21174, 1.21174)
+tint = Color(0.4, 0.46, 0.46, 1)
+
+[node name="T79" parent="Distant" instance=ExtResource("f_tree10")]
+position = Vector3(39.44, 0, -6)
+rotation = Vector3(0, 2.21, 0)
+scale = Vector3(1.02024, 1.02024, 1.02024)
+tint = Color(0.4, 0.46, 0.46, 1)
+
+[node name="T80" parent="Distant" instance=ExtResource("f_tree12")]
+position = Vector3(-46.07, 0, 3)
+rotation = Vector3(0, 0.13, 0)
+scale = Vector3(1.32129, 1.32129, 1.32129)
+tint = Color(0.4, 0.46, 0.46, 1)
+
+[node name="T81" parent="Distant" instance=ExtResource("f_tree09")]
+position = Vector3(39.74, 0, 3)
+rotation = Vector3(0, 5.34, 0)
+scale = Vector3(1.08101, 1.08101, 1.08101)
+tint = Color(0.4, 0.46, 0.46, 1)
+
+[node name="T82" parent="Distant" instance=ExtResource("f_tree07")]
+position = Vector3(-46.61, 0, 12)
+rotation = Vector3(0, 1.36, 0)
+scale = Vector3(1.33974, 1.33974, 1.33974)
+tint = Color(0.4, 0.46, 0.46, 1)
+
+[node name="T83" parent="Distant" instance=ExtResource("f_tree10")]
+position = Vector3(40.56, 0, 12)
+rotation = Vector3(0, 5.71, 0)
+scale = Vector3(1.26663, 1.26663, 1.26663)
+tint = Color(0.4, 0.46, 0.46, 1)
+
+[node name="T84" parent="Distant" instance=ExtResource("f_tree09")]
+position = Vector3(-46.94, 0, 21)
+rotation = Vector3(0, 2.91, 0)
+scale = Vector3(1.10507, 1.10507, 1.10507)
+tint = Color(0.4, 0.46, 0.46, 1)
+
+[node name="T85" parent="Distant" instance=ExtResource("f_tree07")]
+position = Vector3(40.39, 0, 21)
+rotation = Vector3(0, 2.21, 0)
+scale = Vector3(1.00562, 1.00562, 1.00562)
+tint = Color(0.4, 0.46, 0.46, 1)
+
+[node name="Cameras" type="Node3D" parent="."]
+
+[node name="Cam02" type="Camera3D" parent="Cameras"]
+position = Vector3(5.1, 2.7, -3.7)
+fov = 75
+cull_mask = 1048573
+script = ExtResource("cctv")
+label = "CAM 02 - WALKWAY"
+sort_order = 2
+look_target = Vector3(5.1, 1, -16)
+
+[node name="Cam03" type="Camera3D" parent="Cameras"]
+position = Vector3(-1.5, 2.5, -5.3)
+fov = 80
+cull_mask = 1048573
+script = ExtResource("cctv")
+label = "CAM 03 - COURTYARD"
+sort_order = 3
+look_target = Vector3(-9, 0.5, -12)
+
+[node name="Cam03Mount" type="CSGBox3D" parent="Cameras"]
+position = Vector3(-1.5, 2.6, -5.2)
+size = Vector3(0.12, 0.2, 0.3)
+material = SubResource("m_pole")
+
+[node name="Guest" parent="Reception"]
+exit_door_path = NodePath("../EntranceDoor")
+leave_path = PackedVector3Array(2.5, 0, -0.3, 2.5, 0, -4.3, 4.6, 0, -4, 5.1, 0, -5.5, 5.1, 0, -16)
+
+[node name="Lamps" type="Node3D" parent="."]
+
+[node name="Lamp1" parent="Lamps" instance=ExtResource("lamp")]
+position = Vector3(-16.5, 0, -6.6)
+
+[node name="Lamp2" parent="Lamps" instance=ExtResource("lamp")]
+position = Vector3(-8.5, 0, -6.6)
+
+[node name="Lamp3" parent="Lamps" instance=ExtResource("lamp")]
+position = Vector3(-16.5, 0, -14.95)
+rotation = Vector3(0, 3.14159, 0)
+
+[node name="Lamp4" parent="Lamps" instance=ExtResource("lamp")]
+position = Vector3(-6.5, 0, -14.95)
+rotation = Vector3(0, 3.14159, 0)
+
+[node name="Lamp5" parent="Lamps" instance=ExtResource("lamp")]
+position = Vector3(2.7, 0, -9.5)
+rotation = Vector3(0, -1.5708, 0)
+
+[node name="Lamp6" parent="Lamps" instance=ExtResource("lamp")]
+position = Vector3(-10.6, 0, 4.5)
+rotation = Vector3(0, 1.5708, 0)
+
+[node name="Lamp7" parent="Lamps" instance=ExtResource("lamp")]
+position = Vector3(10, 0, 5.6)
+
+[node name="Sun" type="DirectionalLight3D" parent="." groups=["sun"]]
+rotation = Vector3(-0.9, 0.6, 0)
+shadow_enabled = true
+directional_shadow_max_distance = 60.0

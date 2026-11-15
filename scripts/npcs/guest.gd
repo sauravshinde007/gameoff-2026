@@ -1,7 +1,7 @@
 class_name Guest
 extends StaticBody3D
 ## Ordinary check-in guest. Talk -> player assigns a room on the computer -> player takes the key
-## from the rack -> talk again to hand it over -> guest walks to the hallway and disappears.
+## from the rack -> talk again to hand it over -> guest walks away along `leave_path` and disappears.
 
 signal checked_in(reservation_id: String)
 
@@ -12,6 +12,12 @@ signal checked_in(reservation_id: String)
 @export var dialogue_handover: DialogueData
 ## World-space waypoints the guest walks through after check-in.
 @export var leave_path: PackedVector3Array = PackedVector3Array([Vector3(3, 0, 1.5), Vector3(3, 0, 5.2)])
+## Optional door the guest opens on the way out (relative to this node). Empty = no door.
+@export var exit_door_path: NodePath
+## The door opens when the guest comes within this distance (metres, horizontal)...
+@export var exit_door_open_distance: float = 1.8
+## ...and closes again once she is further than this on the other side.
+@export var exit_door_close_distance: float = 2.4
 @export var walk_speed: float = 2.8
 ## Task completed when the key is handed over.
 @export var check_in_task_id: StringName = &"check_in_guest"
@@ -23,9 +29,12 @@ signal checked_in(reservation_id: String)
 var _asked: bool = false
 var _handing_over: bool = false
 var _done: bool = false
+var _exit_door: Node3D
+var _door_opened: bool = false
 
 
 func _ready() -> void:
+	set_process(false)
 	interactable.interacted.connect(_on_interacted)
 	DialogueManager.dialogue_finished.connect(_on_dialogue_finished)
 
@@ -68,12 +77,37 @@ func _leave() -> void:
 	body_shape.set_deferred("disabled", true)
 	if model != null:
 		model.play(&"walk")
+	if not exit_door_path.is_empty():
+		_exit_door = get_node_or_null(exit_door_path) as Node3D
+	set_process(_exit_door != null and _exit_door.has_method("set_open"))
 	var tween: Tween = create_tween()
+	var from: Vector3 = global_position
 	for point: Vector3 in leave_path:
 		tween.tween_callback(_face.bind(point))
-		var dist: float = global_position.distance_to(point)
-		tween.tween_property(self, "global_position", point, dist / walk_speed)
-	tween.tween_callback(hide)
+		tween.tween_property(self, "global_position", point, from.distance_to(point) / walk_speed)
+		from = point
+	tween.tween_callback(_finish_leave)
+
+
+## Opens the exit door as the guest approaches it and closes it once she is through.
+func _process(_delta: float) -> void:
+	var to_door: Vector3 = _exit_door.global_position - global_position
+	to_door.y = 0.0
+	var dist: float = to_door.length()
+	if not _door_opened and dist < exit_door_open_distance:
+		_door_opened = true
+		_exit_door.call("set_open", true)
+	elif _door_opened and dist > exit_door_close_distance:
+		_door_opened = false
+		_exit_door.call("set_open", false)
+		set_process(false)
+
+
+func _finish_leave() -> void:
+	if _door_opened and _exit_door != null:
+		_exit_door.call("set_open", false)
+	set_process(false)
+	hide()
 
 
 func _face(point: Vector3) -> void:

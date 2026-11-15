@@ -8,7 +8,16 @@ extends Resource
 @export var ambient_color: Color = Color(0.3, 0.3, 0.35)
 @export var ambient_energy: float = 1.0
 @export var fog_color: Color = Color(0.1, 0.1, 0.14)
-@export var fog_density: float = 0.03
+## Depth fog: maximum fog amount (0..1). Fog ramps from fog_depth_begin to fog_depth_end metres.
+@export var fog_density: float = 1.0
+@export var fog_depth_begin: float = 10.0
+@export var fog_depth_end: float = 80.0
+## > 1 keeps the near field clear longer and thickens toward the end (gradual Silent Hill-style wall).
+@export var fog_depth_curve: float = 1.5
+@export_group("Sun")
+## DirectionalLight3D in group "sun": daylight by day, faint moonlight by night.
+@export var sun_color: Color = Color.WHITE
+@export var sun_energy: float = 1.0
 @export_group("Sky")
 ## Equirectangular (2:1) sky panorama, seen through the windows (PSX Sky Sampler).
 @export var sky_panorama: Texture2D

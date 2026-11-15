@@ -1,0 +1,25 @@
+[gd_scene format=3]
+
+[ext_resource type="ArrayMesh" path="res://assets/models/props/cars_ggbot/car02/Car2.obj" id="mesh"]
+[ext_resource type="Texture2D" path="res://assets/models/props/cars_ggbot/car02/car2_red.png" id="tex"]
+
+[sub_resource type="StandardMaterial3D" id="mat"]
+albedo_texture = ExtResource("tex")
+texture_filter = 2
+roughness = 1.0
+metallic_specular = 0.1
+
+[sub_resource type="BoxShape3D" id="shape"]
+size = Vector3(1.971, 1.495, 4.442)
+
+[node name="Car" type="StaticBody3D"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+position = Vector3(0, 0.759, -0.021)
+shape = SubResource("shape")
+
+[node name="Model" type="MeshInstance3D" parent="."]
+mesh = ExtResource("mesh")
+material_override = SubResource("mat")
+position = Vector3(0, 0.027, 0)
+scale = Vector3(0.68, 0.68, 0.68)

@@ -1,0 +1,336 @@
+[gd_scene format=3]
+
+[ext_resource type="Material" path="res://assets/materials/wood.tres" id="m_wood"]
+[ext_resource type="Material" path="res://assets/materials/wall.tres" id="m_wall"]
+[ext_resource type="Material" path="res://assets/materials/floor_tile.tres" id="m_tile"]
+[ext_resource type="Script" path="res://scripts/environment/guest_room_interior.gd" id="script"]
+
+[sub_resource type="StandardMaterial3D" id="p_white"]
+albedo_color = Color(0.85, 0.84, 0.8, 1)
+
+[sub_resource type="StandardMaterial3D" id="p_bed"]
+albedo_color = Color(0.55, 0.2, 0.2, 1)
+
+[sub_resource type="StandardMaterial3D" id="p_rug"]
+albedo_color = Color(0.22, 0.28, 0.35, 1)
+
+[sub_resource type="StandardMaterial3D" id="p_dark"]
+albedo_color = Color(0.1, 0.1, 0.12, 1)
+
+[sub_resource type="StandardMaterial3D" id="p_paper"]
+albedo_color = Color(0.9, 0.88, 0.75, 1)
+
+[sub_resource type="StandardMaterial3D" id="p_case"]
+albedo_color = Color(0.45, 0.15, 0.12, 1)
+
+[sub_resource type="StandardMaterial3D" id="p_chair"]
+albedo_color = Color(0.3, 0.38, 0.32, 1)
+
+[sub_resource type="StandardMaterial3D" id="p_frame"]
+albedo_color = Color(0.35, 0.25, 0.15, 1)
+
+[sub_resource type="StandardMaterial3D" id="p_art"]
+albedo_color = Color(0.3, 0.45, 0.55, 1)
+
+[sub_resource type="StandardMaterial3D" id="p_mirror"]
+albedo_color = Color(0.6, 0.68, 0.72, 1)
+
+[sub_resource type="StandardMaterial3D" id="p_screen"]
+albedo_color = Color(0.12, 0.2, 0.16, 1)
+
+[sub_resource type="StandardMaterial3D" id="p_shade"]
+albedo_color = Color(1, 0.8, 0.5, 1)
+emission_enabled = true
+emission = Color(1, 0.8, 0.5, 1)
+emission_energy_multiplier = 1.5
+
+[sub_resource type="StandardMaterial3D" id="p_fixture"]
+albedo_color = Color(1, 0.85, 0.6, 1)
+emission_enabled = true
+emission = Color(1, 0.85, 0.6, 1)
+emission_energy_multiplier = 1.2
+
+[node name="GuestRoomBase" type="Node3D"]
+script = ExtResource("script")
+
+[node name="Furniture" type="Node3D" parent="."]
+
+[node name="Bed" type="Node3D" parent="Furniture"]
+position = Vector3(0.95, 0, -1.85)
+
+[node name="Frame" type="CSGBox3D" parent="Furniture/Bed"]
+position = Vector3(0, 0.175, 0)
+size = Vector3(1.5, 0.35, 2)
+use_collision = true
+material = ExtResource("m_wood")
+
+[node name="Mattress" type="CSGBox3D" parent="Furniture/Bed"]
+position = Vector3(0, 0.425, 0)
+size = Vector3(1.4, 0.15, 1.9)
+material = SubResource("p_white")
+
+[node name="Bedspread" type="CSGBox3D" parent="Furniture/Bed"]
+position = Vector3(0, 0.51, 0.25)
+size = Vector3(1.42, 0.04, 1.4)
+material = SubResource("p_bed")
+
+[node name="PillowA" type="CSGBox3D" parent="Furniture/Bed"]
+position = Vector3(-0.35, 0.54, -0.7)
+size = Vector3(0.5, 0.1, 0.3)
+material = SubResource("p_white")
+
+[node name="PillowB" type="CSGBox3D" parent="Furniture/Bed"]
+position = Vector3(0.35, 0.54, -0.7)
+size = Vector3(0.5, 0.1, 0.3)
+material = SubResource("p_white")
+
+[node name="Headboard" type="CSGBox3D" parent="Furniture/Bed"]
+position = Vector3(0, 0.6, -0.95)
+size = Vector3(1.6, 0.85, 0.08)
+use_collision = true
+material = ExtResource("m_wood")
+
+[node name="BedsideA" type="Node3D" parent="Furniture"]
+position = Vector3(-0.1, 0, -2.6)
+
+[node name="Body" type="CSGBox3D" parent="Furniture/BedsideA"]
+position = Vector3(0, 0.25, 0)
+size = Vector3(0.4, 0.5, 0.4)
+use_collision = true
+material = ExtResource("m_wood")
+
+[node name="LampBase" type="CSGBox3D" parent="Furniture/BedsideA"]
+position = Vector3(0, 0.53, 0)
+size = Vector3(0.14, 0.05, 0.14)
+material = SubResource("p_dark")
+
+[node name="LampStem" type="CSGBox3D" parent="Furniture/BedsideA"]
+position = Vector3(0, 0.68, 0)
+size = Vector3(0.03, 0.25, 0.03)
+material = SubResource("p_dark")
+
+[node name="LampShade" type="CSGBox3D" parent="Furniture/BedsideA"]
+position = Vector3(0, 0.88, 0)
+size = Vector3(0.22, 0.18, 0.22)
+material = SubResource("p_shade")
+
+[node name="BedsideB" type="Node3D" parent="Furniture"]
+position = Vector3(1.95, 0, -2.6)
+
+[node name="Body" type="CSGBox3D" parent="Furniture/BedsideB"]
+position = Vector3(0, 0.25, 0)
+size = Vector3(0.4, 0.5, 0.4)
+use_collision = true
+material = ExtResource("m_wood")
+
+[node name="Clock" type="CSGBox3D" parent="Furniture/BedsideB"]
+position = Vector3(0, 0.58, 0)
+size = Vector3(0.16, 0.1, 0.08)
+material = SubResource("p_dark")
+
+[node name="Desk" type="Node3D" parent="Furniture"]
+position = Vector3(1.5, 0, 2.55)
+
+[node name="Top" type="CSGBox3D" parent="Furniture/Desk"]
+position = Vector3(0, 0.75, 0)
+size = Vector3(1.2, 0.05, 0.55)
+use_collision = true
+material = ExtResource("m_wood")
+
+[node name="PanelL" type="CSGBox3D" parent="Furniture/Desk"]
+position = Vector3(-0.55, 0.36, 0)
+size = Vector3(0.05, 0.72, 0.5)
+use_collision = true
+material = ExtResource("m_wood")
+
+[node name="PanelR" type="CSGBox3D" parent="Furniture/Desk"]
+position = Vector3(0.55, 0.36, 0)
+size = Vector3(0.05, 0.72, 0.5)
+use_collision = true
+material = ExtResource("m_wood")
+
+[node name="Paper" type="CSGBox3D" parent="Furniture/Desk"]
+position = Vector3(0.1, 0.78, 0)
+size = Vector3(0.3, 0.01, 0.2)
+material = SubResource("p_paper")
+
+[node name="Chair" type="Node3D" parent="Furniture"]
+position = Vector3(1.5, 0, 1.85)
+
+[node name="Leg1" type="CSGBox3D" parent="Furniture/Chair"]
+position = Vector3(-0.17, 0.215, -0.17)
+size = Vector3(0.05, 0.43, 0.05)
+use_collision = true
+material = ExtResource("m_wood")
+
+[node name="Leg2" type="CSGBox3D" parent="Furniture/Chair"]
+position = Vector3(0.17, 0.215, -0.17)
+size = Vector3(0.05, 0.43, 0.05)
+use_collision = true
+material = ExtResource("m_wood")
+
+[node name="Leg3" type="CSGBox3D" parent="Furniture/Chair"]
+position = Vector3(-0.17, 0.215, 0.17)
+size = Vector3(0.05, 0.43, 0.05)
+use_collision = true
+material = ExtResource("m_wood")
+
+[node name="Leg4" type="CSGBox3D" parent="Furniture/Chair"]
+position = Vector3(0.17, 0.215, 0.17)
+size = Vector3(0.05, 0.43, 0.05)
+use_collision = true
+material = ExtResource("m_wood")
+
+[node name="Seat" type="CSGBox3D" parent="Furniture/Chair"]
+position = Vector3(0, 0.45, 0)
+size = Vector3(0.42, 0.06, 0.42)
+use_collision = true
+material = SubResource("p_chair")
+
+[node name="Back" type="CSGBox3D" parent="Furniture/Chair"]
+position = Vector3(0, 0.78, -0.2)
+size = Vector3(0.42, 0.5, 0.05)
+use_collision = true
+material = SubResource("p_chair")
+
+[node name="Dresser" type="Node3D" parent="Furniture"]
+position = Vector3(-1.92, 0, 1)
+rotation = Vector3(0, 1.5708, 0)
+
+[node name="Body" type="CSGBox3D" parent="Furniture/Dresser"]
+position = Vector3(0, 0.4, 0)
+size = Vector3(1.2, 0.8, 0.45)
+use_collision = true
+material = ExtResource("m_wood")
+
+[node name="TvBody" type="CSGBox3D" parent="Furniture/Dresser"]
+position = Vector3(0, 1.01, 0)
+size = Vector3(0.55, 0.42, 0.45)
+material = SubResource("p_dark")
+
+[node name="TvScreen" type="CSGBox3D" parent="Furniture/Dresser"]
+position = Vector3(0, 1.01, 0.23)
+size = Vector3(0.42, 0.32, 0.02)
+material = SubResource("p_screen")
+
+[node name="Rug" type="Node3D" parent="Furniture"]
+position = Vector3(0.5, 0, 0.4)
+
+[node name="Mat" type="CSGBox3D" parent="Furniture/Rug"]
+position = Vector3(0, 0.01, 0)
+size = Vector3(1.8, 0.02, 2.2)
+material = SubResource("p_rug")
+
+[node name="BathWallEast" type="Node3D" parent="Furniture"]
+position = Vector3(-0.65, 0, -2.35)
+
+[node name="Wall" type="CSGBox3D" parent="Furniture/BathWallEast"]
+position = Vector3(0, 1.3, 0)
+size = Vector3(0.1, 2.6, 1.1)
+use_collision = true
+material = ExtResource("m_wall")
+
+[node name="BathWallSouth" type="Node3D" parent="Furniture"]
+position = Vector3(-1.4, 0, -0.85)
+
+[node name="Wall" type="CSGBox3D" parent="Furniture/BathWallSouth"]
+position = Vector3(0, 1.3, 0)
+size = Vector3(1.5, 2.6, 0.1)
+use_collision = true
+material = ExtResource("m_wall")
+
+[node name="BathFloor" type="Node3D" parent="Furniture"]
+position = Vector3(-1.4, 0, -1.9)
+
+[node name="Tiles" type="CSGBox3D" parent="Furniture/BathFloor"]
+position = Vector3(0, 0.01, 0)
+size = Vector3(1.5, 0.02, 2)
+material = ExtResource("m_tile")
+
+[node name="Toilet" type="Node3D" parent="Furniture"]
+position = Vector3(-1.5, 0, -2.65)
+
+[node name="Bowl" type="CSGBox3D" parent="Furniture/Toilet"]
+position = Vector3(0, 0.2, 0.05)
+size = Vector3(0.35, 0.4, 0.45)
+use_collision = true
+material = SubResource("p_white")
+
+[node name="Tank" type="CSGBox3D" parent="Furniture/Toilet"]
+position = Vector3(0, 0.55, -0.18)
+size = Vector3(0.35, 0.5, 0.14)
+use_collision = true
+material = SubResource("p_white")
+
+[node name="Sink" type="Node3D" parent="Furniture"]
+position = Vector3(-1.95, 0, -1.5)
+rotation = Vector3(0, 1.5708, 0)
+
+[node name="Vanity" type="CSGBox3D" parent="Furniture/Sink"]
+position = Vector3(0, 0.4, 0)
+size = Vector3(0.5, 0.8, 0.4)
+use_collision = true
+material = SubResource("p_white")
+
+[node name="Basin" type="CSGBox3D" parent="Furniture/Sink"]
+position = Vector3(0, 0.82, 0)
+size = Vector3(0.4, 0.04, 0.3)
+material = SubResource("p_mirror")
+
+[node name="BathMirror" type="Node3D" parent="Furniture"]
+position = Vector3(-2.12, 1.5, -1.5)
+
+[node name="Glass" type="CSGBox3D" parent="Furniture/BathMirror"]
+position = Vector3(0, 0, 0)
+size = Vector3(0.03, 0.6, 0.45)
+material = SubResource("p_mirror")
+
+[node name="Painting" type="Node3D" parent="Furniture"]
+position = Vector3(2.12, 1.6, 0)
+
+[node name="Frame" type="CSGBox3D" parent="Furniture/Painting"]
+position = Vector3(0, 0, 0)
+size = Vector3(0.04, 0.6, 0.8)
+material = SubResource("p_frame")
+
+[node name="Canvas" type="CSGBox3D" parent="Furniture/Painting"]
+position = Vector3(-0.005, 0, 0)
+size = Vector3(0.04, 0.48, 0.68)
+material = SubResource("p_art")
+
+[node name="CeilingFixture" type="Node3D" parent="Furniture"]
+position = Vector3(0, 2.97, 0)
+
+[node name="Shade" type="CSGBox3D" parent="Furniture/CeilingFixture"]
+position = Vector3(0, 0, 0)
+size = Vector3(0.5, 0.06, 0.5)
+material = SubResource("p_fixture")
+
+[node name="Suitcase" type="Node3D" parent="Furniture"]
+position = Vector3(-1.7, 0, 2.3)
+
+[node name="Case" type="CSGBox3D" parent="Furniture/Suitcase"]
+position = Vector3(0, 0.14, 0)
+size = Vector3(0.7, 0.28, 0.4)
+use_collision = true
+material = SubResource("p_case")
+
+[node name="Handle" type="CSGBox3D" parent="Furniture/Suitcase"]
+position = Vector3(0, 0.3, 0)
+size = Vector3(0.2, 0.04, 0.04)
+material = SubResource("p_dark")
+
+[node name="Armchair" type="Node3D" parent="Furniture"]
+position = Vector3(-1.6, 0, 2.2)
+
+[node name="Seat" type="CSGBox3D" parent="Furniture/Armchair"]
+position = Vector3(0, 0.22, 0)
+size = Vector3(0.8, 0.44, 0.8)
+use_collision = true
+material = SubResource("p_chair")
+
+[node name="Back" type="CSGBox3D" parent="Furniture/Armchair"]
+position = Vector3(-0.34, 0.65, 0)
+size = Vector3(0.12, 0.5, 0.8)
+use_collision = true
+material = SubResource("p_chair")

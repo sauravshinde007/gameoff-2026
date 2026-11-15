@@ -6,7 +6,7 @@ signal restart_requested
 
 @export var time_text: String = "6:00 AM"
 @export var title_text: String = "SHIFT COMPLETE"
-@export_multiline var closing_text: String = "You made it to morning.\nReservation #0013 is still in the system."
+@export_multiline var closing_text: String = "You made it to morning."
 @export var fade_seconds: float = 1.5
 
 @onready var content: Control = %Content

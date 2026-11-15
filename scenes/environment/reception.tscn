@@ -85,6 +85,7 @@ material = ExtResource("mat_wall")
 position = Vector3(2.5, 1.1, -3)
 room_id = -1
 door_size = Vector3(1.1, 2.2, 0.1)
+openable = true
 
 [node name="Desk" type="CSGBox3D" parent="."]
 position = Vector3(0, 0.5, -1.2)

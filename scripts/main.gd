@@ -9,7 +9,6 @@ const TITLE_SCENE: String = "res://scenes/ui/title_screen.tscn"
 @export var caption_hold_seconds: float = 1.6
 @export var fade_in_seconds: float = 1.5
 @export var boot_fade_seconds: float = 1.0
-@export var rush_message: String = "*The rest of the night passes quietly...*"
 @export var end_fade_seconds: float = 2.5
 
 @onready var interactor: Interactor = $Player/Head/Camera3D/Interactor
@@ -43,9 +42,6 @@ func _unhandled_input(event: InputEvent) -> void:
 func _on_flag_set(flag: StringName) -> void:
 	if flag == &"note_read":
 		_begin_night()
-	elif flag == &"room13_done":
-		get_tree().call_group("hud", "show_message", rush_message, 4.0)
-		ShiftManager.set_fast(true)
 
 
 ## 6 AM: controls off, low sting, fade to black, then the "Shift complete" screen.
