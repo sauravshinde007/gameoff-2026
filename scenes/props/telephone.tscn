@@ -2,7 +2,6 @@
 
 [ext_resource type="Script" path="res://scripts/props/telephone.gd" id="1_phone"]
 [ext_resource type="Script" path="res://scripts/components/interactable.gd" id="2_inter"]
-[ext_resource type="Resource" path="res://data/dialogue/call_towels.tres" id="3_call"]
 [ext_resource type="PackedScene" path="res://assets/models/props/telephone.glb" id="4_model"]
 [ext_resource type="Script" path="res://scripts/components/retro_model.gd" id="5_retro"]
 
@@ -17,7 +16,6 @@ size = Vector3(0.45, 0.35, 0.45)
 
 [node name="Telephone" type="Node3D"]
 script = ExtResource("1_phone")
-debug_call = ExtResource("3_call")
 
 ; Rotary phone. The model faces +Z, so it is turned to face -Z (the player's side). Its origin is
 ; the desk surface (y = -0.05).

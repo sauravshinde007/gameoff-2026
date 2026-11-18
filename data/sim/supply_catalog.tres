@@ -1,0 +1,72 @@
+[gd_resource type="Resource" script_class="SupplyCatalog" format=3 uid="uid://djubh2nd1ctyc"]
+
+[ext_resource type="Script" uid="uid://b2d61ikfgogxa" path="res://scripts/resources/supply_catalog.gd" id="1_cat"]
+[ext_resource type="Script" uid="uid://pjqkibjo5qyb" path="res://scripts/resources/supply_item.gd" id="2_item"]
+
+[sub_resource type="Resource" id="I_towels"]
+script = ExtResource("2_item")
+id = &"towels"
+display_name = "Towels"
+start_stock = 8
+buy_price = 3
+
+[sub_resource type="Resource" id="I_pillows"]
+script = ExtResource("2_item")
+id = &"pillows"
+display_name = "Pillows"
+start_stock = 4
+buy_price = 6
+
+[sub_resource type="Resource" id="I_soap"]
+script = ExtResource("2_item")
+id = &"soap"
+display_name = "Soap"
+start_stock = 8
+buy_price = 1
+
+[sub_resource type="Resource" id="I_cleaning"]
+script = ExtResource("2_item")
+id = &"cleaning"
+display_name = "Cleaning supplies"
+start_stock = 5
+buy_price = 4
+
+[sub_resource type="Resource" id="I_fuel"]
+script = ExtResource("2_item")
+id = &"fuel"
+display_name = "Fuel can"
+start_stock = 2
+buy_price = 12
+
+[sub_resource type="Resource" id="I_bulbs"]
+script = ExtResource("2_item")
+id = &"bulbs"
+display_name = "Light bulbs"
+start_stock = 3
+buy_price = 3
+
+[sub_resource type="Resource" id="I_ice"]
+script = ExtResource("2_item")
+id = &"ice"
+display_name = "Ice"
+tracked_stock = false
+carry_limit = 1
+
+[sub_resource type="Resource" id="I_coffee"]
+script = ExtResource("2_item")
+id = &"coffee"
+display_name = "Coffee"
+tracked_stock = false
+carry_limit = 1
+
+[resource]
+script = ExtResource("1_cat")
+items = Array[ExtResource("2_item")]([SubResource("I_towels"), SubResource("I_pillows"), SubResource("I_soap"), SubResource("I_cleaning"), SubResource("I_fuel"), SubResource("I_bulbs"), SubResource("I_ice"), SubResource("I_coffee")])
+take_amount = 1
+max_purchase_quantity = 10
+clean_cost = {
+&"cleaning": 1,
+&"soap": 1,
+&"towels": 1
+}
+clean_seconds = 4.0

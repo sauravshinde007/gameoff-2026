@@ -59,6 +59,9 @@ func _reset_all() -> void:
 	EventManager.reset()
 	TaskManager.reset()
 	RoomManager.reset()
+	EconomyManager.reset()
+	GuestManager.reset()
+	InventoryManager.reset()
 	DialogueManager.reset()
 	AudioManager.stop_all()
 	get_tree().paused = false

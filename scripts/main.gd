@@ -2,9 +2,11 @@ extends Node3D
 
 const TITLE_SCENE: String = "res://scenes/ui/title_screen.tscn"
 
-@export var intro_message: String = "Your first night shift starts at 10 PM. Read the manager's note on the desk."
+@export var intro_message: String = "Your shift starts at 6 AM. Read the shift notes on the desk."
 @export var intro_message_seconds: float = 7.0
-@export var night_caption: String = "10:00 PM"
+@export var night_caption: String = "6:00 AM"
+## false = morning shift (day lighting). true = night shift (night lighting).
+@export var night_shift: bool = false
 @export var fade_out_seconds: float = 1.2
 @export var caption_hold_seconds: float = 1.6
 @export var fade_in_seconds: float = 1.5
@@ -44,13 +46,15 @@ func _on_flag_set(flag: StringName) -> void:
 		_begin_night()
 
 
-## 6 AM: controls off, low sting, fade to black, then the "Shift complete" screen.
+## End of shift (2 PM): controls off, operating costs charged, fade to black, then the shift report screen.
 func _on_shift_ended() -> void:
 	get_tree().call_group("player", "set_controls_enabled", false)
+	var director: ShiftDirector = get_tree().get_first_node_in_group(&"shift_director") as ShiftDirector
+	var report: Dictionary = director.finish_shift() if director != null else {}
 	AudioManager.play_sfx(&"end_sting")
 	await screen_fade.fade_out(end_fade_seconds)
 	AudioManager.set_ambience(&"")
-	end_screen.show_screen()
+	end_screen.show_screen(report)
 
 
 ## Fresh run: reset every global system, then reload the scene (back to the day intro).
@@ -69,16 +73,19 @@ func _reset_all() -> void:
 	EventManager.reset()
 	TaskManager.reset()
 	RoomManager.reset()
+	EconomyManager.reset()
+	GuestManager.reset()
+	InventoryManager.reset()
 	DialogueManager.reset()
 	AudioManager.stop_all()
 	get_tree().paused = false
 
 
-## Day -> fade to black with the time -> night look -> fade in -> the clock starts.
+## Fade to black with the start time -> shift lighting (day or night) -> fade in -> the clock starts.
 func _begin_night() -> void:
 	get_tree().call_group("player", "set_controls_enabled", false)
 	await screen_fade.fade_out(fade_out_seconds, night_caption)
-	day_night.apply(day_night.night_preset)
+	day_night.apply(day_night.night_preset if night_shift else day_night.day_preset)
 	await get_tree().create_timer(caption_hold_seconds).timeout
 	TaskManager.activate()
 	await screen_fade.fade_in(fade_in_seconds)

@@ -104,19 +104,16 @@ material = ExtResource("m_wall")
 position = Vector3(-2.6, 1.5, -3)
 rotation = Vector3(0, 3.14159, 0)
 size = Vector2(2, 1.6)
-lit = true
 
 [node name="WindowFrontMid" parent="Reception" instance=ExtResource("window")]
 position = Vector3(0, 1.5, -3)
 rotation = Vector3(0, 3.14159, 0)
 size = Vector2(2.4, 1.6)
-lit = true
 
 [node name="WindowSide" parent="Reception" instance=ExtResource("window")]
 position = Vector3(4, 1.5, -1.8)
 rotation = Vector3(0, 1.5708, 0)
 size = Vector2(1.4, 1.2)
-lit = true
 
 [node name="Extras" parent="." instance=ExtResource("extras")]
 
@@ -228,14 +225,18 @@ openable = true
 [node name="Room02" parent="EastWing" instance=ExtResource("room")]
 position = Vector3(9.1, 0, -9.85)
 room_number = 2
-curtains_closed = true
-window_lit = true
+curtains_closed = false
 rotation = Vector3(0, -1.5708, 0)
 
 [node name="Door" parent="EastWing/Room02" instance=ExtResource("door")]
 position = Vector3(0, 1.05, 3)
 room_id = 2
-openable = false
+openable = true
+
+[node name="Interior" parent="EastWing/Room02" instance=ExtResource("base")]
+bedspread_color = Color(0.5, 0.38, 0.2, 1)
+rug_color = Color(0.25, 0.3, 0.28, 1)
+suitcase = true
 
 [node name="Room03" parent="EastWing" instance=ExtResource("room")]
 position = Vector3(9.1, 0, -14.35)
@@ -264,7 +265,13 @@ curtains_closed = true
 [node name="Door" parent="NorthWing/Room04" instance=ExtResource("door")]
 position = Vector3(0, 1.05, 3)
 room_id = 4
-openable = false
+openable = true
+
+[node name="Interior" parent="NorthWing/Room04" instance=ExtResource("base")]
+mirrored = true
+bedspread_color = Color(0.4, 0.2, 0.35, 1)
+rug_color = Color(0.3, 0.32, 0.22, 1)
+armchair = true
 
 [node name="Room05" parent="NorthWing" instance=ExtResource("room")]
 position = Vector3(-0.65, 0, -21.6)
@@ -290,7 +297,13 @@ window_lit = true
 [node name="Door" parent="NorthWing/Room06" instance=ExtResource("door")]
 position = Vector3(0, 1.05, 3)
 room_id = 6
-openable = false
+openable = true
+
+[node name="Interior" parent="NorthWing/Room06" instance=ExtResource("base")]
+mirrored = true
+bedspread_color = Color(0.3, 0.3, 0.38, 1)
+rug_color = Color(0.4, 0.25, 0.2, 1)
+suitcase = true
 
 [node name="Walkways" type="Node3D" parent="."]
 
@@ -1152,10 +1165,6 @@ look_target = Vector3(-9, 0.5, -12)
 position = Vector3(-1.5, 2.6, -5.2)
 size = Vector3(0.12, 0.2, 0.3)
 material = SubResource("m_pole")
-
-[node name="Guest" parent="Reception"]
-exit_door_path = NodePath("../EntranceDoor")
-leave_path = PackedVector3Array(2.5, 0, -0.3, 2.5, 0, -4.3, 4.6, 0, -4, 5.1, 0, -5.5, 5.1, 0, -16)
 
 [node name="Lamps" type="Node3D" parent="."]
 

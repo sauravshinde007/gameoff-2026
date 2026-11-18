@@ -8,6 +8,8 @@ extends CanvasLayer
 @export var done_color: Color = Color(0.56, 0.83, 0.56)
 ## How long the green "done" row stays before sliding out.
 @export var done_hold_seconds: float = 0.7
+@export var failed_color: Color = Color(0.9, 0.35, 0.3)
+@export var urgent_color: Color = Color(1.0, 0.8, 0.35)
 @export var slide_seconds: float = 0.45
 @export var collapse_seconds: float = 0.25
 
@@ -31,11 +33,16 @@ func _refresh() -> void:
 	for t: TaskData in TaskManager.get_tasks():
 		if t.is_rule:
 			continue
-		if TaskManager.is_completed(t.id):
+		if TaskManager.is_completed(t.id) or TaskManager.is_failed(t.id):
 			if _rows.has(t.id):
-				_slide_out(t.id)
+				_slide_out(t.id, TaskManager.is_failed(t.id))
 		elif not _rows.has(t.id):
 			_add_row(t)
+	# Tasks removed from the manager (e.g. guest left) lose their row without the done animation.
+	for id: StringName in _rows.keys():
+		if TaskManager.get_task(id) == null:
+			_remove_row(_rows[id])
+			_rows.erase(id)
 	_update_header()
 
 
@@ -48,7 +55,9 @@ func _add_row(task: TaskData) -> void:
 	label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	label.custom_minimum_size.x = row_width
-	label.text = "[ ] %s" % task.text
+	label.text = "[ ] %s" % _row_text(task)
+	if task.priority == TaskData.Priority.URGENT:
+		label.add_theme_color_override("font_color", urgent_color)
 	label.add_theme_font_size_override("font_size", font_size)
 	label.add_theme_constant_override("outline_size", 6)
 	label.add_theme_color_override("font_outline_color", Color.BLACK)
@@ -61,12 +70,21 @@ func _add_row(task: TaskData) -> void:
 		wrapper.custom_minimum_size.y = label.get_combined_minimum_size().y
 
 
-func _slide_out(id: StringName) -> void:
+func _row_text(task: TaskData) -> String:
+	var text: String = task.text
+	if task.priority == TaskData.Priority.URGENT:
+		text = "! " + text
+	if task.deadline_minute > 0:
+		text += " (by %s)" % ShiftManager.format_minute(task.deadline_minute)
+	return text
+
+
+func _slide_out(id: StringName, failed: bool = false) -> void:
 	var wrapper: Control = _rows[id]
 	_rows.erase(id)
 	var label: Label = wrapper.get_node("Label")
-	label.text = label.text.replace("[ ]", "[x]")
-	label.add_theme_color_override("font_color", done_color)
+	label.text = label.text.replace("[ ]", "[-]" if failed else "[x]")
+	label.add_theme_color_override("font_color", failed_color if failed else done_color)
 	var tween: Tween = create_tween()
 	tween.tween_interval(done_hold_seconds)
 	tween.set_parallel(true)

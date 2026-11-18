@@ -20,7 +20,8 @@ func _on_interacted(_by: Node) -> void:
 func _build_text() -> String:
 	var out: String = "ROOMS\n"
 	for room: RoomData in RoomManager.get_rooms():
-		var who: String = room.guest_name if room.status == RoomData.Status.OCCUPIED else "-"
+		var who: String = room.guest_name if room.status == RoomData.Status.OCCUPIED \
+				else RoomManager.status_text(room.status).capitalize()
 		out += "  %s: %s\n" % [room.display_name, who]
 	out += "\nTONIGHT'S RESERVATIONS\n"
 	for res: ReservationData in RoomManager.get_reservations():

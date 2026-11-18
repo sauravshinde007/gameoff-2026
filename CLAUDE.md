@@ -1,115 +1,246 @@
-# ROOM 13 — Claude Code Instructions
+# ROOM 13 --- Claude Code Instructions
 
-First-person 3D game for Game Off 2026 (theme: SHIFT), built with Godot 4.x and GDScript.
+First-person 3D motel job simulator for Game Off 2026 (theme: SHIFT),
+built with Godot 4.x and GDScript.
 
-## Source documents and authority
+## 1. Source documents and authority
 
-- `docs/GDD.md` — high-level game design and approved project direction.
-- `docs/ENVIRONMENT.md` — detailed specification for the current motel environment expansion milestone.
-- The GDD is the high-level source of truth. For the environment milestone, follow the more detailed spatial and construction requirements in `docs/ENVIRONMENT.md`.
-- If documents conflict, stop and explain the conflict instead of silently choosing an interpretation.
+-   `docs/GDD.md` --- high-level game vision, approved environment and
+    Simulator V1 scope.
+-   `docs/ENVIRONMENT.md` --- detailed environment construction
+    specification, if present.
+-   `docs/ENVIRONMENT_STATUS.md` --- implemented environment status,
+    file map and known gaps.
+-   `docs/GAMEPLAY_SYSTEMS.md` --- detailed mechanics and implementation
+    plan for Motel Simulator V1.
 
-The final story, antagonist, full gameplay loop, economy, scoring, endings and survival mechanics are not finalized. Do not invent or implement them.
+Authority: - GDD is the high-level source of truth. - ENVIRONMENT.md
+governs environment construction details. - GAMEPLAY_SYSTEMS.md governs
+Simulator V1 mechanics and milestone implementation. -
+ENVIRONMENT_STATUS.md describes what has actually been built; inspect
+the project to confirm current state. - If documents or the project
+conflict, stop and explain the conflict instead of silently choosing an
+interpretation.
 
-## Workflow rules
+## 2. Current project status
 
-- Work in small, reviewable increments.
-- The project must remain runnable after every change.
-- One milestone/task at a time. The current approved milestone is the environment expansion described in `docs/ENVIRONMENT.md`.
-- Before coding: inspect the existing project, identify relevant scenes/scripts/resources, state the plan briefly, then implement.
-- Preserve the completed MVP as a working fallback. Do not delete or overwrite the original playable scene before the expanded environment has been tested.
-- Preserve existing player controls, interactions, reception functionality, UI and gameplay systems unless a change is explicitly required and approved.
-- Do not implement economy, advanced room management, guest personality systems, new story events, criminal AI, survival systems, scoring or endings during the environment milestone.
-- If a design decision is unclear or the current project structure conflicts with the environment specification, ask before making a substantial change.
-- After each task, run the validation commands below and summarize what changed and how to inspect it in-editor.
-- Commit after each working milestone with a clear commit message if the project uses Git.
+The original MVP is complete. It includes a title screen, day
+introduction, first-person movement and interaction, reception, room
+management foundation, telephone/computer and other reception
+interactions, day/night transition, ending, restart and pause
+functionality.
 
-## Current project status
+The expanded motel environment has been implemented and
+headless-validated. See `docs/ENVIRONMENT_STATUS.md` for its layout,
+file map and known gaps. The user has reviewed/accepted the environment
+for the purpose of moving into simulator design; still perform visual
+checks when modifying environment scenes.
 
-The MVP is complete. It includes a title screen, day introduction, first-person movement and interaction, reception, short hallway with three guest-room doors, receptionist tasks, day/night transition, ending, restart and pause menu. The prototype Room 13 incident was removed on 2026-11-14 (see Scope discipline).
+The environment includes: - Single-storey L-shaped roadside motel. - Six
+numbered guest rooms. - Six accessible interiors (Rooms 01-06; Rooms 02, 04 and
+06 added 2026-11-16). - Central courtyard and parking. - Expanded reception. - Laundry,
+storage and owner's office. - Staff corridor and rear service area. -
+Motel sign, vehicles, vending/ice machines and highway backdrop. -
+Day/night lighting presets.
 
-Environment milestone: all seven tasks are built and headless-validated. See `docs/ENVIRONMENT_STATUS.md` for the layout, file map, known gaps and the review checklist. Waiting for the user's in-editor approval before any other work.
+Free Roam remains separate: - Title screen → Free Roam. -
+`scenes/free_roam.tscn`, `scripts/free_roam.gd`. - Loads the motel
+environment without simulator tasks, economy, guest events, shift clock
+or story. - N toggles day/night; ESC opens pause menu. - Keep Free Roam
+independent when adding simulator systems.
 
-Free Roam mode (title screen → Free Roam, `scenes/free_roam.tscn`, `scripts/free_roam.gd`) loads the environment with no tasks, shift clock, events or story. N toggles day/night, ESC opens the pause menu. Use it to review the environment. Keep it separate from the main game: future narrative and mechanics go in `main.tscn`, not Free Roam. When the environment root scene changes, update both `main.tscn` and `free_roam.tscn`.
+## 3. Approved next phase: Motel Simulator V1
 
-The current MVP screenshots establish the visual style:
-- PS1/PSX-inspired low-poly 3D.
-- Low-resolution/pixelated retro post-processing.
-- Dither, vignette and retro colour treatment.
-- Pixel-style UI typography.
-- Wooden-panel reception walls and tiled floor.
-- CRT-era computer props.
-- Warm daytime lighting and dark blue nighttime lighting.
+The approved design direction is: - Balanced first-person motel job
+simulator. - Moderate work pressure. - Mixed guest interactions:
+physical guests and telephone/remote interactions. - Target 3--5 active
+physical guests at a time. - Hybrid economy: income and expenses matter,
+but no bankruptcy game-over. - Hybrid responsibilities: regular duties
+plus generated tasks. - Simple individual guest satisfaction. - No motel
+upgrades in V1. - Simulator remains independent of story and horror.
 
-Keep the MVP working while expanding the environment.
+Read `docs/GAMEPLAY_SYSTEMS.md` fully before implementing gameplay
+systems.
 
-## Current milestone: Environment expansion
+### Included in V1
 
-Read `docs/ENVIRONMENT.md` fully before implementation.
+-   Preserve and integrate existing room management.
+-   Motel balance, income, expenses and transaction history.
+-   Guest check-in/out, room assignment and reservations.
+-   Lightweight physical guest NPC behaviours.
+-   Telephone reservations, enquiries and service requests.
+-   Guest service requests and simple individual satisfaction.
+-   Room cleaning and restocking.
+-   Small shared inventory and limited carry quantities.
+-   Laundry and supply collection.
+-   Basic maintenance and generator fuel.
+-   Regular and generated tasks.
+-   End-of-shift financial/task/guest summary.
 
-Approved environment decisions:
-- Single-storey L-shaped roadside motel.
-- Wooden-panel architecture matching the existing MVP.
-- Six numbered guest rooms.
-- Three fully accessible guest-room interiors.
-- Central parking courtyard.
-- Expanded reception, preserving existing interactions.
-- Laundry room.
-- Storage room.
-- Owner's office.
-- Small rear service area.
-- Limited exploration of the motel property only.
-- Highway and surrounding world are background scenery, not explorable.
-- Reuse the same environment for day and night; vary lighting, ambience and activity.
+### Explicitly excluded
 
-The environment milestone should be delivered as one coherent level-design phase, but implemented in safe substeps:
-1. Inspect existing project and map current reception coordinates/node structure.
-2. Create a greybox of the full property and validate proportions/navigation.
-3. Expand building wings and add six room doors.
-4. Add the three accessible guest-room interiors and reusable room structure.
-5. Add laundry, storage, owner's office and rear service area.
-6. Add central courtyard, parking, vehicles, sign, boundary and background.
-7. Add day/night environmental lighting and ambience.
-8. Run validation and provide a clear in-editor review checklist.
+-   Motel upgrades or property expansion.
+-   Employees and staff management.
+-   Loans, bankruptcy, taxes, investments or complex accounting.
+-   Advanced NPC personalities, autonomous schedules or elaborate
+    dialogue trees.
+-   RPG inventory grids, crafting, weight simulation or complex
+    logistics.
+-   Vehicle driving.
+-   Detailed cleaning physics.
+-   Complex reputation/review systems.
+-   Story, antagonist, criminal AI, horror incidents or survival
+    mechanics.
+-   Scoring, grades, endings and win/loss conditions.
 
-Do not skip the greybox review. Do not add detailed props before the overall layout is navigable.
+Do not add excluded systems unless the user explicitly approves a
+revised scope.
 
-## Godot conventions
+## 4. Development workflow
 
-- GDScript only.
-- Use static typing (`var x: int`, `func f() -> void`).
-- Scripts: `snake_case.gd`.
-- Scenes: `snake_case.tscn`.
-- Nodes: PascalCase.
-- Constants: UPPER_SNAKE_CASE.
-- Communicate through signals; keep systems decoupled.
-- Prefer composition and small reusable scenes over large scripts.
-- Autoloads only for genuinely global systems.
-- Keep interaction reusable. The player raycasts and calls an interactable's `interact()` / `get_prompt()`; avoid editing the player script for each new object.
-- Put tunable values in exported variables or resources.
-- Avoid unnecessary abstraction. This is a game jam project.
+Work in small, reviewable increments.
 
-## Scene and file editing safety
+One milestone at a time: 0. Existing systems audit. 1. Economy
+foundation. 2. Guest operations. 3. Physical operations. 4. Maintenance.
+5. Shift integration.
 
-- `.tscn` and `.tres` are text but fragile. Make small, deliberate edits; do not rewrite entire scene files blindly.
-- Inspect existing scene hierarchy, node paths, scripts, signals and resource references before modifying them.
-- Prefer modular scenes for repeated room modules, doors, windows, wall sections, lights, vehicles and props.
-- Reuse existing materials and assets where practical.
-- Preserve the existing wooden-panel and PS1/PSX visual identity.
-- Do not edit `.godot/` or `*.import` files.
-- Keep `.godot/` in `.gitignore`.
-- Do not rename or move files without updating every reference.
-- Keep the existing MVP scene available as a fallback until the expanded level is validated.
+Before coding each milestone: 1. Inspect the existing project structure
+and relevant scenes/scripts/resources. 2. Identify existing
+functionality and dependencies. 3. State which files/scenes you expect
+to modify. 4. Explain the implementation plan briefly. 5. Identify
+design conflicts or missing decisions. 6. Ask before substantial
+architectural changes.
 
-## Project layout
+Do not implement all milestones in one large change. Keep the project
+runnable after each change. Preserve the existing playable MVP as a
+fallback.
 
-Follow the existing repository structure. The expected documentation locations are:
+After each milestone: - Run the validation commands below. - Summarize
+changed files and behaviour. - Explain how to inspect the changes
+in-editor. - Report warnings and errors accurately. - Commit after a
+working milestone if the project uses Git.
 
-```text
+## 5. Existing systems preservation
+
+The project already has a gameplay foundation. Inspect before creating
+replacements.
+
+In particular, audit: - RoomManager and room assignment/state logic. -
+TaskManager and task UI. - ShiftManager and existing clock/shift flow. -
+Reception computer. - Telephone. - Guest register and key rack. -
+Interaction system and interactable objects. - Existing guest/NPC scenes
+and movement. - UI and pause/menu flows. - Existing autoloads and signal
+connections.
+
+Extend or reuse existing systems where practical. Do not create
+duplicate managers or parallel systems for functionality that already
+exists.
+
+Do not change the existing shift duration, clock speed, player controls,
+interaction prompts or room behaviour without approval or a clear
+technical necessity.
+
+## 6. Gameplay design constraints
+
+### Physical-first interaction
+
+The computer is for administration; the telephone is for communication;
+the physical motel is where the player executes work. Do not make the
+simulator primarily a menu game.
+
+### Guests
+
+Target 3--5 active physical guests as a balancing goal, not a mandatory
+constant NPC count. Use simple predefined behaviours and navigation.
+Avoid complex personality simulation or autonomous schedules.
+
+### Room access
+
+All six rooms (01-06) have accessible interiors. Physical tasks
+requiring room entry may use any of them.
+
+### Economy
+
+Use one source of truth for motel balance. All income/expense changes
+should be recorded as transactions. Low funds may restrict purchases or
+selected operations, but must not cause bankruptcy or game-over in V1.
+
+### Inventory
+
+Use a small shared stock and limited carry inventory. Prevent negative
+quantities. No RPG grid, crafting, weight simulation or complex
+logistics. Purchases may update stock immediately in V1.
+
+### Tasks
+
+Combine regular responsibilities with generated guest/maintenance tasks.
+Initial tuning targets are 3--4 active optional tasks, 2--3 mandatory
+tasks and 1--2 simultaneous urgent requests. Treat these as tunable
+values, not hard architectural limits. Avoid endless task generation.
+
+### Satisfaction
+
+Use simple individual guest satisfaction. Do not introduce overall motel
+reputation, reviews or progression unlocks.
+
+### Story independence
+
+Do not create story clues, suspicious guests, scripted scares,
+criminals, ghosts, stalkers, survival mechanics or narrative events. The
+old MVP Room 13 incident was retired and removed on 2026-11-14. It is
+not canon and must not be restored.
+
+## 7. Godot conventions
+
+-   Godot 4.x.
+-   GDScript only.
+-   Use static typing (`var x: int`, `func f() -> void`).
+-   Scripts: `snake_case.gd`.
+-   Scenes: `snake_case.tscn`.
+-   Nodes: PascalCase.
+-   Constants: UPPER_SNAKE_CASE.
+-   Communicate between decoupled systems through signals.
+-   Prefer composition and small reusable scenes over large scripts.
+-   Autoloads only for genuinely global systems.
+-   Keep interactions reusable. The player raycasts and calls an
+    interactable's `interact()` / `get_prompt()`; avoid editing the
+    player script for each new object.
+-   Put tunable values in exported variables or resources.
+-   Avoid unnecessary abstraction. This is a game jam project.
+
+Proposed logical responsibilities in GAMEPLAY_SYSTEMS.md are not a
+mandate to create every manager as an autoload. Inspect existing
+architecture first.
+
+## 8. Scene and file editing safety
+
+-   Inspect scene hierarchy, node paths, scripts, signals and resource
+    references before modifying.
+-   `.tscn` and `.tres` files are text but fragile. Make small,
+    deliberate edits; do not rewrite entire scene files blindly.
+-   Prefer modular scenes for repeated interactions and props.
+-   Reuse existing materials and assets.
+-   Preserve the PS1/PSX wooden motel identity.
+-   Do not edit `.godot/` or `*.import` files.
+-   Keep `.godot/` in `.gitignore`.
+-   Do not rename or move files without updating every reference.
+-   Keep Free Roam independent of simulator systems.
+-   When changing the environment root scene, update both `main.tscn`
+    and `free_roam.tscn` only if their environment references require
+    it; do not attach simulator systems to Free Roam.
+
+## 9. Expected project documentation locations
+
+Follow the actual repository structure. Expected documentation
+locations:
+
+``` text
 res://
   docs/
     GDD.md
     ENVIRONMENT.md
+    ENVIRONMENT_STATUS.md
+    GAMEPLAY_SYSTEMS.md
   scenes/
     player/
     environment/
@@ -122,45 +253,48 @@ res://
   assets/
 ```
 
-Do not reorganize the project merely to match this example. Inspect the actual project first.
+Do not reorganize the project merely to match this example.
 
-## Validation (run after changes)
+## 10. Validation
+
+Run after changes:
 
 Parse/lint check:
 
-```bash
+``` bash
 godot --headless --path . --check-only --quit
 ```
 
-Use the installed binary name if different (for example `godot4`).
+Use installed binary name if different (for example `godot4`).
 
 Smoke test:
 
-```bash
+``` bash
 godot --headless --path . --quit-after 120
 ```
 
-- Confirm there are no script/scene loading errors.
-- Report warnings and errors; do not claim a test passed unless it was run.
-- Headless validation does not replace visual inspection.
-- For visual changes, tell the user exactly what to inspect in the Godot editor: navigation, collisions, proportions, sightlines, doors, lighting and interaction preservation.
+-   Confirm there are no script/scene loading errors.
+-   Report warnings and errors; do not claim a test passed unless it was
+    run.
+-   Headless validation does not replace visual inspection.
+-   For visual changes, provide an in-editor checklist covering
+    navigation, collisions, proportions, doors, lighting and interaction
+    preservation.
+-   Test Free Roam separately after environment changes.
 
-## Scope discipline
+## 11. Scope discipline
 
-The current task is environment construction only.
+The current approved milestone is **Milestone 0: Existing Systems
+Audit**, unless the user explicitly approves a later milestone.
 
-Do not implement:
-- Full motel economy or money system.
-- Advanced room booking/occupancy simulation.
-- Guest personality or branching dialogue systems.
-- New customer roster or character AI.
-- Final story or antagonist.
-- Criminal/stalker AI or combat.
-- Survival mechanics.
-- Scoring, grades or performance reports.
-- New endings or win/loss states.
-- New story encounters or scripted events (encounters will be designed fresh in a later phase).
+Do not begin coding Milestone 1 or beyond until: 1. The audit is
+complete. 2. Existing systems and required changes are reported. 3. The
+user approves the implementation plan.
 
-The MVP Room 13 incident (and its Room 2 hallway scare) has been retired and removed from the project (2026-11-14). It is not canon and must not be preserved, restored or worked around. New encounters and story structure will be designed fresh in a later phase. Current goal: build the full game environment.
+Do not invent unresolved values such as starting balance, room prices,
+service prices, operating expense amounts, shift duration or exact task
+frequency. Make tunable values configurable and identify proposed
+defaults for user review before balancing.
 
-When the environment milestone is complete, stop and report the result. Wait for the user's review and approval before moving to the next game-development phase.
+**The goal is to expand ROOM 13 incrementally, preserving a working
+playable project throughout development.**

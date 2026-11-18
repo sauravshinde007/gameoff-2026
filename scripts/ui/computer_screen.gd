@@ -9,18 +9,30 @@ const GREEN_DIM: Color = Color(0.0, 0.2, 0.62)  # selected rows, pressed buttons
 const ERROR_RED: Color = Color(1.0, 0.86, 0.3)  # errors (yellow reads better on blue)
 const BG: Color = Color(0.0, 0.3, 0.82)  # screen blue
 const BEZEL: Color = Color(0.86, 0.83, 0.72)  # cream monitor frame
+## Regular duty completed the first time the terminal is opened.
+const OPEN_TASK_ID: StringName = &"review_rooms"
 const SCREEN_FONT: Font = preload("res://assets/fonts/screen_font.tres")
 
 @onready var panel: PanelContainer = %Panel
 @onready var rooms_list: ItemList = %RoomsList
 @onready var reservations_list: ItemList = %ReservationsList
 @onready var info_label: Label = %InfoLabel
+@onready var finance_label: Label = %FinanceLabel
+@onready var supplies_list: ItemList = %SuppliesList
+@onready var qty_down_button: Button = %QtyDown
+@onready var qty_up_button: Button = %QtyUp
+@onready var qty_label: Label = %QtyLabel
+@onready var cost_label: Label = %CostLabel
+@onready var buy_button: Button = %BuyButton
+@onready var report_label: Label = %ReportLabel
 @onready var status_label: Label = %StatusLabel
 @onready var assign_button: Button = %AssignButton
 @onready var close_button: Button = %CloseButton
 
 var _selected_room_id: int = 0
 var _selected_reservation_id: String = ""
+var _selected_supply: StringName = &""
+var _buy_qty: int = 1
 
 
 func _ready() -> void:
@@ -32,6 +44,14 @@ func _ready() -> void:
 	close_button.pressed.connect(close)
 	RoomManager.room_status_changed.connect(_on_room_status_changed)
 	RoomManager.reservations_changed.connect(_refresh)
+	EconomyManager.balance_changed.connect(_on_balance_changed)
+	supplies_list.item_selected.connect(_on_supply_selected)
+	qty_down_button.pressed.connect(_on_qty_changed.bind(-1))
+	qty_up_button.pressed.connect(_on_qty_changed.bind(1))
+	buy_button.pressed.connect(_on_buy_pressed)
+	InventoryManager.stock_changed.connect(_on_stock_changed)
+	TaskManager.tasks_changed.connect(_refresh_report)
+	GuestManager.requests_changed.connect(_refresh_report)
 
 
 func open() -> void:
@@ -39,6 +59,7 @@ func open() -> void:
 		return
 	visible = true
 	AudioManager.play_sfx(&"computer_beep")
+	TaskManager.complete_task(OPEN_TASK_ID)
 	_select_first_pending_if_needed()
 	_refresh()
 	_set_status("Ready.", false)
@@ -61,6 +82,64 @@ func _on_room_status_changed(_room_id: int, _status: int) -> void:
 	_refresh()
 
 
+func _on_balance_changed(_balance: int) -> void:
+	_refresh_finance()
+	_refresh_report()
+	_refresh_supplies()
+
+
+func _on_stock_changed(_item_id: StringName) -> void:
+	_refresh_supplies()
+
+
+func _on_supply_selected(index: int) -> void:
+	_selected_supply = supplies_list.get_item_metadata(index)
+	_refresh_supplies()
+
+
+func _on_qty_changed(delta: int) -> void:
+	_buy_qty = clampi(_buy_qty + delta, 1, InventoryManager.catalog.max_purchase_quantity)
+	_refresh_supplies()
+
+
+func _on_buy_pressed() -> void:
+	if _selected_supply == &"":
+		_set_status("ERROR: Select an item to buy (Supplies tab).", true)
+		return
+	var name: String = InventoryManager.display_name(_selected_supply)
+	var err: String = InventoryManager.purchase(_selected_supply, _buy_qty)
+	if err.is_empty():
+		_set_status("OK: bought %d x %s." % [_buy_qty, name], false)
+	else:
+		_set_status("ERROR: " + err, true)
+
+
+func _refresh_report() -> void:
+	if not is_node_ready() or not visible:
+		return
+	report_label.text = ShiftReport.to_text(ShiftReport.build(get_tree()), true)
+
+
+func _refresh_supplies() -> void:
+	if not is_node_ready():
+		return
+	supplies_list.clear()
+	for it: SupplyItem in InventoryManager.get_items():
+		if not it.tracked_stock or it.buy_price <= 0:
+			continue
+		var idx: int = supplies_list.add_item("%s   |   in stock %d   |   $%d each" % [
+				it.display_name, InventoryManager.get_stock(it.id), it.buy_price])
+		supplies_list.set_item_metadata(idx, it.id)
+		if it.id == _selected_supply:
+			supplies_list.select(idx)
+	qty_label.text = "Qty %d" % _buy_qty
+	var item: SupplyItem = InventoryManager.get_item(_selected_supply)
+	if item == null:
+		cost_label.text = "Select an item.   Balance $%d" % EconomyManager.get_balance()
+	else:
+		cost_label.text = "Cost $%d   Balance $%d" % [item.buy_price * _buy_qty, EconomyManager.get_balance()]
+
+
 func _on_room_selected(index: int) -> void:
 	_selected_room_id = rooms_list.get_item_metadata(index)
 	_update_selection_status()
@@ -68,7 +147,6 @@ func _on_room_selected(index: int) -> void:
 
 func _on_reservation_selected(index: int) -> void:
 	_selected_reservation_id = reservations_list.get_item_metadata(index)
-	_mark_viewed(_selected_reservation_id)
 	_refresh_info()
 	_update_selection_status()
 
@@ -81,7 +159,6 @@ func _on_assign_pressed() -> void:
 	if res.status != ReservationData.Status.PENDING:
 		_set_status("ERROR: Reservation %s is not pending." % res.id, true)
 		return
-	_mark_viewed(res.id)
 	if res.room_id > 0 and RoomManager.get_room(res.room_id) == null:
 		_set_status("ERROR: Room %d does not exist." % res.room_id, true)
 		return
@@ -94,17 +171,21 @@ func _on_assign_pressed() -> void:
 			_set_status("ERROR: %s is occupied." % room.display_name, true)
 			return
 		RoomData.Status.OUT_OF_ORDER:
-			_set_status("ERROR: %s is out of order." % room.display_name, true)
+			_set_status("ERROR: %s is out of service." % room.display_name, true)
+			return
+		RoomData.Status.NEEDS_CLEANING:
+			_set_status("ERROR: %s needs cleaning." % room.display_name, true)
+			return
+		RoomData.Status.MAINTENANCE:
+			_set_status("ERROR: %s is under maintenance." % room.display_name, true)
+			return
+		RoomData.Status.RESERVED:
+			_set_status("ERROR: %s is reserved." % room.display_name, true)
 			return
 	if RoomManager.assign_room(room.id, res.id):
 		_set_status("OK: %s assigned to %s. Issue key." % [res.guest_name, room.display_name], false)
 	else:
 		_set_status("ERROR: Assignment refused.", true)
-
-
-## Reports "this reservation was looked at" as a story flag, e.g. viewed_res_0013.
-func _mark_viewed(reservation_id: String) -> void:
-	EventManager.set_flag(StringName("viewed_res_" + reservation_id.trim_prefix("#")))
 
 
 func _update_selection_status() -> void:
@@ -145,6 +226,28 @@ func _refresh() -> void:
 		if res.id == _selected_reservation_id:
 			reservations_list.select(idx)
 	_refresh_info()
+	_refresh_finance()
+	_refresh_supplies()
+	_refresh_report()
+
+
+func _refresh_finance() -> void:
+	if not is_node_ready():
+		return
+	var out: String = "BALANCE: $%d\n" % EconomyManager.get_balance()
+	out += "Income: $%d   Expenses: $%d   Net: %s$%d\n" % [
+		EconomyManager.get_total_income(), EconomyManager.get_total_expenses(),
+		"-" if EconomyManager.get_net() < 0 else "+", absi(EconomyManager.get_net())]
+	out += "\nRECENT TRANSACTIONS\n"
+	var ledger: Array[TransactionData] = EconomyManager.get_ledger()
+	if ledger.is_empty():
+		out += "  none yet\n"
+	var first: int = maxi(0, ledger.size() - EconomyManager.config.recent_count)
+	for i: int in range(ledger.size() - 1, first - 1, -1):
+		var tx: TransactionData = ledger[i]
+		out += "  %s  %s$%d  %s\n" % [ShiftManager.format_minute(tx.minute),
+			"+" if tx.type == TransactionData.Type.INCOME else "-", tx.amount, tx.description]
+	finance_label.text = out
 
 
 func _refresh_info() -> void:
@@ -157,6 +260,10 @@ func _refresh_info() -> void:
 		res.id, res.guest_name,
 		_room_text(res, room),
 		_reservation_status_text(res.status)]
+	var rec: GuestRecord = GuestManager.find_by_reservation(res.id)
+	if rec != null:
+		info_label.text += "\nSatisfaction: %d (%s)" % [rec.satisfaction,
+				GuestManager.satisfaction_label(rec.satisfaction)]
 
 
 func _room_text(res: ReservationData, room: RoomData) -> String:
@@ -168,12 +275,7 @@ func _room_text(res: ReservationData, room: RoomData) -> String:
 
 
 func _room_status_text(status: RoomData.Status) -> String:
-	match status:
-		RoomData.Status.AVAILABLE:
-			return "AVAILABLE"
-		RoomData.Status.OCCUPIED:
-			return "OCCUPIED"
-	return "OUT OF ORDER"
+	return RoomManager.status_text(status)
 
 
 func _reservation_status_text(status: ReservationData.Status) -> String:
@@ -182,6 +284,8 @@ func _reservation_status_text(status: ReservationData.Status) -> String:
 			return "Check-in Pending"
 		ReservationData.Status.CHECKED_IN:
 			return "Checked In"
+		ReservationData.Status.CANCELLED:
+			return "Cancelled"
 	return "Checked Out"
 
 

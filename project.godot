@@ -23,6 +23,9 @@ AudioManager="*res://autoload/audio_manager.gd"
 TaskManager="*res://autoload/task_manager.gd"
 ShiftManager="*res://autoload/shift_manager.gd"
 EventManager="*res://autoload/event_manager.gd"
+EconomyManager="*res://autoload/economy_manager.gd"
+GuestManager="*res://autoload/guest_manager.gd"
+InventoryManager="*res://autoload/inventory_manager.gd"
 
 [display]
 

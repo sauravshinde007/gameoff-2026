@@ -28,10 +28,16 @@ extends Node3D
 var _handle_tween: Tween
 var _swing_tween: Tween
 var _is_open: bool = false
+## +1 = swings away from the labelled (front) face, -1 = away from the back face.
+var _swing_sign: float = 1.0
 
 
 func _ready() -> void:
 	_apply_size()
+	if room_id > 0:
+		add_to_group(&"room_doors")
+	elif room_id == -1:
+		add_to_group(&"entrance_doors")
 	label.text = "%02d" % room_id
 	label.visible = room_id > 0
 	interactable.interacted.connect(_on_interacted)
@@ -43,17 +49,25 @@ func _ready() -> void:
 func is_locked() -> bool:
 	if not openable:
 		return true
+	# A guest's room stays locked while they have it. Guests open their own door through set_open().
+	if room_id > 0 and RoomManager.get_status(room_id) == RoomData.Status.OCCUPIED:
+		return true
 	return lock_flag != &"" and EventManager.has_flag(lock_flag)
 
 
-func set_open(open: bool) -> void:
+## `opener` (player or guest) decides the swing direction: the door always swings away from them,
+## so it opens from both sides. Closing swings back along the same arc.
+func set_open(open: bool, opener: Node3D = null) -> void:
 	if open == _is_open:
 		return
 	_is_open = open
+	if open and opener != null:
+		var offset: Vector3 = opener.global_position - global_position
+		_swing_sign = 1.0 if offset.dot(global_basis.z) >= 0.0 else -1.0
 	if _swing_tween != null:
 		_swing_tween.kill()
 	AudioManager.play_sfx(&"door_open" if open else &"door_close", global_position)
-	var target: float = deg_to_rad(open_degrees) if open else 0.0
+	var target: float = deg_to_rad(open_degrees) * _swing_sign if open else 0.0
 	_swing_tween = create_tween()
 	_swing_tween.tween_property(hinge, "rotation:y", target, open_seconds)
 	_refresh_prompt()
@@ -92,12 +106,16 @@ func _status_text() -> String:
 		return "%s – Locked" % _display_name()
 	var room_name: String = "Room %02d" % room_id
 	match RoomManager.get_status(room_id):
-		RoomData.Status.AVAILABLE:
+		RoomData.Status.AVAILABLE, RoomData.Status.RESERVED:
 			return "%s – Vacant" % room_name
 		RoomData.Status.OCCUPIED:
 			return "%s – Occupied" % room_name
+		RoomData.Status.NEEDS_CLEANING:
+			return "%s – Needs cleaning" % room_name
+		RoomData.Status.MAINTENANCE:
+			return "%s – Maintenance" % room_name
 		RoomData.Status.OUT_OF_ORDER:
-			return "%s – Out of order" % room_name
+			return "%s – Out of service" % room_name
 	return "%s – Locked" % room_name
 
 
@@ -122,9 +140,9 @@ func _on_flag_set(flag: StringName) -> void:
 		_refresh_prompt()
 
 
-func _on_interacted(_by: Node) -> void:
+func _on_interacted(by: Node) -> void:
 	if not is_locked():
-		set_open(not _is_open)
+		set_open(not _is_open, by as Node3D)
 		return
 	var msg: String
 	if room_id <= 0:

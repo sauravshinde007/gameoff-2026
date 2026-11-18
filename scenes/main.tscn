@@ -14,6 +14,13 @@
 [ext_resource type="PackedScene" path="res://scenes/ui/end_screen.tscn" id="14_end"]
 [ext_resource type="PackedScene" path="res://scenes/ui/pause_menu.tscn" id="15_pause"]
 [ext_resource type="PackedScene" path="res://scenes/ui/retro_filter.tscn" id="99_retro"]
+[ext_resource type="Script" uid="uid://cgxirj46okk6q" path="res://scripts/sim/guest_spawner.gd" id="100_spawner"]
+[ext_resource type="Script" uid="uid://b481x7aq6ubbm" path="res://scripts/sim/phone_dispatcher.gd" id="101_phone"]
+[ext_resource type="PackedScene" path="res://scenes/props/sim/supply_point.tscn" id="102_supply"]
+[ext_resource type="Script" uid="uid://bluaxxoa457vl" path="res://scripts/sim/room_point_spawner.gd" id="103_rooms"]
+[ext_resource type="PackedScene" path="res://scenes/props/sim/generator_point.tscn" id="104_gen"]
+[ext_resource type="Script" uid="uid://lou78x7vdqa7" path="res://scripts/sim/maintenance_system.gd" id="105_maint"]
+[ext_resource type="Script" uid="uid://c5ng55mdw8k4o" path="res://scripts/sim/shift_director.gd" id="106_dir"]
 
 [sub_resource type="PanoramaSkyMaterial" id="Mat_sky"]
 filter = false
@@ -24,12 +31,12 @@ radiance_size = 0
 
 [sub_resource type="Environment" id="Environment_main"]
 background_mode = 2
+background_color = Color(0.05, 0.05, 0.08, 1)
 sky = SubResource("Sky_main")
 sky_rotation = Vector3(0, 3.14159, 0)
-reflected_light_source = 1
-background_color = Color(0.05, 0.05, 0.08, 1)
 ambient_light_source = 2
 ambient_light_color = Color(0.3, 0.3, 0.35, 1)
+reflected_light_source = 1
 tonemap_mode = 2
 glow_enabled = true
 glow_intensity = 0.5
@@ -67,6 +74,8 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.02386403, 2.3841858e-07, -0
 [node name="ScreenFade" parent="." unique_id=197064989 instance=ExtResource("11_fade")]
 
 [node name="RetroFilter" parent="." unique_id=977749559 instance=ExtResource("99_retro")]
+vignette = 0.409
+screen_dither = true
 
 [node name="DayNight" type="Node" parent="." unique_id=254467826]
 script = ExtResource("10_daynight")
@@ -76,3 +85,67 @@ night_preset = ExtResource("13_night")
 [node name="EndScreen" parent="." unique_id=1156824740 instance=ExtResource("14_end")]
 
 [node name="PauseMenu" parent="." unique_id=2013554142 instance=ExtResource("15_pause")]
+
+[node name="Simulator" type="Node3D" parent="." unique_id=1646329156]
+
+[node name="GuestSpawner" type="Node3D" parent="Simulator" unique_id=1588643477]
+script = ExtResource("100_spawner")
+
+[node name="PhoneDispatcher" type="Node" parent="Simulator" unique_id=1539541371]
+script = ExtResource("101_phone")
+
+[node name="SupplyPoints" type="Node3D" parent="Simulator" unique_id=391328242]
+
+[node name="Towels" parent="Simulator/SupplyPoints" unique_id=779058193 instance=ExtResource("102_supply")]
+transform = Transform3D(1, 0, 0, 0, 0.83876306, 0.5444966, 0, -0.5444966, 0.83876306, 0.35, 0.8974803, 3.3645437)
+item_id = &"towels"
+point_size = Vector3(1.4, 1.7, 0.5)
+
+[node name="Bulbs" parent="Simulator/SupplyPoints" unique_id=1301114163 instance=ExtResource("102_supply")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.4330993, 0.43235266, 7.315821)
+item_id = &"bulbs"
+point_size = Vector3(0.5, 1.7, 1.4)
+
+[node name="Pillows" parent="Simulator/SupplyPoints" unique_id=959683967 instance=ExtResource("102_supply")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.816875, 0.22148529, 5.2276664)
+item_id = &"pillows"
+point_size = Vector3(0.5, 1.7, 1.4)
+
+[node name="Soap" parent="Simulator/SupplyPoints" unique_id=1913797160 instance=ExtResource("102_supply")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.6520505, 0.3061986, 3.3435812)
+item_id = &"soap"
+point_size = Vector3(0.5, 1.7, 1.4)
+
+[node name="CleaningSupplies" parent="Simulator/SupplyPoints" unique_id=2048445220 instance=ExtResource("102_supply")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.4382524, 0.12278861, 3.5222836)
+item_id = &"cleaning"
+point_size = Vector3(0.9, 1.6, 0.9)
+
+[node name="Fuel" parent="Simulator/SupplyPoints" unique_id=925910656 instance=ExtResource("102_supply")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.7083325, 0.12585258, 7.329918)
+item_id = &"fuel"
+point_size = Vector3(0.9, 1.2, 1.4)
+
+[node name="Ice" parent="Simulator/SupplyPoints" unique_id=1700331325 instance=ExtResource("102_supply")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.1, 0.7174523, -18.15888)
+item_id = &"ice"
+requires_power = true
+point_size = Vector3(1, 1.6, 0.8)
+
+[node name="Coffee" parent="Simulator/SupplyPoints" unique_id=712042951 instance=ExtResource("102_supply")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.6951785, 0.8680778, 1.0971373)
+item_id = &"coffee"
+requires_power = true
+point_size = Vector3(0.6, 1.5, 1.4)
+
+[node name="RoomPoints" type="Node" parent="Simulator" unique_id=1598679240]
+script = ExtResource("103_rooms")
+
+[node name="Generator" parent="Simulator" unique_id=1042840032 instance=ExtResource("104_gen")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.6, 0, 4.4)
+
+[node name="MaintenanceSystem" type="Node" parent="Simulator" unique_id=1187650104]
+script = ExtResource("105_maint")
+
+[node name="ShiftDirector" type="Node" parent="Simulator" unique_id=706586031]
+script = ExtResource("106_dir")

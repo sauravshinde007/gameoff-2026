@@ -6,7 +6,7 @@
 [sub_resource type="Resource" id="L1"]
 script = ExtResource("2_line")
 speaker = "Ms. Carter"
-text = "Good evening. I have a reservation under Carter."
+text = "Good morning. I have a reservation under Carter."
 
 [sub_resource type="Resource" id="L2"]
 script = ExtResource("2_line")

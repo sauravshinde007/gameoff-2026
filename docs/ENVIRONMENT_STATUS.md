@@ -6,7 +6,7 @@ Status: all seven environment tasks are built and headless-validated. Waiting fo
 
 - Single-storey L-shaped motel property, about 35 m x 37 m, built around the original reception (unchanged position and interactions).
 - East wing (Rooms 01-03) and north wing (Rooms 04-06) with a covered walkway on the courtyard side.
-- Rooms 01, 03 and 05 are furnished and enterable. Rooms 02, 04 and 06 are locked with closed curtains. Rooms 02 and 06 glow at night.
+- All six rooms (01-06) are furnished and enterable (02, 04, 06 added 2026-11-16, same room base with different colours/extras). Rooms 02, 04 and 06 keep closed curtains; 02 and 06 glow at night.
 - Reception additions: larger windows, side window, porch, sofa, notice board, coffee station, door to the owner's office.
 - Owner's office, laundry, storage, staff corridor and a rear service yard. All furnished with decorative props only.
 - Courtyard with parking bays, GGBot parked cars, street lamps, motel sign, vending and ice machines, fences, entrance gate, PSX trees, highway backdrop with random passing cars.
@@ -31,7 +31,7 @@ Status: all seven environment tasks are built and headless-validated. Waiting fo
 ## Review checklist (Free Roam)
 
 1. Layout and scale: walk reception, both walkways, courtyard, driveway, laundry, storage, office, rear yard.
-2. Rooms: enter 01, 03, 05. Check furniture, bathroom, door swing. Look at 02, 04, 06 from outside.
+2. Rooms: enter all six rooms (01-06). Check furniture, bathroom, door swing.
 3. Collision: walk the whole fence line, the gate and the corners. Nothing should let you leave or get stuck.
 4. Sightlines: from the reception desk, check the front window (courtyard and cars), side window (walkway) and the entrance approach.
 5. Doors and interactions: entrance, room, office, laundry, storage and service doors open. Computer, phone, key rack, register, CCTV (3 cameras) still work in the main game.

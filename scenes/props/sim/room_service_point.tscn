@@ -1,0 +1,15 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/sim/room_service_point.gd" id="1_s"]
+[ext_resource type="Script" path="res://scripts/components/interactable.gd" id="2_inter"]
+
+[node name="RoomServicePoint" type="Node3D"]
+script = ExtResource("1_s")
+
+[node name="Tray" type="CSGBox3D" parent="."]
+size = Vector3(0.4, 0.04, 0.3)
+
+[node name="Interactable" type="Area3D" parent="."]
+script = ExtResource("2_inter")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Interactable"]

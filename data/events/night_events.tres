@@ -2,14 +2,6 @@
 
 [ext_resource type="Script" uid="uid://dylb85ekck5xw" path="res://scripts/resources/event_database.gd" id="1_db"]
 [ext_resource type="Script" uid="uid://dug7bqkla6w14" path="res://scripts/resources/event_data.gd" id="2_event"]
-[ext_resource type="Resource" uid="uid://cscavc10vb0wy" path="res://data/dialogue/call_towels.tres" id="3_towels"]
-
-[sub_resource type="Resource" id="Ev_towels"]
-script = ExtResource("2_event")
-id = &"towel_call"
-trigger_minute = 1350
-phone_call = ExtResource("3_towels")
 
 [resource]
 script = ExtResource("1_db")
-events = Array[ExtResource("2_event")]([SubResource("Ev_towels")])

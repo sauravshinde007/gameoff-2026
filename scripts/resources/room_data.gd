@@ -1,7 +1,8 @@
 class_name RoomData
 extends Resource
 
-enum Status { AVAILABLE, OCCUPIED, OUT_OF_ORDER }
+## OUT_OF_ORDER = "Out of Service". New values are appended so saved .tres ints stay valid.
+enum Status { AVAILABLE, OCCUPIED, OUT_OF_ORDER, RESERVED, NEEDS_CLEANING, MAINTENANCE }
 
 @export var id: int = 0
 @export var display_name: String = ""

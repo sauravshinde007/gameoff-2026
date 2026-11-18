@@ -29,7 +29,7 @@ theme_override_constants/separation = 18
 [node name="TimeLabel" type="Label" parent="Content/VBox"]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_font_sizes/font_size = 96
+theme_override_font_sizes/font_size = 72
 horizontal_alignment = 1
 
 [node name="TitleLabel" type="Label" parent="Content/VBox"]
@@ -45,9 +45,10 @@ layout_mode = 2
 
 [node name="ClosingLabel" type="Label" parent="Content/VBox"]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(900, 0)
 layout_mode = 2
-theme_override_colors/font_color = Color(0.7, 0.7, 0.7, 1)
-theme_override_font_sizes/font_size = 28
+theme_override_colors/font_color = Color(0.78, 0.78, 0.78, 1)
+theme_override_font_sizes/font_size = 24
 horizontal_alignment = 1
 
 [node name="Gap2" type="Control" parent="Content/VBox"]

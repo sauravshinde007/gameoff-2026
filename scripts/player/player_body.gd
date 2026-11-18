@@ -34,6 +34,10 @@ var _current: StringName = &""
 
 func _ready() -> void:
 	_body = get_parent() as CharacterBody3D
+	# Saved hidden so the editor viewport (which shows every render layer) does not draw the
+	# player twice. In game only the player's own camera sees the first-person copy (layer 4).
+	if fp_model != null:
+		fp_model.visible = true
 	_play(idle_anim, 0.0)
 
 

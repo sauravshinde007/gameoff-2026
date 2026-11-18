@@ -3,44 +3,45 @@
 [ext_resource type="Script" uid="uid://cwswsvw8pajjl" path="res://scripts/resources/task_database.gd" id="1_db"]
 [ext_resource type="Script" uid="uid://bydolre5rr267" path="res://scripts/resources/task_data.gd" id="2_task"]
 
-[sub_resource type="Resource" id="T_lights"]
+[sub_resource type="Resource" id="T_checkin"]
 script = ExtResource("2_task")
-id = &"keep_lights_on"
-text = "Keep the reception lights on."
-is_rule = true
+id = &"check_in_guest"
+text = "Check in the guest at the desk."
+category = &"duty"
+mandatory = true
+
+[sub_resource type="Resource" id="T_rooms"]
+script = ExtResource("2_task")
+id = &"review_rooms"
+text = "Review room availability on the computer."
+category = &"duty"
+mandatory = true
+
+[sub_resource type="Resource" id="T_generator"]
+script = ExtResource("2_task")
+id = &"check_generator"
+text = "Check the generator in the rear yard."
+category = &"duty"
+mandatory = true
 
 [sub_resource type="Resource" id="T_phone"]
 script = ExtResource("2_task")
 id = &"answer_phone"
 text = "Answer the telephone."
-
-[sub_resource type="Resource" id="T_occupied"]
-script = ExtResource("2_task")
-id = &"no_occupied_rooms"
-text = "Do not assign occupied rooms."
-is_rule = true
-
-[sub_resource type="Resource" id="T_door"]
-script = ExtResource("2_task")
-id = &"no_door_after_midnight"
-text = "Never open the entrance door after midnight unless you recognize the guest."
-is_rule = true
-
-[sub_resource type="Resource" id="T_checkin"]
-script = ExtResource("2_task")
-id = &"check_in_guest"
-text = "Check in the guest at the desk."
+category = &"duty"
 
 [sub_resource type="Resource" id="T_register"]
 script = ExtResource("2_task")
 id = &"read_register"
 text = "Check the guest register."
+category = &"duty"
 
 [resource]
 script = ExtResource("1_db")
-tasks = Array[ExtResource("2_task")]([SubResource("T_lights"), SubResource("T_phone"), SubResource("T_occupied"), SubResource("T_door"), SubResource("T_checkin"), SubResource("T_register")])
-note_title = "NIGHT SHIFT INSTRUCTIONS"
-note_text = "1. Keep the reception lights on.
-2. Answer the telephone.
-3. Do not assign occupied rooms.
-4. Never open the entrance door after midnight unless you recognize the guest."
+tasks = Array[ExtResource("2_task")]([SubResource("T_checkin"), SubResource("T_rooms"), SubResource("T_generator"), SubResource("T_phone"), SubResource("T_register")])
+note_title = "SHIFT NOTES"
+note_text = "1. Check guests in at the desk and give them their key.
+2. Answer the telephone. Bookings, questions and requests all come by phone.
+3. Bring guests what they ask for. Keep rooms clean and stocked.
+4. Check the generator. Keep spare fuel and bulbs.
+5. Buy supplies on the computer when stock runs low."

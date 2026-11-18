@@ -66,6 +66,16 @@ func add_reservation(res: ReservationData) -> void:
 	reservations_changed.emit()
 
 
+## A pending reservation that will not be used (no-show, walked out, phone cancellation).
+func cancel_reservation(reservation_id: String) -> bool:
+	var res: ReservationData = get_reservation(reservation_id)
+	if res == null or res.status != ReservationData.Status.PENDING:
+		return false
+	res.status = ReservationData.Status.CANCELLED
+	reservations_changed.emit()
+	return true
+
+
 ## Assign an AVAILABLE room to a reservation. Returns false if refused.
 func assign_room(room_id: int, reservation_id: String) -> bool:
 	var r: RoomData = get_room(room_id)
@@ -90,7 +100,7 @@ func check_out(room_id: int) -> bool:
 	for res: ReservationData in _reservations:
 		if res.room_id == room_id and res.status == ReservationData.Status.CHECKED_IN:
 			res.status = ReservationData.Status.CHECKED_OUT
-	r.status = RoomData.Status.AVAILABLE
+	r.status = RoomData.Status.NEEDS_CLEANING
 	r.guest_name = ""
 	r.key_issued = false
 	if issued_key_room_id == room_id:
@@ -99,6 +109,49 @@ func check_out(room_id: int) -> bool:
 	reservations_changed.emit()
 	key_state_changed.emit()
 	return true
+
+
+## Needs Cleaning -> Available. Refused for any other state.
+func mark_clean(room_id: int) -> bool:
+	var r: RoomData = get_room(room_id)
+	if r == null or r.status != RoomData.Status.NEEDS_CLEANING:
+		return false
+	r.status = RoomData.Status.AVAILABLE
+	room_status_changed.emit(room_id, r.status)
+	return true
+
+
+## true: Available/Needs Cleaning room -> Maintenance. false: Maintenance -> Available.
+func set_maintenance(room_id: int, broken: bool) -> bool:
+	var r: RoomData = get_room(room_id)
+	if r == null:
+		return false
+	if broken:
+		if r.status != RoomData.Status.AVAILABLE and r.status != RoomData.Status.NEEDS_CLEANING:
+			return false
+		r.status = RoomData.Status.MAINTENANCE
+	else:
+		if r.status != RoomData.Status.MAINTENANCE:
+			return false
+		r.status = RoomData.Status.AVAILABLE
+	room_status_changed.emit(room_id, r.status)
+	return true
+
+
+## Display text for a room status.
+func status_text(status: int) -> String:
+	match status:
+		RoomData.Status.AVAILABLE:
+			return "AVAILABLE"
+		RoomData.Status.OCCUPIED:
+			return "OCCUPIED"
+		RoomData.Status.RESERVED:
+			return "RESERVED"
+		RoomData.Status.NEEDS_CLEANING:
+			return "NEEDS CLEANING"
+		RoomData.Status.MAINTENANCE:
+			return "MAINTENANCE"
+	return "OUT OF SERVICE"
 
 
 ## A key can be taken for an assigned room whose guest has no key yet, if the player's hands are free.

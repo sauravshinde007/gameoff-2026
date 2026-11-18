@@ -45,6 +45,7 @@ render_layers = 4
 
 [node name="FpModel" parent="Body" instance=ExtResource("5_fp")]
 transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 0, 0, 0.12)
+visible = false
 script = ExtResource("6_retro")
 render_layers = 8
 cast_shadows = false
