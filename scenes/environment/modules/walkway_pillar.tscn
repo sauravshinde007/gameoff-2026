@@ -1,0 +1,22 @@
+[gd_scene format=3]
+
+[ext_resource type="Material" path="res://assets/materials/wood.tres" id="m_wood"]
+
+[node name="WalkwayPillar" type="Node3D"]
+
+[node name="Base" type="CSGBox3D" parent="."]
+position = Vector3(0, 0.08, 0)
+size = Vector3(0.42, 0.16, 0.42)
+use_collision = true
+material = ExtResource("m_wood")
+
+[node name="Column" type="CSGBox3D" parent="."]
+position = Vector3(0, 1.4, 0)
+size = Vector3(0.25, 2.8, 0.25)
+use_collision = true
+material = ExtResource("m_wood")
+
+[node name="Cap" type="CSGBox3D" parent="."]
+position = Vector3(0, 2.74, 0)
+size = Vector3(0.42, 0.12, 0.42)
+material = ExtResource("m_wood")

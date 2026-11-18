@@ -1,721 +1,815 @@
 # ROOM 13
+
 ## Game Design Document (GDD)
 
-**Project:** ROOM 13  
-**Game Jam:** Game Off 2026  
-**Theme:** SHIFT  
-**Engine:** Godot 4.x  
-**Language:** GDScript  
-**Genre:** Psychological Horror / Workplace Simulation  
-**Perspective:** First-Person 3D  
-**Platform:** Windows / Linux  
+**Project:** ROOM 13\
+**Game Jam:** Game Off 2026\
+**Theme:** SHIFT\
+**Engine:** Godot 4.x\
+**Language:** GDScript\
+**Genre:** First-Person Motel Job Simulator / Psychological Horror
+(future narrative layer not currently specified)\
+**Perspective:** First-Person 3D\
+**Platform:** Windows / Linux\
 **Players:** Single-player
 
----
+> **Document status:** The original MVP and expanded motel environment
+> have been implemented. This document now defines the approved
+> direction for **Motel Simulator V1**. The simulator is designed to be
+> story-independent. The final story, antagonist, horror incidents,
+> survival mechanics, scoring and endings remain undecided and must not
+> be invented or implemented as part of Simulator V1.
+
+------------------------------------------------------------------------
 
 # 1. Game Overview
 
-ROOM 13 is a first-person psychological horror game in which the player works as a receptionist at an isolated motel.
+ROOM 13 is a first-person game set at an isolated roadside motel. The
+player works at the motel and is responsible for its day-to-day
+operations.
 
-The player works alternating day and night shifts.
+The game combines: - Front-desk work and room management. - Guest
+interactions through physical NPCs and telephone calls. - Simple motel
+finances and supply management. - Physical errands across the motel
+property. - Cleaning and basic maintenance. - Shift responsibilities and
+an end-of-shift report.
 
-During the day, the motel operates normally. Guests check in and out, the telephone rings occasionally, and the receptionist performs ordinary workplace responsibilities.
+The intended experience is a **balanced first-person motel job
+simulator**, not a full business-management spreadsheet simulator. The
+player should spend most of their time interacting with the motel and
+its guests in the 3D environment. Computers and menus support the work;
+they should not replace the physical gameplay.
 
-However, during the night shift, strange and increasingly disturbing events begin occurring.
+The simulator must be functional and enjoyable independently of any
+future horror or narrative content.
 
-Guests request rooms that do not exist. Telephone calls come from disconnected rooms. Security cameras display things that should not be there.
+## 1.1 Core experience
 
-The player must continue performing their responsibilities while investigating these incidents and surviving until the end of the shift.
+The player starts a shift, reviews the motel's condition and outstanding
+work, handles guests and bookings, completes physical errands, manages
+basic supplies and money, and reviews the shift at the end.
 
-The central gameplay idea is:
+The work should feel purposeful but manageable. The target pressure is
+moderate: there can be competing responsibilities, but the game should
+not become a constant countdown or punishing time-management challenge.
 
-**The player has an ordinary job to perform in an increasingly abnormal environment.**
+## 1.2 Design principles
 
-The game should create horror through atmosphere, environmental storytelling, unexpected events, player decisions and psychological tension rather than relying entirely on jumpscares or combat.
+1.  **Physical-first gameplay:** Use the motel environment for
+    meaningful interactions.
+2.  **Simple systems:** Prefer short, readable interactions over
+    detailed simulations.
+3.  **Connected mechanics:** A guest request should lead to a physical
+    activity, use a location or resource, and update the relevant
+    task/guest/economy state.
+4.  **Moderate workload:** The player should have choices about task
+    priority and enough time to move around.
+5.  **Incremental implementation:** Extend existing systems rather than
+    replacing them.
+6.  **Story independence:** No story, horror, antagonist or survival
+    assumptions in Simulator V1.
 
----
+------------------------------------------------------------------------
 
-# 2. Core Vision
+# 2. Core Gameplay Identity
 
-The experience should make the player feel:
+## 2.1 Approved V1 direction
 
-- Comfortable and familiar with the motel during the day.
-- Slightly uneasy when the night shift begins.
-- Increasingly suspicious of ordinary objects and interactions.
-- Vulnerable when strange events occur.
-- Curious about the motel's history and the mystery of Room 13.
+  -----------------------------------------------------------------------
+  Design area                         Decision
+  ----------------------------------- -----------------------------------
+  Gameplay identity                   Balanced motel job simulator
 
-The contrast between the ordinary workplace and its supernatural nighttime counterpart is the game's defining feature.
+  Work pressure                       Moderate
 
-The player should always have a reason to interact with the environment, even when supernatural events are happening.
+  Guest interaction                   Mixed: physical guests and
+                                      remote/telephone guests
 
-The horror should emerge naturally from normal gameplay activities.
+  Active physical guests              Target of 3--5 at a time
 
----
+  Economy                             Hybrid: income and expenses matter,
+                                      but no bankruptcy game-over
+
+  Daily responsibilities              Hybrid: regular duties plus
+                                      generated tasks
+
+  Guest satisfaction                  Simple individual guest
+                                      satisfaction
+
+  Motel upgrades                      Excluded from V1
+
+  Story and horror                    Independent; not part of simulator
+                                      implementation
+  -----------------------------------------------------------------------
+
+The 3--5 physical guest target is a balancing goal, not a requirement to
+have that many NPCs present at every moment. Avoid unnecessary NPC
+complexity.
+
+## 2.2 Gameplay pillars
+
+### A. Front-desk and guest management
+
+-   Check-in and checkout.
+-   Room assignment and availability.
+-   Reservations and cancellations.
+-   Guest payments.
+-   Telephone calls and enquiries.
+-   Basic guest records.
+
+### B. Guest services
+
+-   Receive service requests.
+-   Collect and deliver requested items.
+-   Handle basic complaints.
+-   Schedule wake-up calls.
+-   Track simple guest satisfaction.
+
+### C. Motel operations
+
+-   Clean rooms after checkout.
+-   Restock rooms.
+-   Collect and manage laundry.
+-   Collect supplies from storage.
+-   Perform simple maintenance.
+-   Check the generator and fuel.
+-   Handle occasional property chores.
+
+### D. Economy and resources
+
+-   Track motel balance.
+-   Record income and expenses.
+-   Purchase supplies.
+-   Track a small set of essential stock.
+-   Review financial summaries.
+
+### E. Shift and task management
+
+-   Review shift instructions.
+-   Track regular responsibilities.
+-   Receive guest and maintenance tasks.
+-   Prioritize tasks.
+-   Complete the shift and review results.
+
+------------------------------------------------------------------------
 
 # 3. Setting and Environment
 
-The game takes place inside a small, isolated roadside motel.
+## 3.1 Overall setting
 
-The motel is the primary playable location.
+The game takes place at a small, isolated, single-storey roadside motel
+beside a highway.
 
-It should feel like an ordinary, slightly outdated establishment rather than a large luxury hotel.
+The motel property is the primary playable location. The highway and
+wider surrounding world are background scenery only.
 
-## Main Areas
+## 3.2 Approved environment
 
-### 3.1 Reception
+  -----------------------------------------------------------------------
+  Property                            Decision
+  ----------------------------------- -----------------------------------
+  Building layout                     L-shaped, single-storey motel
 
-The primary player location.
+  Geographic setting                  Isolated roadside highway
 
-Contains:
-- Reception desk.
-- Desktop computer.
-- Telephone.
-- Guest register.
-- Room key rack.
-- Entrance door.
-- Windows overlooking the motel exterior.
-- Wall clock.
-- Manager's instructions.
+  Guest rooms                         6 numbered rooms
 
-The reception is where most interactions and important gameplay events occur.
+  Fully accessible guest-room         3
+  interiors                           
 
-### 3.2 Hallway
+  Parking                             Central courtyard
 
-A short corridor connecting the reception area to guest rooms.
+  Architecture                        Wooden-panel motel
 
-Contains:
-- Three numbered guest room doors.
-- Ceiling lights.
-- Wall decorations.
-- Carpet.
-- Environmental props.
+  Visual style                        PS1/PSX-inspired low-poly
 
-The hallway should feel ordinary during the day and increasingly unsettling at night.
+  Exterior exploration                Limited to motel property
 
-### 3.3 Guest Rooms
+  Day/night                           Same geometry with different
+                                      lighting, ambience and activity
 
-The initial motel contains three rooms:
+  Access                              Mixed; some areas may be restricted
+                                      by shift or task
+  -----------------------------------------------------------------------
 
-- Room 1
-- Room 2
-- Room 3
+The reception is at the junction/elbow of the L-shaped building. Guest
+wings extend around the central courtyard.
 
-For the MVP, these rooms do not need fully explorable interiors.
+## 3.3 Environment spaces and intended gameplay use
 
-Their doors should be interactive and communicate whether a room is occupied, available or inaccessible.
+  -----------------------------------------------------------------------
+  Location                            Simulator V1 purpose
+  ----------------------------------- -----------------------------------
+  Reception                           Check-in/out, reservations,
+                                      payments, telephone, computer,
+                                      guest register and coffee
 
-### 3.4 Exterior
+  Guest rooms                         Cleaning, restocking, deliveries
+                                      and basic maintenance
 
-The motel exterior is initially visible through reception windows.
+  Laundry                             Collect clean towels/linen and
+                                      perform a simple laundry
+                                      interaction
 
-It should establish the feeling of isolation.
+  Storage                             Collect supplies, check stock and
+                                      access replacement materials
 
-Possible environmental details:
-- Rain.
-- Empty parking area.
-- Roadside signage.
-- Dim street lighting.
-- Distant silhouettes or lights.
+  Owner's office                      Financial ledger, shift reports and
+                                      management instructions
 
-The exterior does not need to be explorable in the MVP.
+  Central courtyard                   Ice machine, vending, garbage
+                                      collection and occasional parking
+                                      inspection
 
----
+  Rear service area                   Generator fuel and basic equipment
+                                      checks
 
-# 4. Day and Night Shift System
+  Staff corridor                      Navigation between operational
+                                      spaces
+  -----------------------------------------------------------------------
 
-The game revolves around two distinct shifts.
+All six guest rooms (01-06) have accessible interiors (revised
+2026-11-16). Physical room tasks may use any of them.
 
-## 4.1 Day Shift
+## 3.4 Reception
 
-The daytime environment should feel relatively safe, cozy and ordinary.
+Preserve existing reception interactions and visual identity: -
+Wooden-panel walls and tiled floor. - Reception counter. - CRT
+computer. - Telephone. - Guest register. - Room-key rack. - Wall clock
+and manager's notes. - Existing interaction points.
 
-Lighting:
-- Warm interior lights.
-- Natural daylight.
-- Soft shadows.
-- Normal environmental ambience.
+The computer is the administration interface. The telephone is the
+communication interface. Physical work is performed in the 3D
+environment.
 
-Gameplay:
-- Check guests in.
-- Assign available rooms.
-- Issue room keys.
-- Answer telephone calls.
-- Check guests out.
-- Learn the motel layout.
-- Read instructions from the manager.
+## 3.5 Guest accommodation
 
-The day shift introduces the player to the motel and its mechanics.
+The motel has six numbered guest rooms. All six interiors are accessible
+in the current environment. Room modules and room identifiers should
+remain reusable and consistent.
 
-It should be relatively short and serve as a tutorial and narrative introduction.
+## 3.6 Central parking courtyard
 
-## 4.2 Night Shift
+The courtyard includes parking bays, vehicles, exterior lights, motel
+signage, vending and/or ice machines, fences and the entrance gate.
+Vehicles are scenery and must not become drivable in Simulator V1.
 
-At night, the motel becomes darker, quieter and increasingly unsettling.
+## 3.7 Laundry room
 
-Lighting:
-- Cold blue or green nighttime ambience.
-- Flickering fluorescent lights.
-- Limited visibility in hallways.
-- Warm reception desk lighting contrasting with darkness.
-- Occasional electrical failures.
+Contains washing machines, laundry baskets, clean-towel shelves and
+cleaning equipment. Simulator V1 may add simple interactions for
+collecting clean linen and updating stock. Do not build a detailed
+washing physics or timing simulation.
 
-Gameplay:
-- Continue normal receptionist responsibilities.
-- Handle unusual guest requests.
-- Monitor security cameras.
-- Answer suspicious telephone calls.
-- Investigate strange occurrences.
-- Follow the manager's night-shift instructions.
-- Survive until 6 AM.
+## 3.8 Storage room
 
-The same environment should be reused for both shifts.
+Contains shelves, boxes, tools, replacement bulbs and cleaning supplies.
+Use it as the physical location for collecting available supplies.
 
-The nighttime experience should primarily be achieved through lighting, audio, NPC behaviour and scripted events rather than creating a completely separate environment.
+## 3.9 Owner's office
 
----
+Contains a desk, computer/CRT, filing cabinet, papers and ledger. Use it
+for financial records, shift reports and management instructions. Do not
+add story clues or secrets.
 
-# 5. Core Gameplay Loop
+## 3.10 Rear service area
 
-The fundamental gameplay loop is:
+Contains the generator, garbage bins, service entrance and maintenance
+access. Use it for simple generator-fuel and occasional maintenance
+tasks.
 
-1. Receive shift instructions.
-2. Explore the motel and perform receptionist duties.
-3. Receive guest requests or unexpected events.
-4. Interact with motel objects to investigate.
-5. Identify whether something is abnormal.
-6. Decide how to respond.
-7. Deal with the consequences.
-8. Continue working until the shift ends.
+## 3.11 Day and night
 
-The game should balance ordinary workplace activities with supernatural encounters.
+Reuse the same geometry. Day/night presentation is controlled by
+lighting, ambience and activity. Shift scheduling and the final story
+are not locked by this document.
 
-The player should not spend the entire game hiding from threats. They should remain actively involved in motel operations.
+## 3.12 Visual identity
 
----
+Preserve: - PS1/PSX-inspired low-poly 3D. - Low-resolution/pixelated
+presentation. - Dither, vignette and retro colour treatment. -
+Pixel-style UI typography. - Wooden-panel architecture. - Warm daytime
+lighting and darker blue nighttime lighting.
 
-# 6. Core Gameplay Mechanics
+------------------------------------------------------------------------
 
-## 6.1 First-Person Movement
+# 4. Simulator V1 --- Core Gameplay Loop
 
-The player explores the motel using a first-person controller.
+1.  Begin a shift.
+2.  Review manager instructions, room status, supplies and outstanding
+    tasks.
+3.  Handle physical guests, reservations and telephone calls.
+4.  Assign rooms, check guests in/out and process payments.
+5.  Receive and complete guest service requests.
+6.  Perform physical motel work: cleaning, laundry, restocking and
+    maintenance.
+7.  Purchase supplies and monitor motel finances.
+8.  Complete regular responsibilities and prioritize generated tasks.
+9.  End the shift and review finances, guest outcomes and outstanding
+    work.
 
-Controls:
-- WASD: Movement.
-- Mouse: Camera movement.
-- E: Interact.
-- ESC: Pause menu.
-- Left click: UI interactions where applicable.
+The loop should create variety through different guests and tasks, not
+through a large number of complicated systems.
 
-Movement should feel responsive and grounded.
+------------------------------------------------------------------------
 
-No jumping or advanced movement mechanics are required initially.
+# 5. Room and Guest Management
 
-## 6.2 Interaction System
+## 5.1 Existing system
 
-The player can interact with objects by looking at them and pressing E.
+The project already has a basic room/reception foundation. Inspect the
+current RoomManager and related scenes/scripts before making changes.
+Preserve working functionality and extend it only where needed.
 
-When looking at an interactable object, an interaction prompt should appear.
+## 5.2 Room states
 
-Examples:
-- Doors.
-- Computers.
-- Telephones.
-- Room key rack.
-- Guest register.
-- Light switches.
-- CCTV monitor.
+The intended expanded room lifecycle is: - **Available:** Clean,
+maintained and ready. - **Reserved:** Assigned to an upcoming booking. -
+**Occupied:** A guest is currently staying. - **Needs Cleaning:** Guest
+has checked out and the room requires cleaning. - **Maintenance:** A
+repair is required. - **Out of Service:** The room cannot currently be
+booked.
 
-The interaction system must be modular and reusable.
+Do not force this exact enum or rewrite existing state handling without
+first auditing the implementation. Map existing states to these design
+concepts and explain any migration required.
 
-New interactable objects should be easy to add without rewriting the player controller.
+## 5.3 Guest lifecycle
 
-## 6.3 Guest Management
+-   Reservation or walk-in enquiry.
+-   Room availability check.
+-   Room assignment.
+-   Payment and key issue.
+-   Occupied stay.
+-   Service requests where applicable.
+-   Checkout and payment settlement.
+-   Room becomes dirty/needs cleaning.
+-   Cleaning/restocking.
+-   Room becomes available again.
 
-The player performs basic receptionist duties.
+Room payment timing and any deposit policy should be configurable; do
+not hardcode unapproved business rules.
 
-Possible interactions:
-- Check in guests.
-- Assign rooms.
-- Issue keys.
-- Check out guests.
+## 5.4 Physical guest behaviour
 
-The motel has three normal rooms in the initial version.
+Target 3--5 active physical guests at a time. Use a small set of
+reusable behaviours: - Walk-in guest. - Existing guest. - Checking-out
+guest. - Guest approaching reception for a service. - Guest arriving for
+a reservation.
 
-Room availability should be tracked by a simple room management system.
+V1 NPC behaviour should be simple: - Basic movement between predefined
+locations. - Reception interaction. - Room assignment. - Check-in and
+checkout. - Short dialogue choices. - Request generation. -
+Arrival/departure behaviour.
 
-Complex hotel management simulation is not required.
+Use existing navigation and interaction foundations where possible. Do
+not build advanced personality simulation, complex schedules, elaborate
+dialogue trees or sophisticated autonomous AI.
 
-## 6.4 Reception Computer
+Guests may occupy rooms whose interiors are not physically accessible to
+the player, provided the existing room system supports this. Tasks
+requiring physical room entry must be restricted to accessible
+interiors.
 
-The computer provides access to basic motel information.
+------------------------------------------------------------------------
 
-For the MVP, it should support:
-- Viewing room availability.
-- Viewing reservations.
-- Displaying guest information.
-- Showing unusual reservation records.
+# 6. Guest Services and Satisfaction
 
-The computer interface should feel like an old motel management system.
+## 6.1 Initial service catalogue
 
-## 6.5 Telephone
+  -----------------------------------------------------------------------
+  Service                 Player activity         Initial payment policy
+  ----------------------- ----------------------- -----------------------
+  Extra towels            Collect from laundry    Included
+                          and deliver             
 
-The telephone is an important gameplay and horror device.
+  Extra pillows           Collect from storage    Included
+                          and deliver             
 
-Normal calls may contain guest requests.
+  Ice request             Use courtyard ice       Optional charge;
+                          machine and deliver     configure
 
-Supernatural calls may:
-- Originate from empty rooms.
-- Contain strange messages.
-- Come from unknown extensions.
-- Reveal information about upcoming incidents.
+  Coffee request          Prepare/collect at      Optional charge;
+                          reception and deliver   configure
 
-The player should interact with the telephone to answer incoming calls.
+  Wake-up call            Schedule through        Included
+                          telephone               
 
-## 6.6 CCTV
+  Room cleaning           Visit and clean room    Included
 
-The CCTV system allows the player to observe selected motel areas.
+  Maintenance request     Visit and repair        Included
+  -----------------------------------------------------------------------
 
-For the MVP, only a small number of fixed cameras are required.
+These are the initial V1 service candidates. Exact prices and final
+policies are balancing/configuration decisions, not fixed values in this
+document.
 
-CCTV can be used for:
-- Checking hallway activity.
-- Investigating suspicious guests.
-- Revealing supernatural events.
-- Creating tension through visual anomalies.
+## 6.2 Request lifecycle
 
-## 6.7 Task System
+1.  Request arrives by telephone or physical guest interaction.
+2.  Create a task/request record with guest or room reference.
+3.  Add it to the active task list.
+4.  Player completes the required physical or reception interaction.
+5.  Mark request complete.
+6.  Update guest satisfaction and economy only where appropriate.
 
-The player receives a list of responsibilities for their shift.
+Each request should support: - Guest/room reference. - Request type and
+description. - Priority. - Status. - Optional deadline. - Optional
+payment. - Completion outcome.
 
-Examples:
-- Check the guest register.
-- Keep reception lights on.
-- Answer the telephone.
-- Verify room availability.
-- Investigate unusual activity.
+Do not create a complex branching dialogue system.
 
-Tasks should be displayed through a simple UI.
+## 6.3 Guest satisfaction
 
-## 6.8 Shift Clock
+Use simple individual satisfaction, with a configurable value such as
+0--100. It may be stored internally as a number while UI communicates it
+through readable labels.
 
-The game uses an accelerated in-game clock.
+Potential influences: - Completing a request: positive. - Resolving a
+complaint: positive. - Ignoring a request: negative. - Missing an agreed
+deadline: negative. - Successful check-in: neutral or small positive.
 
-The player begins the night shift at 10 PM.
+Do not add an overall motel reputation, review platform, progression
+unlocks or complex guest mood simulation in V1. Satisfaction may
+influence simple guest feedback and modest configured outcomes, but
+should not become a separate management game.
 
-The night shift ends at 6 AM.
+------------------------------------------------------------------------
 
-Specific supernatural events can be triggered at predefined times or through gameplay conditions.
+# 7. Economy and Money
 
-The clock should be configurable rather than hardcoding event timings into unrelated scripts.
+## 7.1 Economy direction
 
----
+Use a hybrid economy: - The motel has a starting balance. - Room
+bookings and eligible services generate income. - Purchases and
+operating costs create expenses. - Transactions are recorded. - Low
+funds can restrict purchases or selected operations. - Low funds must
+not cause bankruptcy or an immediate game-over in V1.
 
-# 7. Horror and Atmosphere
+## 7.2 Income sources
 
-ROOM 13 should prioritize psychological horror and environmental storytelling.
+-   Room bookings and walk-in stays.
+-   Eligible additional guest services.
+-   Other explicitly configured motel charges.
 
-The horror should be built through:
+## 7.3 Expenses
 
-- Unexpected environmental changes.
-- Strange guest behaviour.
-- Unexplained sounds.
-- Flickering lights.
-- Suspicious telephone calls.
-- CCTV anomalies.
-- Unusual room records.
-- Changes in familiar locations.
+-   Cleaning and bathroom supplies.
+-   Laundry supplies.
+-   Generator fuel.
+-   Replacement materials and maintenance.
+-   Configured operating expenses.
 
-Avoid excessive jumpscares.
+Do not invent complex taxes, loans, investments, interest, payroll,
+dynamic pricing or business upgrades.
 
-The player should frequently question whether something is actually wrong.
+## 7.4 Transactions and reports
 
-## Visual Direction
+Record each transaction with: - Amount. - Income/expense category. -
+Description. - Related room/guest/task when applicable. - In-game
+timestamp or shift/day reference.
 
-The desired art style is:
+The player should be able to review: - Current balance. - Income for the
+shift/day. - Expenses for the shift/day. - Net result. - Recent
+transaction history.
 
-**Stylized low-poly 3D with retro-inspired atmospheric horror.**
+Use one source of truth for the balance. Avoid multiple systems
+independently changing money.
 
-Visual characteristics:
-- Low-poly geometry.
-- Slightly exaggerated proportions.
-- Simple but attractive materials.
-- Retro-inspired textures.
-- Atmospheric lighting.
-- Subtle fog.
-- Limited colour palette.
-- Warm daytime environments.
-- Cold nighttime environments.
+------------------------------------------------------------------------
 
-The game should look visually appealing during the day.
+# 8. Inventory and Supplies
 
-Nighttime should transform the same environment into something unsettling.
+## 8.1 Design
 
-Do not aim for photorealism.
+Use a small shared motel inventory and a limited carry inventory. Do not
+build an RPG-style grid inventory, crafting system, weight simulation or
+complex logistics.
 
----
+Initial resources: - Clean towels. - Pillows. - Soap. - Cleaning
+supplies. - Fuel containers/fuel. - Replacement bulbs.
 
-# 8. Story and Narrative Direction
+Exact starting quantities are balancing values and should be
+configurable.
 
-The player is a newly hired motel receptionist.
+## 8.2 Interactions
 
-The motel appears ordinary initially.
+-   Collect supplies physically from shelves.
+-   Track quantities in the player's carry inventory.
+-   Deliver items to guests or rooms.
+-   Consume resources during cleaning and maintenance.
+-   Decrease storage stock when items are collected.
+-   Purchase replenishment through the reception computer.
+-   For V1, purchased supplies may be added immediately; no delivery
+    truck or supplier NPC is required.
 
-The manager provides a set of instructions for the night shift.
+Prevent negative stock and clearly communicate when a required item is
+unavailable.
 
-Some instructions seem unnecessarily specific.
+------------------------------------------------------------------------
 
-As the player experiences supernatural events, they begin discovering that the motel has a history involving a mysterious Room 13.
+# 9. Physical Motel Operations
 
-The central mystery is:
+## 9.1 Room cleaning
 
-**Why does Room 13 appear in the motel's reservation system when the motel only has three rooms?**
+Keep room cleaning to a short, readable interaction: 1. Enter an
+accessible room requiring cleaning. 2. Interact with the cleaning point.
+3. Complete a short animation or interaction. 4. Handle dirty linen if
+the task requires it. 5. Restock required supplies. 6. Mark the room
+ready.
 
-The narrative should unfold gradually through:
-- Manager instructions.
-- Guest conversations.
-- Reservation records.
-- Telephone calls.
-- CCTV footage.
-- Environmental clues.
-- Unusual events.
+No detailed dirt simulation, movable furniture, mop physics or repeated
+tiny cleaning actions.
 
-Do not reveal the complete mystery immediately.
+## 9.2 Laundry
 
-## Current Narrative Direction
+V1 laundry interactions should support: - Collecting clean
+towels/linen. - Updating stock. - Optionally a simple start/complete
+washing interaction if useful.
 
-The current preferred direction is:
+Do not build a detailed washing-machine simulation or long wait loop.
 
-Room 13 was associated with a guest who mysteriously disappeared in the motel's past.
+## 9.3 Maintenance
 
-The motel staff have been instructed never to acknowledge the room or its reservations.
+Initial maintenance activities: - Replace a burnt-out bulb. - Refill
+generator fuel. - Perform a simple equipment repair. - Occasional
+courtyard garbage collection or inspection.
 
-Elements of a larger supernatural mystery may be revealed in later gameplay.
+These should be occasional tasks, not constant chores.
 
-This narrative is intentionally expandable.
+## 9.4 Generator
 
----
+The generator interaction should be simple: - Receive a low-fuel
+task/notification. - Visit the rear service area. - Use available
+fuel. - Update fuel state. - Resolve the task.
 
-# 9. MVP Scope
+Do not simulate electrical engineering, power distribution networks or
+detailed generator mechanics. Any effect on motel functions should be
+limited and clearly communicated.
 
-The initial MVP should prove that the core concept works.
+------------------------------------------------------------------------
 
-The MVP should contain:
+# 10. Telephone and Computer
 
-## Environment
-- One motel reception.
-- One short hallway.
-- Three guest room doors.
-- Basic exterior visible through windows.
-- Day and night lighting.
+## 10.1 Telephone --- communication
 
-## Player
-- First-person movement.
-- Mouse look.
-- Collision.
-- Interaction raycasting.
-- Interaction prompts.
+The telephone handles: - Reservations. - Guest service requests. -
+General enquiries. - Cancellations. - Manager instructions. - Supplier
+calls only if required for a specific task.
 
-## Gameplay
-- Basic room management.
-- Functional reception computer.
-- Telephone interaction.
-- Basic task system.
-- Accelerated shift clock.
+Use concise dialogue and limited choices. Do not implement elaborate
+branching dialogue trees.
 
-## Horror
-- One scripted supernatural incident.
-- One mysterious guest.
-- One impossible reservation.
-- One CCTV anomaly.
-- One supernatural telephone call.
-- One final scare.
+## 10.2 Reception computer --- administration
 
-## Ending
-- A simple night shift completion or failure condition.
-- Basic restart functionality.
+The computer may provide: - Room status and guest records. - Reservation
+handling. - Financial overview and transaction history. - Supply
+ordering. - Active task list. - Daily/shift report.
 
-The MVP should be approximately 5–10 minutes long.
+Keep the interface readable and consistent with the existing pixel-style
+UI. Do not force the player to remain at the computer for most of the
+shift.
 
-It must be playable from start to finish.
+## 10.3 Interaction principle
 
----
+-   Telephone = communication.
+-   Computer = administration.
+-   Physical motel = execution.
 
-# 10. First Supernatural Incident: THE ROOM 13 RESERVATION
+Preserve existing computer and telephone behaviour where it already
+works; extend rather than replace.
 
-This is the first major horror sequence and the main feature of the initial MVP.
+------------------------------------------------------------------------
 
-## Background
+# 11. Tasks, Responsibilities and Workload
 
-The player starts their night shift at 10 PM.
+## 11.1 Hybrid task model
 
-The manager leaves a note containing the following instructions:
+Each shift combines:
 
-NIGHT SHIFT INSTRUCTIONS
+**Regular responsibilities** - Review room availability. - Check
+reception. - Review outstanding guest requests. - Check essential
+supplies. - Review end-of-shift report.
 
-1. Keep the reception lights on.
-2. Answer the telephone.
-3. Do not assign occupied rooms.
-4. If someone asks for Room 13, tell them it is unavailable.
-5. Never open the entrance door after midnight unless you recognize the guest.
+**Generated responsibilities** - Walk-in guest arrives. - Guest requests
+towels or another service. - Room needs cleaning. - Generator needs
+fuel. - Maintenance issue occurs. - Telephone reservation arrives.
 
-The player continues normal responsibilities.
+These are examples, not a requirement that every event occurs on every
+shift.
 
-At approximately 12:15 AM, the first supernatural incident begins.
+## 11.2 Workload targets
 
-## Event Sequence
+Initial balancing targets: \| Parameter \| Target \| \|---\|---:\| \|
+Active physical guests \| 3--5 \| \| Active optional tasks \| 3--4 \| \|
+Mandatory tasks \| 2--3 \| \| Simultaneous urgent requests \| 1--2 \|
 
-### Event 1: Guest Arrival
+These are tunable targets, not hard-coded architectural limits. The
+system should avoid generating an endless stream of tasks.
 
-The entrance bell rings.
+## 11.3 Priority and deadlines
 
-A mysterious guest appears at the reception desk.
+Not every task needs a timer.
 
-Guest:
+  Task               Suggested handling
+  ------------------ ------------------------------------------------------
+  Walk-in check-in   Immediate attention while guest is present
+  Guest service      Flexible; deadline only when explicitly communicated
+  Room cleaning      Before the room is assigned again
+  Generator fuel     Complete before a configured critical threshold
+  Supply ordering    Flexible
+  Shift report       End-of-shift responsibility
 
-"Good evening. I have a reservation for Room 13."
+The player should be able to prioritize tasks. Missed deadlines should
+have understandable, proportionate consequences.
 
-### Event 2: Impossible Reservation
+## 11.4 Neglected tasks
 
-The player checks the reception computer.
+Possible gradual consequences: - Ignored guest request: satisfaction
+decreases. - Dirty room: cannot be reassigned. - Low supplies: related
+services become unavailable. - Low generator fuel: configured motel
+functions may be affected. - Unresolved maintenance: room/equipment
+remains unavailable. - Unanswered reservation: potential booking is
+lost.
 
-The computer displays:
+Do not add bankruptcy, sudden game-over or severe cascading penalties in
+V1.
 
-Reservation ID: #0013  
-Guest: Unknown  
-Room: 13  
-Status: Check-in Pending
+------------------------------------------------------------------------
 
-However, the motel only has three rooms.
+# 12. Shift Management and Day Structure
 
-### Event 3: Player Decision
+The existing ShiftManager and clock must be inspected and preserved.
+Simulator V1 may integrate task generation and shift reports with the
+existing shift lifecycle.
 
-The player can refuse the reservation.
+The final campaign length, day count, exact shift schedule and story
+progression are not defined here. Do not invent them.
 
-For the initial MVP, only the refusal outcome needs to be implemented.
+A shift should: 1. Begin using the existing shift flow. 2. Present
+instructions and current motel state. 3. Allow regular and generated
+work. 4. Track completed and outstanding tasks. 5. End through the
+existing shift/end-of-shift mechanism. 6. Present a summary of finances,
+task outcomes and relevant guest outcomes.
 
-Player:
+Do not change shift duration or clock speed without approval.
 
-"I'm sorry, but we don't have a Room 13."
+------------------------------------------------------------------------
 
-Guest:
+# 13. Simulator V1 Exclusions
 
-"Are you sure?"
+Do not implement: - Motel upgrades or property expansion. - Employee
+hiring/management. - Loans, bankruptcy or complex accounting. - Taxes,
+investments or dynamic pricing. - Advanced NPC personalities or
+autonomous schedules. - Complex dialogue trees. - Large inventory grids,
+crafting or weight simulation. - Vehicle driving. - Detailed cleaning
+physics. - Complex motel reputation/review systems. - Story progression
+or narrative clues. - Horror incidents, criminals, stalkers, ghosts or
+survival mechanics. - Scoring, grades, endings or win/loss conditions. -
+Additional large locations.
 
-Player:
+------------------------------------------------------------------------
 
-"Yes. This motel only has three rooms."
+# 14. Technical Architecture Guidelines
 
-Guest:
+Use Godot 4.x and GDScript. Follow the existing project structure and
+conventions.
 
-"That's strange. I stayed here yesterday."
+Proposed logical responsibilities: - **RoomManager:** Existing room
+states, availability and assignments. - **EconomyManager:** Balance and
+transaction records. - **GuestManager:** Guest records and physical
+guest lifecycle. - **ServiceManager:** Guest service requests. -
+**InventoryManager:** Stock and carried quantities. - **TaskManager:**
+Regular and generated tasks. - **ShiftManager:** Existing clock and
+shift lifecycle.
 
-### Event 4: Guest Disappearance
+These are logical responsibilities, not instructions to create every
+manager as a new autoload. Inspect existing scripts and autoloads first.
+Reuse or extend existing systems where appropriate.
 
-The reception lights flicker.
+Architecture rules: - GDScript only. - Static typing. - Scripts use
+`snake_case.gd`. - Scenes use `snake_case.tscn`. - Nodes use
+PascalCase. - Constants use `UPPER_SNAKE_CASE`. - Use signals to
+communicate between decoupled systems. - Prefer composition and small
+reusable scenes. - Use autoloads only for genuinely global systems. -
+Keep tunable values in exported variables or resources. - Avoid
+unnecessary abstraction.
 
-When the lights stabilize, the guest has disappeared.
+------------------------------------------------------------------------
 
-The entrance door remains locked.
+# 15. Development Roadmap
 
-There is no indication that the guest left.
+Implement one milestone at a time. The project must remain runnable
+after each milestone.
 
-### Event 5: CCTV Anomaly
+## Milestone 0 --- Existing systems audit
 
-The telephone rings.
+-   Inspect project structure and current scenes/scripts.
+-   Identify RoomManager, TaskManager, ShiftManager, telephone,
+    computer, interaction and guest systems.
+-   Document what already exists and what must be extended.
+-   Identify risks and conflicts before coding.
+-   Do not rewrite systems during the audit.
 
-The player checks the CCTV system.
+## Milestone 1 --- Economy foundation
 
-A mysterious figure is standing at the end of the hallway.
+-   Balance and transaction model.
+-   Guest room payment integration.
+-   Expense and purchase integration.
+-   Financial overview and transaction history.
+-   Test positive, negative and insufficient-funds cases.
 
-The camera label displays:
+## Milestone 2 --- Guest operations
 
-ROOM 13 - CAMERA 04
+-   Guest records and simple NPC states.
+-   Check-in/check-out integration.
+-   Reservations and telephone interactions.
+-   Guest service request lifecycle.
+-   Simple individual satisfaction.
+-   Keep NPC count and behaviour lightweight.
 
-There is no Camera 04.
+## Milestone 3 --- Physical operations
 
-### Event 6: Telephone Call
+-   Cleaning and room readiness.
+-   Laundry and towel stock.
+-   Storage collection.
+-   Carry inventory and deliveries.
+-   Guest service completion in the environment.
 
-The telephone rings again.
+## Milestone 4 --- Maintenance
 
-The player answers.
+-   Generator fuel.
+-   Replacement bulbs.
+-   Basic repairs.
+-   Occasional property chores.
+-   Supply consumption and task resolution.
 
-Unknown Guest:
+## Milestone 5 --- Shift integration
 
-"You forgot to give me my key."
+-   Regular responsibilities.
+-   Generated tasks and workload limits.
+-   Priorities and selected deadlines.
+-   End-of-shift financial/task/guest summary.
+-   Full simulator playthrough and balancing.
 
-Pause.
+Do not implement all milestones in one large change.
 
-"I'm already inside."
+------------------------------------------------------------------------
 
-A door-opening sound plays somewhere in the hallway.
+# 16. Validation and Acceptance Criteria
 
-### Event 7: Final Scare
+After each milestone: - Run
+`godot --headless --path . --check-only --quit` (or installed binary
+equivalent). - Run `godot --headless --path . --quit-after 120` (or
+equivalent smoke test). - Report actual warnings/errors; do not claim
+tests passed unless run. - Visually inspect changed scenes in the Godot
+editor. - Preserve the existing MVP as a working fallback. - Keep Free
+Roam independent of simulator tasks, economy, guests and shift
+progression.
 
-The player hears footsteps.
+Simulator V1 is ready for review when: - Existing movement and
+interaction remain functional. - Existing room/reception functionality
+is preserved. - Money changes only through valid transactions. - Guests
+can be checked in/out using the room system. - Physical and telephone
+requests can be received and completed. - Cleaning and supply tasks use
+the existing accessible spaces. - Inventory quantities cannot become
+negative. - Generated tasks remain within the intended workload. - The
+shift can be completed and summarized. - No story or horror content has
+been introduced.
 
-The player can investigate the hallway.
+Headless validation does not replace in-editor visual inspection.
 
-All three room doors appear closed.
+------------------------------------------------------------------------
 
-Room 2's handle slowly turns.
+# 17. Story and Horror Independence
 
-The incident ends.
+Simulator V1 is deliberately story-independent.
 
-The next objective appears:
+The current creative preference for a grounded human threat is not
+authorization to implement any antagonist, criminal AI, suspicious
+guest, scripted encounter or survival mechanic.
 
-"Investigate the hallway. Return to reception before 6:00 AM."
+The previous MVP Room 13 incident was retired and removed on 2026-11-14.
+It is not canon and must not be restored.
 
-For the MVP, this can conclude with a short fade to black or a simple final scare.
+Build the motel simulator as a stable foundation. Future narrative and
+horror systems will be designed separately and layered onto this
+foundation only after explicit approval.
 
-## Important Design Principle
+------------------------------------------------------------------------
 
-The player followed the manager's instructions correctly.
+# 18. Important Instructions for AI Development
 
-However, the supernatural incident still occurred.
+Before coding: 1. Read this GDD, `CLAUDE.md` and `GAMEPLAY_SYSTEMS.md`.
+2. Inspect the actual Godot project and relevant scripts/scenes. 3.
+Compare the design with existing functionality. 4. Explain the proposed
+milestone plan and files to be changed. 5. Ask about substantial
+ambiguities or conflicts. 6. Implement only the currently approved
+milestone. 7. Validate and report the result.
 
-This establishes that the instructions are not a complete solution to the motel's mysteries.
+Do not independently expand scope, silently replace existing systems or
+invent story content.
 
----
-
-# 11. MVP Development Priorities
-
-Development must happen incrementally.
-
-## Phase 1: Greybox Environment and Player
-- Create Godot project.
-- Implement first-person movement.
-- Implement camera controls.
-- Implement interaction system.
-- Build basic reception.
-- Build hallway with three doors.
-- Add basic collision and lighting.
-
-## Phase 2: Motel Functionality
-- Implement doors.
-- Implement room availability.
-- Implement reception computer.
-- Implement telephone.
-- Implement basic guest interactions.
-- Implement task UI.
-
-## Phase 3: Horror Sequence
-- Implement shift clock.
-- Implement event manager.
-- Create mysterious guest.
-- Implement Room 13 reservation.
-- Implement refusal dialogue.
-- Implement guest disappearance.
-- Implement CCTV anomaly.
-- Implement telephone call.
-- Implement final scare.
-
-## Phase 4: Complete MVP
-- Add audio and atmosphere.
-- Add day/night lighting.
-- Add ending.
-- Add restart.
-- Test the complete gameplay loop.
-- Fix bugs and improve presentation.
-
----
-
-# 12. Features for Future Expansion
-
-These features are NOT part of the initial MVP.
-
-They may be considered after the first playable prototype is complete.
-
-- Multiple night shifts.
-- Additional supernatural incidents.
-- Multiple endings.
-- More motel rooms.
-- Explorable room interiors.
-- Additional guests.
-- More complex guest behaviour.
-- Manager backstory.
-- Motel history and environmental storytelling.
-- More CCTV cameras.
-- Additional puzzles.
-- Branching dialogue.
-- Additional supernatural entities.
-- Expanded exterior environment.
-- More complex survival mechanics.
-
-Do not implement these features without explicit approval.
-
----
-
-# 13. Technical Architecture Guidelines
-
-The project should use a modular architecture.
-
-Suggested systems:
-
-- PlayerController: Player movement and camera.
-- InteractionManager: Detecting and interacting with objects.
-- ShiftManager: In-game clock and shift progression.
-- TaskManager: Tracking shift responsibilities.
-- RoomManager: Room availability and assignments.
-- EventManager: Triggering supernatural incidents.
-- DialogueManager: Handling dialogue sequences.
-- AudioManager: Managing ambience and sound effects.
-
-Use Godot scenes and signals to keep systems independent.
-
-Prefer reusable components over large scripts containing unrelated responsibilities.
-
-Avoid unnecessary abstraction.
-
----
-
-# 14. Development Constraints
-
-This is a game jam project with a limited development timeline.
-
-Prioritize:
-
-1. A complete playable experience.
-2. Interesting core gameplay.
-3. Strong atmosphere.
-4. Clear interactions.
-5. Stable performance.
-6. Visual polish.
-
-Avoid:
-- Open-world environments.
-- Complex combat.
-- Multiplayer.
-- Procedural generation.
-- Large numbers of NPCs.
-- Unnecessary survival mechanics.
-- Features that do not directly support the core gameplay loop.
-
-The first priority is a small but polished playable MVP.
-
----
-
-# 15. Important Instructions for AI Development
-
-Claude Code is responsible for helping implement the game technically.
-
-However, implementation must follow the GDD.
-
-Before adding new mechanics or changing the design:
-
-1. Inspect the existing project.
-2. Refer to this GDD.
-3. Understand the current development milestone.
-4. Explain the proposed implementation.
-5. Implement only the requested feature.
-6. Validate the changes.
-
-Do not independently expand the scope of the game.
-
-Do not replace the established concept with a different horror game.
-
-Do not implement future expansion features prematurely.
-
-When a design decision is unclear, ask before making substantial architectural or gameplay changes.
-
-**The goal is to build ROOM 13 incrementally, maintaining a working playable project throughout development.**
+**The goal is a compact, atmospheric, playable motel job simulator with
+meaningful physical interactions and simple connected management
+systems.**

@@ -1,0 +1,23 @@
+[gd_scene format=3]
+
+
+[sub_resource type="StandardMaterial3D" id="p_bin"]
+albedo_color = Color(0.15, 0.3, 0.2, 1)
+
+[sub_resource type="StandardMaterial3D" id="p_lid"]
+albedo_color = Color(0.1, 0.2, 0.14, 1)
+
+[node name="TrashBin" type="Node3D"]
+
+[node name="Body" type="CSGCylinder3D" parent="."]
+position = Vector3(0, 0.45, 0)
+radius = 0.32
+height = 0.9
+material = SubResource("p_bin")
+use_collision = true
+
+[node name="Lid" type="CSGCylinder3D" parent="."]
+position = Vector3(0, 0.93, 0)
+radius = 0.35
+height = 0.06
+material = SubResource("p_lid")

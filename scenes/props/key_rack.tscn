@@ -8,7 +8,7 @@
 albedo_color = Color(0.8, 0.65, 0.25, 1)
 
 [sub_resource type="BoxShape3D" id="Box_hook"]
-size = Vector3(0.25, 0.4, 0.2)
+size = Vector3(0.14, 0.4, 0.2)
 
 [node name="KeyRack" type="Node3D"]
 script = ExtResource("1_rack")
@@ -18,7 +18,7 @@ size = Vector3(1, 0.6, 0.08)
 material = ExtResource("mat_wood")
 
 [node name="Hook1" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.3, 0, 0.04)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.375, 0, 0.04)
 
 [node name="Key" type="CSGBox3D" parent="Hook1"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.02, 0.02)
@@ -28,7 +28,7 @@ material = SubResource("Mat_key")
 [node name="Label" type="Label3D" parent="Hook1"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.17, 0.005)
 pixel_size = 0.0015
-text = "1"
+text = "01"
 font_size = 96
 
 [node name="Interactable" type="Area3D" parent="Hook1"]
@@ -40,7 +40,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.1)
 shape = SubResource("Box_hook")
 
 [node name="Hook2" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0, 0, 0.04)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.225, 0, 0.04)
 
 [node name="Key" type="CSGBox3D" parent="Hook2"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.02, 0.02)
@@ -50,7 +50,7 @@ material = SubResource("Mat_key")
 [node name="Label" type="Label3D" parent="Hook2"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.17, 0.005)
 pixel_size = 0.0015
-text = "2"
+text = "02"
 font_size = 96
 
 [node name="Interactable" type="Area3D" parent="Hook2"]
@@ -62,7 +62,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.1)
 shape = SubResource("Box_hook")
 
 [node name="Hook3" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3, 0, 0.04)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.075, 0, 0.04)
 
 [node name="Key" type="CSGBox3D" parent="Hook3"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.02, 0.02)
@@ -72,7 +72,7 @@ material = SubResource("Mat_key")
 [node name="Label" type="Label3D" parent="Hook3"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.17, 0.005)
 pixel_size = 0.0015
-text = "3"
+text = "03"
 font_size = 96
 
 [node name="Interactable" type="Area3D" parent="Hook3"]
@@ -80,5 +80,71 @@ script = ExtResource("2_inter")
 prompt_text = "Take key"
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Hook3/Interactable"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.1)
+shape = SubResource("Box_hook")
+
+[node name="Hook4" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.075, 0, 0.04)
+
+[node name="Key" type="CSGBox3D" parent="Hook4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.02, 0.02)
+size = Vector3(0.07, 0.14, 0.02)
+material = SubResource("Mat_key")
+
+[node name="Label" type="Label3D" parent="Hook4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.17, 0.005)
+pixel_size = 0.0015
+text = "04"
+font_size = 96
+
+[node name="Interactable" type="Area3D" parent="Hook4"]
+script = ExtResource("2_inter")
+prompt_text = "Take key"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Hook4/Interactable"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.1)
+shape = SubResource("Box_hook")
+
+[node name="Hook5" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.225, 0, 0.04)
+
+[node name="Key" type="CSGBox3D" parent="Hook5"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.02, 0.02)
+size = Vector3(0.07, 0.14, 0.02)
+material = SubResource("Mat_key")
+
+[node name="Label" type="Label3D" parent="Hook5"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.17, 0.005)
+pixel_size = 0.0015
+text = "05"
+font_size = 96
+
+[node name="Interactable" type="Area3D" parent="Hook5"]
+script = ExtResource("2_inter")
+prompt_text = "Take key"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Hook5/Interactable"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.1)
+shape = SubResource("Box_hook")
+
+[node name="Hook6" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.375, 0, 0.04)
+
+[node name="Key" type="CSGBox3D" parent="Hook6"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.02, 0.02)
+size = Vector3(0.07, 0.14, 0.02)
+material = SubResource("Mat_key")
+
+[node name="Label" type="Label3D" parent="Hook6"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.17, 0.005)
+pixel_size = 0.0015
+text = "06"
+font_size = 96
+
+[node name="Interactable" type="Area3D" parent="Hook6"]
+script = ExtResource("2_inter")
+prompt_text = "Take key"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Hook6/Interactable"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.1)
 shape = SubResource("Box_hook")

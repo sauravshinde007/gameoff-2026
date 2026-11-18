@@ -1,12 +1,12 @@
 class_name EndScreen
 extends CanvasLayer
-## "Shift complete" screen. Shown by main.gd when the clock reaches 6 AM.
+## "Shift complete" screen with the shift report. Shown by main.gd when the shift ends.
 
 signal restart_requested
 
-@export var time_text: String = "6:00 AM"
+@export var time_text: String = "2:00 PM"
 @export var title_text: String = "SHIFT COMPLETE"
-@export_multiline var closing_text: String = "You made it to morning.\nReservation #0013 is still in the system."
+@export_multiline var closing_text: String = "The shift is over."
 @export var fade_seconds: float = 1.5
 
 @onready var content: Control = %Content
@@ -31,7 +31,9 @@ func _ready() -> void:
 	quit_button.pressed.connect(_on_quit_pressed)
 
 
-func show_screen() -> void:
+func show_screen(report: Dictionary = {}) -> void:
+	if not report.is_empty():
+		closing_label.text = ShiftReport.to_text(report)
 	visible = true
 	content.modulate.a = 0.0
 	create_tween().tween_property(content, "modulate:a", 1.0, fade_seconds)

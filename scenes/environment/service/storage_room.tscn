@@ -1,0 +1,634 @@
+[gd_scene format=3]
+
+[ext_resource type="Material" path="res://assets/materials/wall.tres" id="m_wall"]
+[ext_resource type="Material" path="res://assets/materials/concrete.tres" id="m_concrete"]
+[ext_resource type="Material" path="res://assets/materials/wood.tres" id="m_wood"]
+
+[sub_resource type="StandardMaterial3D" id="p_box"]
+albedo_color = Color(0.6, 0.48, 0.32, 1)
+
+[sub_resource type="StandardMaterial3D" id="p_box2"]
+albedo_color = Color(0.5, 0.4, 0.28, 1)
+
+[sub_resource type="StandardMaterial3D" id="p_bulb"]
+albedo_color = Color(0.95, 0.93, 0.8, 1)
+
+[sub_resource type="StandardMaterial3D" id="p_bottle"]
+albedo_color = Color(0.3, 0.55, 0.7, 1)
+
+[sub_resource type="StandardMaterial3D" id="p_bottle2"]
+albedo_color = Color(0.7, 0.3, 0.3, 1)
+
+[sub_resource type="StandardMaterial3D" id="p_metal"]
+albedo_color = Color(0.5, 0.52, 0.55, 1)
+
+[sub_resource type="StandardMaterial3D" id="p_red"]
+albedo_color = Color(0.7, 0.15, 0.12, 1)
+
+[sub_resource type="StandardMaterial3D" id="p_dark"]
+albedo_color = Color(0.1, 0.1, 0.12, 1)
+
+[sub_resource type="StandardMaterial3D" id="p_yellow"]
+albedo_color = Color(0.85, 0.7, 0.2, 1)
+
+[sub_resource type="StandardMaterial3D" id="p_paint"]
+albedo_color = Color(0.35, 0.5, 0.35, 1)
+
+[node name="StorageRoom" type="Node3D"]
+
+[node name="Shell" type="CSGCombiner3D" parent="."]
+use_collision = true
+
+[node name="Floor" type="CSGBox3D" parent="Shell"]
+position = Vector3(0, -0.1, -0)
+size = Vector3(5, 0.2, 4)
+material = ExtResource("m_concrete")
+
+[node name="WallBack" type="CSGBox3D" parent="Shell"]
+position = Vector3(0, 1.5, -2)
+size = Vector3(5, 3, 0.2)
+material = ExtResource("m_wall")
+
+[node name="WallFront" type="CSGBox3D" parent="Shell"]
+position = Vector3(0, 1.5, 2)
+size = Vector3(5, 3, 0.2)
+material = ExtResource("m_wall")
+
+[node name="WallLeft" type="CSGBox3D" parent="Shell"]
+position = Vector3(-2.5, 1.5, 0)
+size = Vector3(0.2, 3, 4)
+material = ExtResource("m_wall")
+
+[node name="WallRight" type="CSGBox3D" parent="Shell"]
+position = Vector3(2.5, 1.5, 0)
+size = Vector3(0.2, 3, 4)
+material = ExtResource("m_wall")
+
+[node name="Ceiling" type="CSGBox3D" parent="Shell"]
+position = Vector3(0, 3.1, 0)
+size = Vector3(5, 0.2, 4)
+material = ExtResource("m_concrete")
+
+[node name="DoorHoleFront" type="CSGBox3D" parent="Shell"]
+position = Vector3(0, 1.075, 2)
+size = Vector3(1, 2.15, 0.6)
+operation = 2
+material = ExtResource("m_wall")
+
+[node name="Light" type="OmniLight3D" parent="." groups=["hallway_lights"]]
+position = Vector3(0, 2.6, 0)
+omni_range = 5.5
+light_energy = 0.7
+
+[node name="Props" type="Node3D" parent="."]
+
+[node name="BackShelf1" type="Node3D" parent="Props"]
+position = Vector3(-1.65, 0, -1.65)
+
+[node name="Post1" type="CSGBox3D" parent="Props/BackShelf1"]
+position = Vector3(-0.72, 0.9, -0.17)
+size = Vector3(0.05, 1.8, 0.05)
+use_collision = true
+material = SubResource("p_metal")
+
+[node name="Post2" type="CSGBox3D" parent="Props/BackShelf1"]
+position = Vector3(0.72, 0.9, -0.17)
+size = Vector3(0.05, 1.8, 0.05)
+use_collision = true
+material = SubResource("p_metal")
+
+[node name="Post3" type="CSGBox3D" parent="Props/BackShelf1"]
+position = Vector3(-0.72, 0.9, 0.17)
+size = Vector3(0.05, 1.8, 0.05)
+use_collision = true
+material = SubResource("p_metal")
+
+[node name="Post4" type="CSGBox3D" parent="Props/BackShelf1"]
+position = Vector3(0.72, 0.9, 0.17)
+size = Vector3(0.05, 1.8, 0.05)
+use_collision = true
+material = SubResource("p_metal")
+
+[node name="Board1" type="CSGBox3D" parent="Props/BackShelf1"]
+position = Vector3(0, 0.2, 0)
+size = Vector3(1.5, 0.04, 0.4)
+use_collision = true
+material = SubResource("p_metal")
+
+[node name="Board2" type="CSGBox3D" parent="Props/BackShelf1"]
+position = Vector3(0, 0.7, 0)
+size = Vector3(1.5, 0.04, 0.4)
+use_collision = true
+material = SubResource("p_metal")
+
+[node name="Board3" type="CSGBox3D" parent="Props/BackShelf1"]
+position = Vector3(0, 1.2, 0)
+size = Vector3(1.5, 0.04, 0.4)
+use_collision = true
+material = SubResource("p_metal")
+
+[node name="Board4" type="CSGBox3D" parent="Props/BackShelf1"]
+position = Vector3(0, 1.7, 0)
+size = Vector3(1.5, 0.04, 0.4)
+use_collision = true
+material = SubResource("p_metal")
+
+[node name="BackShelf1Stuff" type="Node3D" parent="Props"]
+position = Vector3(-1.65, 0, -1.65)
+
+[node name="BoxA" type="CSGBox3D" parent="Props/BackShelf1Stuff"]
+position = Vector3(-0.35, 0.4, 0)
+size = Vector3(0.4, 0.3, 0.3)
+material = SubResource("p_box")
+
+[node name="BoxB" type="CSGBox3D" parent="Props/BackShelf1Stuff"]
+position = Vector3(0.3, 0.38, 0)
+size = Vector3(0.5, 0.26, 0.3)
+material = SubResource("p_box2")
+
+[node name="Bulb1" type="CSGBox3D" parent="Props/BackShelf1Stuff"]
+position = Vector3(-0.5, 0.78, 0.05)
+size = Vector3(0.07, 0.11, 0.07)
+material = SubResource("p_bulb")
+
+[node name="Bulb2" type="CSGBox3D" parent="Props/BackShelf1Stuff"]
+position = Vector3(-0.41, 0.78, 0.05)
+size = Vector3(0.07, 0.11, 0.07)
+material = SubResource("p_bulb")
+
+[node name="Bulb3" type="CSGBox3D" parent="Props/BackShelf1Stuff"]
+position = Vector3(-0.32, 0.78, 0.05)
+size = Vector3(0.07, 0.11, 0.07)
+material = SubResource("p_bulb")
+
+[node name="Bulb4" type="CSGBox3D" parent="Props/BackShelf1Stuff"]
+position = Vector3(-0.23, 0.78, 0.05)
+size = Vector3(0.07, 0.11, 0.07)
+material = SubResource("p_bulb")
+
+[node name="Bulb5" type="CSGBox3D" parent="Props/BackShelf1Stuff"]
+position = Vector3(-0.14, 0.78, 0.05)
+size = Vector3(0.07, 0.11, 0.07)
+material = SubResource("p_bulb")
+
+[node name="BottleA" type="CSGCylinder3D" parent="Props/BackShelf1Stuff"]
+position = Vector3(0.2, 0.87, 0)
+radius = 0.05
+height = 0.25
+material = SubResource("p_bottle")
+
+[node name="BottleB" type="CSGCylinder3D" parent="Props/BackShelf1Stuff"]
+position = Vector3(0.35, 0.87, 0.05)
+radius = 0.05
+height = 0.25
+material = SubResource("p_bottle2")
+
+[node name="BoxC" type="CSGBox3D" parent="Props/BackShelf1Stuff"]
+position = Vector3(0, 1.35, 0)
+size = Vector3(0.7, 0.3, 0.3)
+material = SubResource("p_box")
+
+[node name="BackShelf2" type="Node3D" parent="Props"]
+position = Vector3(0, 0, -1.65)
+
+[node name="Post1" type="CSGBox3D" parent="Props/BackShelf2"]
+position = Vector3(-0.72, 0.9, -0.17)
+size = Vector3(0.05, 1.8, 0.05)
+use_collision = true
+material = SubResource("p_metal")
+
+[node name="Post2" type="CSGBox3D" parent="Props/BackShelf2"]
+position = Vector3(0.72, 0.9, -0.17)
+size = Vector3(0.05, 1.8, 0.05)
+use_collision = true
+material = SubResource("p_metal")
+
+[node name="Post3" type="CSGBox3D" parent="Props/BackShelf2"]
+position = Vector3(-0.72, 0.9, 0.17)
+size = Vector3(0.05, 1.8, 0.05)
+use_collision = true
+material = SubResource("p_metal")
+
+[node name="Post4" type="CSGBox3D" parent="Props/BackShelf2"]
+position = Vector3(0.72, 0.9, 0.17)
+size = Vector3(0.05, 1.8, 0.05)
+use_collision = true
+material = SubResource("p_metal")
+
+[node name="Board1" type="CSGBox3D" parent="Props/BackShelf2"]
+position = Vector3(0, 0.2, 0)
+size = Vector3(1.5, 0.04, 0.4)
+use_collision = true
+material = SubResource("p_metal")
+
+[node name="Board2" type="CSGBox3D" parent="Props/BackShelf2"]
+position = Vector3(0, 0.7, 0)
+size = Vector3(1.5, 0.04, 0.4)
+use_collision = true
+material = SubResource("p_metal")
+
+[node name="Board3" type="CSGBox3D" parent="Props/BackShelf2"]
+position = Vector3(0, 1.2, 0)
+size = Vector3(1.5, 0.04, 0.4)
+use_collision = true
+material = SubResource("p_metal")
+
+[node name="Board4" type="CSGBox3D" parent="Props/BackShelf2"]
+position = Vector3(0, 1.7, 0)
+size = Vector3(1.5, 0.04, 0.4)
+use_collision = true
+material = SubResource("p_metal")
+
+[node name="BackShelf2Stuff" type="Node3D" parent="Props"]
+position = Vector3(0, 0, -1.65)
+
+[node name="BoxA" type="CSGBox3D" parent="Props/BackShelf2Stuff"]
+position = Vector3(-0.35, 0.4, 0)
+size = Vector3(0.4, 0.3, 0.3)
+material = SubResource("p_box")
+
+[node name="BoxB" type="CSGBox3D" parent="Props/BackShelf2Stuff"]
+position = Vector3(0.3, 0.38, 0)
+size = Vector3(0.5, 0.26, 0.3)
+material = SubResource("p_box2")
+
+[node name="Bulb1" type="CSGBox3D" parent="Props/BackShelf2Stuff"]
+position = Vector3(-0.5, 0.78, 0.05)
+size = Vector3(0.07, 0.11, 0.07)
+material = SubResource("p_bulb")
+
+[node name="Bulb2" type="CSGBox3D" parent="Props/BackShelf2Stuff"]
+position = Vector3(-0.41, 0.78, 0.05)
+size = Vector3(0.07, 0.11, 0.07)
+material = SubResource("p_bulb")
+
+[node name="Bulb3" type="CSGBox3D" parent="Props/BackShelf2Stuff"]
+position = Vector3(-0.32, 0.78, 0.05)
+size = Vector3(0.07, 0.11, 0.07)
+material = SubResource("p_bulb")
+
+[node name="Bulb4" type="CSGBox3D" parent="Props/BackShelf2Stuff"]
+position = Vector3(-0.23, 0.78, 0.05)
+size = Vector3(0.07, 0.11, 0.07)
+material = SubResource("p_bulb")
+
+[node name="Bulb5" type="CSGBox3D" parent="Props/BackShelf2Stuff"]
+position = Vector3(-0.14, 0.78, 0.05)
+size = Vector3(0.07, 0.11, 0.07)
+material = SubResource("p_bulb")
+
+[node name="BottleA" type="CSGCylinder3D" parent="Props/BackShelf2Stuff"]
+position = Vector3(0.2, 0.87, 0)
+radius = 0.05
+height = 0.25
+material = SubResource("p_bottle")
+
+[node name="BottleB" type="CSGCylinder3D" parent="Props/BackShelf2Stuff"]
+position = Vector3(0.35, 0.87, 0.05)
+radius = 0.05
+height = 0.25
+material = SubResource("p_bottle2")
+
+[node name="BoxC" type="CSGBox3D" parent="Props/BackShelf2Stuff"]
+position = Vector3(0, 1.35, 0)
+size = Vector3(0.7, 0.3, 0.3)
+material = SubResource("p_box")
+
+[node name="BackShelf3" type="Node3D" parent="Props"]
+position = Vector3(1.65, 0, -1.65)
+
+[node name="Post1" type="CSGBox3D" parent="Props/BackShelf3"]
+position = Vector3(-0.72, 0.9, -0.17)
+size = Vector3(0.05, 1.8, 0.05)
+use_collision = true
+material = SubResource("p_metal")
+
+[node name="Post2" type="CSGBox3D" parent="Props/BackShelf3"]
+position = Vector3(0.72, 0.9, -0.17)
+size = Vector3(0.05, 1.8, 0.05)
+use_collision = true
+material = SubResource("p_metal")
+
+[node name="Post3" type="CSGBox3D" parent="Props/BackShelf3"]
+position = Vector3(-0.72, 0.9, 0.17)
+size = Vector3(0.05, 1.8, 0.05)
+use_collision = true
+material = SubResource("p_metal")
+
+[node name="Post4" type="CSGBox3D" parent="Props/BackShelf3"]
+position = Vector3(0.72, 0.9, 0.17)
+size = Vector3(0.05, 1.8, 0.05)
+use_collision = true
+material = SubResource("p_metal")
+
+[node name="Board1" type="CSGBox3D" parent="Props/BackShelf3"]
+position = Vector3(0, 0.2, 0)
+size = Vector3(1.5, 0.04, 0.4)
+use_collision = true
+material = SubResource("p_metal")
+
+[node name="Board2" type="CSGBox3D" parent="Props/BackShelf3"]
+position = Vector3(0, 0.7, 0)
+size = Vector3(1.5, 0.04, 0.4)
+use_collision = true
+material = SubResource("p_metal")
+
+[node name="Board3" type="CSGBox3D" parent="Props/BackShelf3"]
+position = Vector3(0, 1.2, 0)
+size = Vector3(1.5, 0.04, 0.4)
+use_collision = true
+material = SubResource("p_metal")
+
+[node name="Board4" type="CSGBox3D" parent="Props/BackShelf3"]
+position = Vector3(0, 1.7, 0)
+size = Vector3(1.5, 0.04, 0.4)
+use_collision = true
+material = SubResource("p_metal")
+
+[node name="BackShelf3Stuff" type="Node3D" parent="Props"]
+position = Vector3(1.65, 0, -1.65)
+
+[node name="BoxA" type="CSGBox3D" parent="Props/BackShelf3Stuff"]
+position = Vector3(-0.35, 0.4, 0)
+size = Vector3(0.4, 0.3, 0.3)
+material = SubResource("p_box")
+
+[node name="BoxB" type="CSGBox3D" parent="Props/BackShelf3Stuff"]
+position = Vector3(0.3, 0.38, 0)
+size = Vector3(0.5, 0.26, 0.3)
+material = SubResource("p_box2")
+
+[node name="Bulb1" type="CSGBox3D" parent="Props/BackShelf3Stuff"]
+position = Vector3(-0.5, 0.78, 0.05)
+size = Vector3(0.07, 0.11, 0.07)
+material = SubResource("p_bulb")
+
+[node name="Bulb2" type="CSGBox3D" parent="Props/BackShelf3Stuff"]
+position = Vector3(-0.41, 0.78, 0.05)
+size = Vector3(0.07, 0.11, 0.07)
+material = SubResource("p_bulb")
+
+[node name="Bulb3" type="CSGBox3D" parent="Props/BackShelf3Stuff"]
+position = Vector3(-0.32, 0.78, 0.05)
+size = Vector3(0.07, 0.11, 0.07)
+material = SubResource("p_bulb")
+
+[node name="Bulb4" type="CSGBox3D" parent="Props/BackShelf3Stuff"]
+position = Vector3(-0.23, 0.78, 0.05)
+size = Vector3(0.07, 0.11, 0.07)
+material = SubResource("p_bulb")
+
+[node name="Bulb5" type="CSGBox3D" parent="Props/BackShelf3Stuff"]
+position = Vector3(-0.14, 0.78, 0.05)
+size = Vector3(0.07, 0.11, 0.07)
+material = SubResource("p_bulb")
+
+[node name="BottleA" type="CSGCylinder3D" parent="Props/BackShelf3Stuff"]
+position = Vector3(0.2, 0.87, 0)
+radius = 0.05
+height = 0.25
+material = SubResource("p_bottle")
+
+[node name="BottleB" type="CSGCylinder3D" parent="Props/BackShelf3Stuff"]
+position = Vector3(0.35, 0.87, 0.05)
+radius = 0.05
+height = 0.25
+material = SubResource("p_bottle2")
+
+[node name="BoxC" type="CSGBox3D" parent="Props/BackShelf3Stuff"]
+position = Vector3(0, 1.35, 0)
+size = Vector3(0.7, 0.3, 0.3)
+material = SubResource("p_box")
+
+[node name="SideShelf" type="Node3D" parent="Props"]
+position = Vector3(-2.2, 0, 0)
+rotation = Vector3(0, 1.5708, 0)
+
+[node name="Post1" type="CSGBox3D" parent="Props/SideShelf"]
+position = Vector3(-0.67, 0.8, -0.17)
+size = Vector3(0.05, 1.6, 0.05)
+use_collision = true
+material = SubResource("p_metal")
+
+[node name="Post2" type="CSGBox3D" parent="Props/SideShelf"]
+position = Vector3(0.67, 0.8, -0.17)
+size = Vector3(0.05, 1.6, 0.05)
+use_collision = true
+material = SubResource("p_metal")
+
+[node name="Post3" type="CSGBox3D" parent="Props/SideShelf"]
+position = Vector3(-0.67, 0.8, 0.17)
+size = Vector3(0.05, 1.6, 0.05)
+use_collision = true
+material = SubResource("p_metal")
+
+[node name="Post4" type="CSGBox3D" parent="Props/SideShelf"]
+position = Vector3(0.67, 0.8, 0.17)
+size = Vector3(0.05, 1.6, 0.05)
+use_collision = true
+material = SubResource("p_metal")
+
+[node name="Board1" type="CSGBox3D" parent="Props/SideShelf"]
+position = Vector3(0, 0.2, 0)
+size = Vector3(1.4, 0.04, 0.4)
+use_collision = true
+material = SubResource("p_metal")
+
+[node name="Board2" type="CSGBox3D" parent="Props/SideShelf"]
+position = Vector3(0, 0.7, 0)
+size = Vector3(1.4, 0.04, 0.4)
+use_collision = true
+material = SubResource("p_metal")
+
+[node name="Board3" type="CSGBox3D" parent="Props/SideShelf"]
+position = Vector3(0, 1.2, 0)
+size = Vector3(1.4, 0.04, 0.4)
+use_collision = true
+material = SubResource("p_metal")
+
+[node name="SideStuff" type="Node3D" parent="Props"]
+position = Vector3(-2.2, 0, 0)
+
+[node name="Toolbox" type="CSGBox3D" parent="Props/SideStuff"]
+position = Vector3(0, 0.27, -0.3)
+size = Vector3(0.45, 0.14, 0.22)
+material = SubResource("p_red")
+
+[node name="PaintA" type="CSGCylinder3D" parent="Props/SideStuff"]
+position = Vector3(0, 0.82, 0.3)
+radius = 0.12
+height = 0.2
+material = SubResource("p_paint")
+
+[node name="PaintB" type="CSGCylinder3D" parent="Props/SideStuff"]
+position = Vector3(0, 0.82, -0.2)
+radius = 0.12
+height = 0.2
+material = SubResource("p_yellow")
+
+[node name="Spare" type="CSGBox3D" parent="Props/SideStuff"]
+position = Vector3(0, 1.32, 0.1)
+size = Vector3(0.4, 0.2, 0.5)
+material = SubResource("p_box2")
+
+[node name="Workbench" type="Node3D" parent="Props"]
+position = Vector3(1.95, 0, 0.5)
+rotation = Vector3(0, -1.5708, 0)
+
+[node name="Top" type="CSGBox3D" parent="Props/Workbench"]
+position = Vector3(0, 0.85, 0)
+size = Vector3(1.2, 0.05, 0.55)
+use_collision = true
+material = ExtResource("m_wood")
+
+[node name="Leg1" type="CSGBox3D" parent="Props/Workbench"]
+position = Vector3(-0.55, 0.42, -0.22)
+size = Vector3(0.06, 0.84, 0.06)
+use_collision = true
+material = ExtResource("m_wood")
+
+[node name="Leg2" type="CSGBox3D" parent="Props/Workbench"]
+position = Vector3(0.55, 0.42, -0.22)
+size = Vector3(0.06, 0.84, 0.06)
+use_collision = true
+material = ExtResource("m_wood")
+
+[node name="Leg3" type="CSGBox3D" parent="Props/Workbench"]
+position = Vector3(-0.55, 0.42, 0.22)
+size = Vector3(0.06, 0.84, 0.06)
+use_collision = true
+material = ExtResource("m_wood")
+
+[node name="Leg4" type="CSGBox3D" parent="Props/Workbench"]
+position = Vector3(0.55, 0.42, 0.22)
+size = Vector3(0.06, 0.84, 0.06)
+use_collision = true
+material = ExtResource("m_wood")
+
+[node name="Toolbox" type="CSGBox3D" parent="Props/Workbench"]
+position = Vector3(-0.3, 0.93, 0)
+size = Vector3(0.4, 0.12, 0.2)
+material = SubResource("p_red")
+
+[node name="Hammer" type="CSGBox3D" parent="Props/Workbench"]
+position = Vector3(0.2, 0.89, 0.05)
+size = Vector3(0.25, 0.03, 0.04)
+material = SubResource("p_dark")
+
+[node name="Ladder" type="Node3D" parent="Props"]
+position = Vector3(2.3, 1, -0.95)
+
+[node name="RailA" type="CSGBox3D" parent="Props/Ladder"]
+position = Vector3(0, 0, -0.18)
+size = Vector3(0.04, 2, 0.04)
+material = ExtResource("m_wood")
+
+[node name="RailB" type="CSGBox3D" parent="Props/Ladder"]
+position = Vector3(0, 0, 0.18)
+size = Vector3(0.04, 2, 0.04)
+material = ExtResource("m_wood")
+
+[node name="Rung1" type="CSGBox3D" parent="Props/Ladder"]
+position = Vector3(0, -0.8, 0)
+size = Vector3(0.04, 0.04, 0.36)
+material = ExtResource("m_wood")
+
+[node name="Rung2" type="CSGBox3D" parent="Props/Ladder"]
+position = Vector3(0, -0.48, 0)
+size = Vector3(0.04, 0.04, 0.36)
+material = ExtResource("m_wood")
+
+[node name="Rung3" type="CSGBox3D" parent="Props/Ladder"]
+position = Vector3(0, -0.16, 0)
+size = Vector3(0.04, 0.04, 0.36)
+material = ExtResource("m_wood")
+
+[node name="Rung4" type="CSGBox3D" parent="Props/Ladder"]
+position = Vector3(0, 0.16, 0)
+size = Vector3(0.04, 0.04, 0.36)
+material = ExtResource("m_wood")
+
+[node name="Rung5" type="CSGBox3D" parent="Props/Ladder"]
+position = Vector3(0, 0.48, 0)
+size = Vector3(0.04, 0.04, 0.36)
+material = ExtResource("m_wood")
+
+[node name="Rung6" type="CSGBox3D" parent="Props/Ladder"]
+position = Vector3(0, 0.8, 0)
+size = Vector3(0.04, 0.04, 0.36)
+material = ExtResource("m_wood")
+
+[node name="BoxStack" type="Node3D" parent="Props"]
+position = Vector3(-1.9, 0, 1.4)
+
+[node name="A" type="CSGBox3D" parent="Props/BoxStack"]
+position = Vector3(0, 0.2, 0)
+size = Vector3(0.55, 0.4, 0.5)
+use_collision = true
+material = SubResource("p_box")
+
+[node name="B" type="CSGBox3D" parent="Props/BoxStack"]
+position = Vector3(0.05, 0.6, 0)
+size = Vector3(0.5, 0.4, 0.45)
+use_collision = true
+material = SubResource("p_box2")
+
+[node name="C" type="CSGBox3D" parent="Props/BoxStack"]
+position = Vector3(0.7, 0.2, 0)
+size = Vector3(0.45, 0.4, 0.45)
+use_collision = true
+material = SubResource("p_box2")
+
+[node name="CleaningCorner" type="Node3D" parent="Props"]
+position = Vector3(1.9, 0, 1.5)
+
+[node name="Bucket" type="CSGBox3D" parent="Props/CleaningCorner"]
+position = Vector3(0, 0.15, 0)
+size = Vector3(0.3, 0.3, 0.3)
+use_collision = true
+material = SubResource("p_yellow")
+
+[node name="Mop" type="CSGBox3D" parent="Props/CleaningCorner"]
+position = Vector3(0.05, 0.75, 0)
+size = Vector3(0.03, 1.5, 0.03)
+material = ExtResource("m_wood")
+
+[node name="Label" type="Label3D" parent="Props/BackShelf1Stuff/BoxA"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.153)
+pixel_size = 0.0022
+modulate = Color(0.16, 0.1, 0.05, 1)
+outline_size = 0
+text = "BULBS"
+font_size = 40
+
+[node name="Label" type="Label3D" parent="Props/BackShelf2Stuff/BoxC"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.153)
+pixel_size = 0.0022
+modulate = Color(0.16, 0.1, 0.05, 1)
+outline_size = 0
+text = "PILLOWS"
+font_size = 40
+
+[node name="Label" type="Label3D" parent="Props/BackShelf3Stuff/BoxB"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.153)
+pixel_size = 0.0022
+modulate = Color(0.16, 0.1, 0.05, 1)
+outline_size = 0
+text = "SOAP"
+font_size = 40
+
+[node name="Label" type="Label3D" parent="Props/BoxStack/A"]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 0, 0, -0.253)
+pixel_size = 0.0022
+modulate = Color(0.16, 0.1, 0.05, 1)
+outline_size = 0
+text = "FUEL"
+font_size = 40
+
+[node name="Label" type="Label3D" parent="Props/CleaningCorner/Bucket"]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 0, 0, -0.153)
+pixel_size = 0.0016
+modulate = Color(0.16, 0.1, 0.05, 1)
+outline_size = 0
+text = "CLEANING"
+font_size = 40

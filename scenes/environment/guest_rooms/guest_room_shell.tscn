@@ -1,0 +1,99 @@
+[gd_scene format=3]
+
+[ext_resource type="Material" path="res://assets/materials/wall.tres" id="m_wall"]
+[ext_resource type="Material" path="res://assets/materials/carpet.tres" id="m_carpet"]
+[ext_resource type="Material" path="res://assets/materials/concrete.tres" id="m_concrete"]
+[ext_resource type="Material" path="res://assets/materials/wood.tres" id="m_wood"]
+[ext_resource type="Script" path="res://scripts/environment/guest_room_shell.gd" id="script"]
+[ext_resource type="PackedScene" path="res://scenes/environment/modules/window_unit.tscn" id="window"]
+[ext_resource type="PackedScene" path="res://scenes/environment/modules/door_frame.tscn" id="frame"]
+
+[sub_resource type="StandardMaterial3D" id="m_plate"]
+albedo_color = Color(0.1, 0.09, 0.08, 1)
+
+[node name="GuestRoomShell" type="Node3D"]
+script = ExtResource("script")
+
+[node name="Shell" type="CSGCombiner3D" parent="."]
+use_collision = true
+
+[node name="Floor" type="CSGBox3D" parent="Shell"]
+position = Vector3(0, -0.1, 0)
+size = Vector3(4.5, 0.2, 6)
+material = ExtResource("m_carpet")
+
+[node name="WallBack" type="CSGBox3D" parent="Shell"]
+position = Vector3(0, 1.5, -3)
+size = Vector3(4.5, 3, 0.2)
+material = ExtResource("m_wall")
+
+[node name="WallFront" type="CSGBox3D" parent="Shell"]
+position = Vector3(0, 1.5, 3)
+size = Vector3(4.5, 3, 0.2)
+material = ExtResource("m_wall")
+
+[node name="WallLeft" type="CSGBox3D" parent="Shell"]
+position = Vector3(-2.25, 1.5, 0)
+size = Vector3(0.2, 3, 6)
+material = ExtResource("m_wall")
+
+[node name="WallRight" type="CSGBox3D" parent="Shell"]
+position = Vector3(2.25, 1.5, 0)
+size = Vector3(0.2, 3, 6)
+material = ExtResource("m_wall")
+
+[node name="Ceiling" type="CSGBox3D" parent="Shell"]
+position = Vector3(0, 3.1, 0)
+size = Vector3(4.5, 0.2, 6)
+material = ExtResource("m_concrete")
+
+[node name="DoorHole" type="CSGBox3D" parent="Shell"]
+position = Vector3(0, 1.075, 3)
+size = Vector3(1, 2.15, 0.6)
+operation = 2
+material = ExtResource("m_wall")
+
+[node name="WindowHole" type="CSGBox3D" parent="Shell"]
+position = Vector3(1.4, 1.5, 3)
+size = Vector3(1, 1.2, 0.6)
+operation = 2
+material = ExtResource("m_wall")
+
+[node name="Trim" type="Node3D" parent="."]
+
+[node name="TrimTop" type="CSGBox3D" parent="Trim"]
+position = Vector3(0, 2.88, 3.13)
+size = Vector3(4.5, 0.2, 0.06)
+material = ExtResource("m_wood")
+
+[node name="TrimBase" type="CSGBox3D" parent="Trim"]
+position = Vector3(0, 0.13, 3.13)
+size = Vector3(4.5, 0.26, 0.06)
+material = ExtResource("m_wood")
+
+[node name="DoorFrame" parent="." instance=ExtResource("frame")]
+position = Vector3(0, 0, 3)
+
+[node name="Window" parent="." instance=ExtResource("window")]
+position = Vector3(1.4, 1.5, 3)
+size = Vector2(1, 1.2)
+
+[node name="NumberPlate" type="Node3D" parent="."]
+position = Vector3(0, 2.55, 3.12)
+
+[node name="Plate" type="CSGBox3D" parent="NumberPlate"]
+position = Vector3(0, 0, 0)
+size = Vector3(0.5, 0.22, 0.04)
+material = SubResource("m_plate")
+
+[node name="Label" type="Label3D" parent="NumberPlate"]
+position = Vector3(0, 0, 0.03)
+pixel_size = 0.004
+text = "01"
+font_size = 64
+modulate = Color(1, 0.8, 0.35, 1)
+
+[node name="Light" type="OmniLight3D" parent="." groups=["hallway_lights"]]
+position = Vector3(0, 2.6, 0)
+omni_range = 5.5
+light_energy = 0.7

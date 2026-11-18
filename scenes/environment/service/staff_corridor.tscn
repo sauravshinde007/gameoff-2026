@@ -1,0 +1,52 @@
+[gd_scene format=3]
+
+[ext_resource type="Material" path="res://assets/materials/wall.tres" id="m_wall"]
+[ext_resource type="Material" path="res://assets/materials/carpet.tres" id="m_carpet"]
+[ext_resource type="Material" path="res://assets/materials/concrete.tres" id="m_concrete"]
+
+[node name="StaffCorridor" type="Node3D"]
+
+[node name="Shell" type="CSGCombiner3D" parent="."]
+use_collision = true
+
+[node name="Floor" type="CSGBox3D" parent="Shell"]
+position = Vector3(3, -0.1, 5.55)
+size = Vector3(2, 0.2, 4.9)
+material = ExtResource("m_carpet")
+
+[node name="WallWest" type="CSGBox3D" parent="Shell"]
+position = Vector3(2, 1.5, 5.5)
+size = Vector3(0.2, 3, 5)
+material = ExtResource("m_wall")
+
+[node name="WallEast" type="CSGBox3D" parent="Shell"]
+position = Vector3(4, 1.5, 5.5)
+size = Vector3(0.2, 3, 5)
+material = ExtResource("m_wall")
+
+[node name="WallEnd" type="CSGBox3D" parent="Shell"]
+position = Vector3(3, 1.5, 8)
+size = Vector3(2.2, 3, 0.2)
+material = ExtResource("m_wall")
+
+[node name="Ceiling" type="CSGBox3D" parent="Shell"]
+position = Vector3(3, 3.1, 5.5)
+size = Vector3(2.2, 0.2, 5.2)
+material = ExtResource("m_concrete")
+
+[node name="LaundryHole" type="CSGBox3D" parent="Shell"]
+position = Vector3(2, 1.075, 5.5)
+size = Vector3(0.6, 2.15, 1)
+operation = 2
+material = ExtResource("m_wall")
+
+[node name="YardHole" type="CSGBox3D" parent="Shell"]
+position = Vector3(4, 1.075, 5.5)
+size = Vector3(0.6, 2.15, 1)
+operation = 2
+material = ExtResource("m_wall")
+
+[node name="Light" type="OmniLight3D" parent="." groups=["hallway_lights"]]
+position = Vector3(3, 2.6, 5.5)
+omni_range = 5.0
+light_energy = 0.7

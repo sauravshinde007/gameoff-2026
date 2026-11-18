@@ -19,3 +19,10 @@
 - **ambientCG** — https://ambientcg.com — CC0.
   Environment textures (wallpaper, tiles, carpet, wood, concrete, asphalt) and clothing fabrics.
 - **VCR OSD Mono** font (see `assets/fonts/`).
+- **PSX Retro Style Tree Pack v1.1** by elegantcrow — https://elegantcrow.itch.io/psx-retro-style-tree-pack
+  Trees and bushes (`assets/models/props/trees/`, source zip `assets/models/props/tree_pack_1.1.zip`).
+  TODO: confirm the licence/credit terms on the itch.io page (no licence file is included in the zip).
+- **PSX Style Cars** by GGBot — https://ggbot.itch.io/psx-style-cars
+  Parked and highway cars (`assets/models/props/cars_ggbot/`, source zip
+  `assets/models/props/PSX_Style_Cars_by_GGBot_(August2023).zip`; `.blend` files and sounds not copied).
+  TODO: confirm the licence/credit terms on the itch.io page (no licence file is included in the zip).

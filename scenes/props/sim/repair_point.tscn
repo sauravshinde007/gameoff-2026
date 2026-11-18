@@ -1,0 +1,20 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/sim/repair_point.gd" id="1_s"]
+[ext_resource type="Script" path="res://scripts/components/interactable.gd" id="2_inter"]
+
+[sub_resource type="StandardMaterial3D" id="Mat_box"]
+albedo_color = Color(0.75, 0.15, 0.12, 1)
+
+[node name="RepairPoint" type="Node3D"]
+script = ExtResource("1_s")
+
+[node name="Toolbox" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.09, 0)
+size = Vector3(0.38, 0.18, 0.2)
+material = SubResource("Mat_box")
+
+[node name="Interactable" type="Area3D" parent="."]
+script = ExtResource("2_inter")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Interactable"]

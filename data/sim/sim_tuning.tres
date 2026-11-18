@@ -1,0 +1,52 @@
+[gd_resource type="Resource" script_class="SimTuning" format=3 uid="uid://dqpb2bgm4m5b"]
+
+[ext_resource type="Script" uid="uid://j843cvda74dt" path="res://scripts/resources/sim_tuning.gd" id="1_tune"]
+
+[resource]
+script = ExtResource("1_tune")
+start_satisfaction = 60
+delta_check_in = 5
+delta_request_completed = 10
+delta_complaint_resolved = 10
+delta_request_ignored = -15
+delta_deadline_missed = -10
+delta_waited_too_long = -20
+request_deadline_minutes = 50
+urgent_request_deadline_minutes = 30
+wakeup_delay_minutes = 90
+wakeup_grace_minutes = 15
+generator_start_fuel = 70.0
+generator_drain_per_hour = 12.0
+generator_low_fuel = 30.0
+generator_critical_fuel = 10.0
+generator_fuel_per_can = 50.0
+repair_seconds = 4.0
+call_timeout_seconds = 40.0
+booking_arrival_delay_minutes = 60
+director_first_event_minutes = 15
+director_interval_minutes = 30
+director_max_optional = 4
+director_max_mandatory = 4
+director_max_urgent = 2
+director_max_pending_calls = 2
+director_max_faults = 1
+max_active_guests = 5
+first_spawn_delay_minutes = 25
+spawn_interval_minutes = 45
+min_stay_minutes = 150
+preexisting_stay_minutes = 600
+desk_patience_seconds = 120.0
+director_weights = {
+"cancellation": 1,
+"enquiry": 1,
+"fault:bulb": 1,
+"fault:repair": 1,
+"reservation": 3,
+"service:cleaning": 1,
+"service:coffee": 2,
+"service:ice": 2,
+"service:maintenance": 1,
+"service:pillows": 2,
+"service:towels": 3,
+"service:wakeup": 2
+}

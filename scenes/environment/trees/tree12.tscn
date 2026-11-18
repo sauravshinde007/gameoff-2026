@@ -1,0 +1,11 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/environment/psx_foliage.gd" id="script"]
+[ext_resource type="Texture2D" path="res://assets/models/props/trees/textures/tree12.png" id="tex"]
+[ext_resource type="PackedScene" path="res://assets/models/props/trees/models/tree12.fbx" id="model"]
+
+[node name="PsxFoliage" type="Node3D"]
+script = ExtResource("script")
+texture = ExtResource("tex")
+
+[node name="Model" parent="." instance=ExtResource("model")]

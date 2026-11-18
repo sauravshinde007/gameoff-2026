@@ -4,10 +4,6 @@
 [ext_resource type="Script" path="res://scripts/components/interactable.gd" id="2_inter"]
 [ext_resource type="PackedScene" path="res://assets/models/characters/mysterious_guest.glb" id="7_model"]
 [ext_resource type="Script" path="res://scripts/components/retro_model.gd" id="8_retro"]
-[ext_resource type="Resource" path="res://data/dialogue/room13_arrive.tres" id="3_arrive"]
-[ext_resource type="Resource" path="res://data/dialogue/room13_remind.tres" id="4_remind"]
-[ext_resource type="Resource" path="res://data/dialogue/room13_prompt.tres" id="5_prompt"]
-[ext_resource type="Resource" path="res://data/dialogue/room13_refusal.tres" id="6_refusal"]
 
 [sub_resource type="CapsuleShape3D" id="Cap_body"]
 radius = 0.3
@@ -18,10 +14,6 @@ size = Vector3(0.9, 2.0, 0.9)
 
 [node name="MysteriousGuest" type="StaticBody3D"]
 script = ExtResource("1_guest")
-dialogue_arrive = ExtResource("3_arrive")
-dialogue_remind = ExtResource("4_remind")
-dialogue_prompt = ExtResource("5_prompt")
-dialogue_refusal = ExtResource("6_refusal")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)

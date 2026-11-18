@@ -20,7 +20,7 @@ albedo_color = Color(0.2, 0.2, 0.22, 1)
 [node name="Exterior" type="Node3D"]
 
 [node name="Ground" type="CSGBox3D" parent="."]
-position = Vector3(0, -0.25, 0)
+position = Vector3(0, -0.12, 0)
 size = Vector3(60, 0.2, 60)
 use_collision = true
 collision_layer = 1
@@ -28,34 +28,34 @@ collision_mask = 0
 material = SubResource("Mat_ground")
 
 [node name="ParkingLot" type="CSGBox3D" parent="."]
-position = Vector3(0, -0.13, -8)
+position = Vector3(0, -0.03, -8)
 size = Vector3(12, 0.04, 8)
 material = ExtResource("mat_lot")
 
 [node name="ParkingLine1" type="CSGBox3D" parent="."]
-position = Vector3(-4, -0.105, -9)
+position = Vector3(-4, 0.0, -9)
 size = Vector3(0.1, 0.01, 4)
 material = SubResource("Mat_line")
 
 [node name="ParkingLine2" type="CSGBox3D" parent="."]
-position = Vector3(-1.33, -0.105, -9)
+position = Vector3(-1.33, 0.0, -9)
 size = Vector3(0.1, 0.01, 4)
 material = SubResource("Mat_line")
 
 [node name="ParkingLine3" type="CSGBox3D" parent="."]
-position = Vector3(1.33, -0.105, -9)
+position = Vector3(1.33, 0.0, -9)
 size = Vector3(0.1, 0.01, 4)
 material = SubResource("Mat_line")
 
 [node name="ParkingLine4" type="CSGBox3D" parent="."]
-position = Vector3(4, -0.105, -9)
+position = Vector3(4, 0.0, -9)
 size = Vector3(0.1, 0.01, 4)
 material = SubResource("Mat_line")
 
 ; Parked nose-in (nose toward the motel) in the parking bay next to the sign. Origin = bottom
-; centre of the car; the lot surface is at y = -0.11.
+; centre of the car; the lot surface is at y = -0.01.
 [node name="Car" parent="." instance=ExtResource("2_car")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.67, -0.11, -9)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.67, -0.01, -9)
 script = ExtResource("3_retro")
 
 [node name="SignPole" type="CSGBox3D" parent="."]

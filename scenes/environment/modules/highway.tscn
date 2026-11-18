@@ -1,0 +1,192 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/environment/highway_traffic.gd" id="traffic"]
+[ext_resource type="PackedScene" path="res://scenes/props/vehicles/ggbot/car01_blue.tscn" id="car0"]
+[ext_resource type="PackedScene" path="res://scenes/props/vehicles/ggbot/car01_red.tscn" id="car1"]
+[ext_resource type="PackedScene" path="res://scenes/props/vehicles/ggbot/car01_gray.tscn" id="car2"]
+[ext_resource type="PackedScene" path="res://scenes/props/vehicles/ggbot/car02_red.tscn" id="car3"]
+[ext_resource type="PackedScene" path="res://scenes/props/vehicles/ggbot/car02_black.tscn" id="car4"]
+[ext_resource type="PackedScene" path="res://scenes/props/vehicles/ggbot/car03_yellow.tscn" id="car5"]
+[ext_resource type="PackedScene" path="res://scenes/props/vehicles/ggbot/car03_red.tscn" id="car6"]
+[ext_resource type="PackedScene" path="res://scenes/props/vehicles/ggbot/car04_lightgrey.tscn" id="car7"]
+[ext_resource type="PackedScene" path="res://scenes/props/vehicles/ggbot/car04_grey.tscn" id="car8"]
+[ext_resource type="PackedScene" path="res://scenes/props/vehicles/ggbot/car05_grey.tscn" id="car9"]
+[ext_resource type="PackedScene" path="res://scenes/props/vehicles/ggbot/car05_green.tscn" id="car10"]
+[ext_resource type="PackedScene" path="res://scenes/props/vehicles/ggbot/car07_brown.tscn" id="car11"]
+[ext_resource type="PackedScene" path="res://scenes/props/vehicles/ggbot/car07_black.tscn" id="car12"]
+[ext_resource type="PackedScene" path="res://scenes/props/vehicles/ggbot/car07_green.tscn" id="car13"]
+[ext_resource type="PackedScene" path="res://scenes/props/vehicles/ggbot/car08_grey.tscn" id="car14"]
+[ext_resource type="PackedScene" path="res://scenes/props/vehicles/ggbot/car08_purple.tscn" id="car15"]
+[ext_resource type="PackedScene" path="res://scenes/props/vehicles/parked_car.tscn" id="oldcar"]
+
+[sub_resource type="StandardMaterial3D" id="p_asphalt"]
+albedo_color = Color(0.14, 0.14, 0.16, 1)
+
+[sub_resource type="StandardMaterial3D" id="p_yellow"]
+albedo_color = Color(0.85, 0.7, 0.15, 1)
+
+[sub_resource type="StandardMaterial3D" id="p_white"]
+albedo_color = Color(0.8, 0.8, 0.8, 1)
+
+[sub_resource type="StandardMaterial3D" id="p_rail"]
+albedo_color = Color(0.5, 0.52, 0.55, 1)
+
+[sub_resource type="StandardMaterial3D" id="p_post"]
+albedo_color = Color(0.3, 0.3, 0.32, 1)
+
+[node name="Highway" type="Node3D"]
+
+[node name="Road" type="CSGBox3D" parent="."]
+position = Vector3(-2.9, -0.06, 18)
+size = Vector3(100, 0.1, 8.4)
+material = SubResource("p_asphalt")
+
+[node name="Apron" type="CSGBox3D" parent="."]
+position = Vector3(-14, -0.06, 12)
+size = Vector3(8, 0.1, 4)
+material = SubResource("p_asphalt")
+
+[node name="CentreA" type="CSGBox3D" parent="."]
+position = Vector3(-2.9, -0.005, 17.9)
+size = Vector3(100, 0.01, 0.1)
+material = SubResource("p_yellow")
+
+[node name="CentreB" type="CSGBox3D" parent="."]
+position = Vector3(-2.9, -0.005, 18.1)
+size = Vector3(100, 0.01, 0.1)
+material = SubResource("p_yellow")
+
+[node name="EdgeNorth" type="CSGBox3D" parent="."]
+position = Vector3(-2.9, -0.005, 14.1)
+size = Vector3(100, 0.01, 0.1)
+material = SubResource("p_white")
+
+[node name="EdgeSouth" type="CSGBox3D" parent="."]
+position = Vector3(-2.9, -0.005, 21.9)
+size = Vector3(100, 0.01, 0.1)
+material = SubResource("p_white")
+
+[node name="GuardrailRailWest" type="Node3D" parent="."]
+position = Vector3(-32.75, 0, 13.3)
+
+[node name="Rail" type="CSGBox3D" parent="GuardrailRailWest"]
+position = Vector3(0, 0.65, 0)
+size = Vector3(28.5, 0.2, 0.06)
+material = SubResource("p_rail")
+
+[node name="Post0" type="CSGBox3D" parent="GuardrailRailWest"]
+position = Vector3(-14.25, 0.4, 0)
+size = Vector3(0.1, 0.8, 0.1)
+material = SubResource("p_post")
+
+[node name="Post1" type="CSGBox3D" parent="GuardrailRailWest"]
+position = Vector3(-10.25, 0.4, 0)
+size = Vector3(0.1, 0.8, 0.1)
+material = SubResource("p_post")
+
+[node name="Post2" type="CSGBox3D" parent="GuardrailRailWest"]
+position = Vector3(-6.25, 0.4, 0)
+size = Vector3(0.1, 0.8, 0.1)
+material = SubResource("p_post")
+
+[node name="Post3" type="CSGBox3D" parent="GuardrailRailWest"]
+position = Vector3(-2.25, 0.4, 0)
+size = Vector3(0.1, 0.8, 0.1)
+material = SubResource("p_post")
+
+[node name="Post4" type="CSGBox3D" parent="GuardrailRailWest"]
+position = Vector3(1.75, 0.4, 0)
+size = Vector3(0.1, 0.8, 0.1)
+material = SubResource("p_post")
+
+[node name="Post5" type="CSGBox3D" parent="GuardrailRailWest"]
+position = Vector3(5.75, 0.4, 0)
+size = Vector3(0.1, 0.8, 0.1)
+material = SubResource("p_post")
+
+[node name="Post6" type="CSGBox3D" parent="GuardrailRailWest"]
+position = Vector3(9.75, 0.4, 0)
+size = Vector3(0.1, 0.8, 0.1)
+material = SubResource("p_post")
+
+[node name="Post7" type="CSGBox3D" parent="GuardrailRailWest"]
+position = Vector3(13.75, 0.4, 0)
+size = Vector3(0.1, 0.8, 0.1)
+material = SubResource("p_post")
+
+[node name="GuardrailRailEast" type="Node3D" parent="."]
+position = Vector3(16.25, 0, 13.3)
+
+[node name="Rail" type="CSGBox3D" parent="GuardrailRailEast"]
+position = Vector3(0, 0.65, 0)
+size = Vector3(51.5, 0.2, 0.06)
+material = SubResource("p_rail")
+
+[node name="Post0" type="CSGBox3D" parent="GuardrailRailEast"]
+position = Vector3(-25.75, 0.4, 0)
+size = Vector3(0.1, 0.8, 0.1)
+material = SubResource("p_post")
+
+[node name="Post1" type="CSGBox3D" parent="GuardrailRailEast"]
+position = Vector3(-21.75, 0.4, 0)
+size = Vector3(0.1, 0.8, 0.1)
+material = SubResource("p_post")
+
+[node name="Post2" type="CSGBox3D" parent="GuardrailRailEast"]
+position = Vector3(-17.75, 0.4, 0)
+size = Vector3(0.1, 0.8, 0.1)
+material = SubResource("p_post")
+
+[node name="Post3" type="CSGBox3D" parent="GuardrailRailEast"]
+position = Vector3(-13.75, 0.4, 0)
+size = Vector3(0.1, 0.8, 0.1)
+material = SubResource("p_post")
+
+[node name="Post4" type="CSGBox3D" parent="GuardrailRailEast"]
+position = Vector3(-9.75, 0.4, 0)
+size = Vector3(0.1, 0.8, 0.1)
+material = SubResource("p_post")
+
+[node name="Post5" type="CSGBox3D" parent="GuardrailRailEast"]
+position = Vector3(-5.75, 0.4, 0)
+size = Vector3(0.1, 0.8, 0.1)
+material = SubResource("p_post")
+
+[node name="Post6" type="CSGBox3D" parent="GuardrailRailEast"]
+position = Vector3(-1.75, 0.4, 0)
+size = Vector3(0.1, 0.8, 0.1)
+material = SubResource("p_post")
+
+[node name="Post7" type="CSGBox3D" parent="GuardrailRailEast"]
+position = Vector3(2.25, 0.4, 0)
+size = Vector3(0.1, 0.8, 0.1)
+material = SubResource("p_post")
+
+[node name="Post8" type="CSGBox3D" parent="GuardrailRailEast"]
+position = Vector3(6.25, 0.4, 0)
+size = Vector3(0.1, 0.8, 0.1)
+material = SubResource("p_post")
+
+[node name="Post9" type="CSGBox3D" parent="GuardrailRailEast"]
+position = Vector3(10.25, 0.4, 0)
+size = Vector3(0.1, 0.8, 0.1)
+material = SubResource("p_post")
+
+[node name="Post10" type="CSGBox3D" parent="GuardrailRailEast"]
+position = Vector3(14.25, 0.4, 0)
+size = Vector3(0.1, 0.8, 0.1)
+material = SubResource("p_post")
+
+[node name="Post11" type="CSGBox3D" parent="GuardrailRailEast"]
+position = Vector3(18.25, 0.4, 0)
+size = Vector3(0.1, 0.8, 0.1)
+material = SubResource("p_post")
+
+[node name="Post12" type="CSGBox3D" parent="GuardrailRailEast"]
+position = Vector3(22.25, 0.4, 0)
+size = Vector3(0.1, 0.8, 0.1)
+material = SubResource("p_post")
+
+[node name="Traffic" type="Node3D" parent="."]
+script = ExtResource("traffic")
+car_scenes = Array[PackedScene]([ExtResource("car0"), ExtResource("car1"), ExtResource("car2"), ExtResource("car3"), ExtResource("car4"), ExtResource("car5"), ExtResource("car6"), ExtResource("car7"), ExtResource("car8"), ExtResource("car9"), ExtResource("car10"), ExtResource("car11"), ExtResource("car12"), ExtResource("car13"), ExtResource("car14"), ExtResource("car15"), ExtResource("oldcar")])

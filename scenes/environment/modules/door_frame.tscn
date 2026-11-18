@@ -1,0 +1,20 @@
+[gd_scene format=3]
+
+[ext_resource type="Material" path="res://assets/materials/wood.tres" id="m_wood"]
+
+[node name="DoorFrame" type="Node3D"]
+
+[node name="JambLeft" type="CSGBox3D" parent="."]
+position = Vector3(-0.53, 1.08, 0)
+size = Vector3(0.08, 2.16, 0.32)
+material = ExtResource("m_wood")
+
+[node name="JambRight" type="CSGBox3D" parent="."]
+position = Vector3(0.53, 1.08, 0)
+size = Vector3(0.08, 2.16, 0.32)
+material = ExtResource("m_wood")
+
+[node name="Lintel" type="CSGBox3D" parent="."]
+position = Vector3(0, 2.19, 0)
+size = Vector3(1.14, 0.1, 0.32)
+material = ExtResource("m_wood")

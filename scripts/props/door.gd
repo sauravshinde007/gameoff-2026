@@ -1,12 +1,22 @@
 class_name Door
 extends Node3D
-## Static guest-room / entrance door. Never opens; shows room status on interact.
-## room_id > 0 = guest room (status from RoomManager). room_id <= 0 = entrance (always locked).
+## Guest-room / entrance door. Static (locked, shows room status) unless `openable` is set.
+## room_id > 0 = guest room (status from RoomManager). room_id <= 0 = entrance.
 
 @export var room_id: int = 0
+## Prompt/message name for non-guest-room doors (office, laundry...). Empty = "Entrance" or "Room NN".
+@export var door_name: String = ""
 @export var door_size: Vector3 = Vector3(0.9, 2.1, 0.1)
 @export var handle_turn_degrees: float = 45.0
 @export var handle_turn_seconds: float = 0.6
+@export_group("Opening")
+## When true, interacting swings the door open/closed instead of showing the locked message.
+@export var openable: bool = false
+## Once this EventManager flag is set the door closes and behaves as locked. Empty = never locks.
+@export var lock_flag: StringName = &""
+## Swing angle. Positive opens away from the labelled (front) face.
+@export var open_degrees: float = 95.0
+@export var open_seconds: float = 0.5
 
 @onready var hinge: Node3D = $Hinge
 @onready var leaf: CSGBox3D = $Hinge/Leaf
@@ -16,14 +26,50 @@ extends Node3D
 @onready var shape: CollisionShape3D = $Interactable/CollisionShape3D
 
 var _handle_tween: Tween
+var _swing_tween: Tween
+var _is_open: bool = false
+## +1 = swings away from the labelled (front) face, -1 = away from the back face.
+var _swing_sign: float = 1.0
 
 
 func _ready() -> void:
 	_apply_size()
-	label.text = str(room_id)
+	if room_id > 0:
+		add_to_group(&"room_doors")
+	elif room_id == -1:
+		add_to_group(&"entrance_doors")
+	label.text = "%02d" % room_id
 	label.visible = room_id > 0
 	interactable.interacted.connect(_on_interacted)
 	RoomManager.room_status_changed.connect(_on_room_status_changed)
+	EventManager.flag_set.connect(_on_flag_set)
+	_refresh_prompt()
+
+
+func is_locked() -> bool:
+	if not openable:
+		return true
+	# A guest's room stays locked while they have it. Guests open their own door through set_open().
+	if room_id > 0 and RoomManager.get_status(room_id) == RoomData.Status.OCCUPIED:
+		return true
+	return lock_flag != &"" and EventManager.has_flag(lock_flag)
+
+
+## `opener` (player or guest) decides the swing direction: the door always swings away from them,
+## so it opens from both sides. Closing swings back along the same arc.
+func set_open(open: bool, opener: Node3D = null) -> void:
+	if open == _is_open:
+		return
+	_is_open = open
+	if open and opener != null:
+		var offset: Vector3 = opener.global_position - global_position
+		_swing_sign = 1.0 if offset.dot(global_basis.z) >= 0.0 else -1.0
+	if _swing_tween != null:
+		_swing_tween.kill()
+	AudioManager.play_sfx(&"door_open" if open else &"door_close", global_position)
+	var target: float = deg_to_rad(open_degrees) * _swing_sign if open else 0.0
+	_swing_tween = create_tween()
+	_swing_tween.tween_property(hinge, "rotation:y", target, open_seconds)
 	_refresh_prompt()
 
 
@@ -54,17 +100,29 @@ func _apply_size() -> void:
 
 
 func _status_text() -> String:
+	if not is_locked():
+		return "%s – %s" % [_display_name(), "Close" if _is_open else "Open"]
 	if room_id <= 0:
-		return "Entrance – Locked"
-	var room_name: String = "Room %d" % room_id
+		return "%s – Locked" % _display_name()
+	var room_name: String = "Room %02d" % room_id
 	match RoomManager.get_status(room_id):
-		RoomData.Status.AVAILABLE:
+		RoomData.Status.AVAILABLE, RoomData.Status.RESERVED:
 			return "%s – Vacant" % room_name
 		RoomData.Status.OCCUPIED:
 			return "%s – Occupied" % room_name
+		RoomData.Status.NEEDS_CLEANING:
+			return "%s – Needs cleaning" % room_name
+		RoomData.Status.MAINTENANCE:
+			return "%s – Maintenance" % room_name
 		RoomData.Status.OUT_OF_ORDER:
-			return "%s – Out of order" % room_name
+			return "%s – Out of service" % room_name
 	return "%s – Locked" % room_name
+
+
+func _display_name() -> String:
+	if door_name != "":
+		return door_name
+	return "Room %02d" % room_id if room_id > 0 else "Entrance"
 
 
 func _refresh_prompt() -> void:
@@ -76,20 +134,26 @@ func _on_room_status_changed(changed_id: int, _status: int) -> void:
 		_refresh_prompt()
 
 
-func _on_interacted(_by: Node) -> void:
+func _on_flag_set(flag: StringName) -> void:
+	if openable and flag == lock_flag:
+		set_open(false)
+		_refresh_prompt()
+
+
+func _on_interacted(by: Node) -> void:
+	if not is_locked():
+		set_open(not _is_open, by as Node3D)
+		return
 	var msg: String
 	if room_id <= 0:
-		if EventManager.has_flag(&"guest_vanished"):
-			msg = "*The entrance door is still locked.*"
-		else:
-			msg = "The entrance door is locked."
+		msg = "The %s door is locked." % _display_name().to_lower()
 	else:
 		match RoomManager.get_status(room_id):
 			RoomData.Status.AVAILABLE:
-				msg = "Room %d is vacant. The door is locked." % room_id
+				msg = "Room %02d is vacant. The door is locked." % room_id
 			RoomData.Status.OCCUPIED:
-				msg = "Room %d is occupied. Better not disturb them." % room_id
+				msg = "Room %02d is occupied. Better not disturb them." % room_id
 			_:
-				msg = "Room %d is closed." % room_id
+				msg = "Room %02d is closed." % room_id
 	AudioManager.play_sfx(&"door_locked", global_position)
 	get_tree().call_group("hud", "show_message", msg)
