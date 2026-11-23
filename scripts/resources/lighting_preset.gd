@@ -14,6 +14,10 @@ extends Resource
 @export var fog_depth_end: float = 80.0
 ## > 1 keeps the near field clear longer and thickens toward the end (gradual Silent Hill-style wall).
 @export var fog_depth_curve: float = 1.5
+## Screen-space ambient occlusion: darkens corners, wall/floor seams and contact areas under
+## furniture. 0 = off. Main fix for the flat look when ambient light is strong.
+@export_range(0.0, 4.0) var ssao_intensity: float = 0.0
+@export var ssao_radius: float = 1.0
 @export_group("Sun")
 ## DirectionalLight3D in group "sun": daylight by day, faint moonlight by night.
 @export var sun_color: Color = Color.WHITE

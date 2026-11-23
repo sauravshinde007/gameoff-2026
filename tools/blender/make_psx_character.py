@@ -702,8 +702,9 @@ def _photo_average(img, centre: tuple, radius: float) -> tuple:
 def bake_face_photo(mesh, base, eyes, head_img, skin: tuple, photo: str, lm: dict, size: int,
                     hair=None):
     """Project a straight-on face photo onto the head (orthographic, from the front), aligned by
-    the eyes and mouth, and blend it over the MPFB head colour. Sides and back keep the MPFB
-    colour, tinted towards the photo's skin tone so there is no seam."""
+    the eyes and mouth, and blend it over the MPFB head colour. The photo is colour-corrected to
+    the body's skin tone (the same `skin` the body bake uses), so face, neck, sides of the head
+    and hands all share one tone and the face blends into the model."""
     img = bpy.data.images.load(photo, check_existing=True)
     w, h = img.size
     pt = lambda k: (lm[k][0] / w, 1.0 - lm[k][1] / h)       # pixels (top-left) -> uv (bottom-left)
@@ -736,6 +737,8 @@ def bake_face_photo(mesh, base, eyes, head_img, skin: tuple, photo: str, lm: dic
     photo_skin = tuple((cheeks[0][i] + cheeks[1][i]) * 0.5 for i in range(3))
     gain = tuple(max(0.5, min(2.0, photo_skin[i] / max(1e-4, skin[i])))
                  for i in range(3))
+    # Photo -> body skin tone (inverse of gain). The MPFB head keeps the body tone (no tint).
+    photo_gain = tuple(1.0 / g for g in gain)
     # Hair colour match: photo hair just above the hairline vs the MPFB hair texture.
     hair_gain = gain
     if hair is not None:
@@ -781,8 +784,9 @@ def bake_face_photo(mesh, base, eyes, head_img, skin: tuple, photo: str, lm: dic
     oval = N.new("ShaderNodeMapRange")
     oval.interpolation_type = "SMOOTHSTEP"
     N.link(d, oval.inputs["Value"])
+    # Wide soft edge so the photo fades into the head colour without a visible rim.
     oval.inputs["From Min"].default_value = 1.0
-    oval.inputs["From Max"].default_value = 0.6
+    oval.inputs["From Max"].default_value = 0.4
     weight = m("MULTIPLY", facing.outputs[0], oval.outputs[0])
     # Only the head (the collar/body keep their colour).
     weight = m("MULTIPLY", weight, m("GREATER_THAN", z, NECK_Z))
@@ -799,9 +803,9 @@ def bake_face_photo(mesh, base, eyes, head_img, skin: tuple, photo: str, lm: dic
     N.link(bw.outputs[0], is_hair.inputs["Value"])
     is_hair.inputs["From Min"].default_value = lum_skin * 0.6
     is_hair.inputs["From Max"].default_value = lum_skin * 0.35
-    base_col = N.mix(is_hair.outputs[0], N.mul_col(th.outputs["Color"], gain),
+    base_col = N.mix(is_hair.outputs[0], th.outputs["Color"],
                      N.mul_col(th.outputs["Color"], hair_gain))
-    col = N.mix(weight, base_col, tp.outputs["Color"])
+    col = N.mix(weight, base_col, N.mul_col(tp.outputs["Color"], photo_gain))
     emit = N.new("ShaderNodeEmission")
     N.link(col, emit.inputs[0])
     outn = N.new("ShaderNodeOutputMaterial")
@@ -810,7 +814,7 @@ def bake_face_photo(mesh, base, eyes, head_img, skin: tuple, photo: str, lm: dic
     N.n.active = target
     _bake_active(mesh, mat)
     print(f"[make_psx_character] face photo {os.path.basename(photo)}: vertical k {k:.2f}, "
-          f"skin gain {tuple(round(g, 2) for g in gain)}, "
+          f"photo->skin gain {tuple(round(g, 2) for g in photo_gain)}, "
           f"hair gain {tuple(round(g, 2) for g in hair_gain)}")
     return out
 

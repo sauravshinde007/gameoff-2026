@@ -17,9 +17,11 @@ func _physics_process(_delta: float) -> void:
 	if target != _focused:
 		if _focused != null:
 			_focused.prompt_changed.disconnect(_on_prompt_changed)
+			_focused.set_highlighted(false)
 		_focused = target
 		if _focused != null:
 			_focused.prompt_changed.connect(_on_prompt_changed)
+			_focused.set_highlighted(true)
 		focus_changed.emit(target.get_prompt() if target != null else "")
 
 
@@ -40,5 +42,6 @@ func set_active(active: bool) -> void:
 	if not active and _focused != null:
 		if is_instance_valid(_focused):
 			_focused.prompt_changed.disconnect(_on_prompt_changed)
+			_focused.set_highlighted(false)
 		_focused = null
 		focus_changed.emit("")

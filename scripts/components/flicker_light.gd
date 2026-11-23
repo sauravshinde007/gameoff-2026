@@ -22,6 +22,8 @@ var _hum: Node = null
 var _off: bool = false
 var _base_energy: float = 1.0
 var _tween: Tween
+## Current fraction of _base_energy (0 = off, 1 = on); kept so an energy-scale change never fights a flicker or an off light.
+var _level: float = 1.0
 
 
 func _ready() -> void:
@@ -50,9 +52,8 @@ func flicker(seconds: float) -> void:
 
 ## Scales the energy set in the scene (used by DayNight presets). 1.0 = as authored.
 func set_energy_scale(energy_scale: float) -> void:
-	_kill_tween()
 	_base_energy = _authored_energy * energy_scale
-	light_energy = _base_energy
+	light_energy = _base_energy * _level
 
 
 ## true = fully dark until set_off(false).
@@ -68,6 +69,7 @@ func set_off(off: bool) -> void:
 
 
 func _set_level(fraction: float) -> void:
+	_level = fraction
 	light_energy = _base_energy * fraction
 
 

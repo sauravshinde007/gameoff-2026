@@ -16,8 +16,15 @@ extends Node3D
 ## Render layers for every mesh (e.g. 2 = only CCTV cameras see it).
 @export_flags_3d_render var render_layers: int = 1
 @export var cast_shadows: bool = true
+## The model's animation stops while it is hidden or further than this from the camera (it would
+## not be seen, and skinned animation is not free). 0 = always animate.
+@export var anim_cull_distance: float = 40.0
+
+## Retro copies of imported materials, shared by every model using the same source/skin/tint.
+static var _material_cache: Dictionary = {}
 
 var _anim: AnimationPlayer
+var _cull_timer: float = 0.0
 
 
 func _ready() -> void:
@@ -27,6 +34,21 @@ func _ready() -> void:
 		_anim.speed_scale = anim_speed
 		if autoplay_anim != &"":
 			play(autoplay_anim)
+	set_process(_anim != null and anim_cull_distance > 0.0)
+
+
+func _process(delta: float) -> void:
+	_cull_timer += delta
+	if _cull_timer < 0.5:
+		return
+	_cull_timer = 0.0
+	var cam: Camera3D = get_viewport().get_camera_3d()
+	var near: bool = true
+	if cam != null:
+		near = cam.global_position.distance_to(global_position) <= anim_cull_distance
+	var should_run: bool = is_visible_in_tree() and near
+	if _anim.active != should_run:
+		_anim.active = should_run
 
 
 ## Plays a looping animation by name. Ignored if the model has no such animation.
@@ -62,16 +84,27 @@ func _retro_materials(node: Node) -> void:
 				var mat: BaseMaterial3D = mesh_node.mesh.surface_get_material(i) as BaseMaterial3D
 				if mat == null:
 					continue
-				var copy: BaseMaterial3D = mat.duplicate() as BaseMaterial3D
-				copy.texture_filter = texture_filter
-				if skin_texture != null:
-					copy.albedo_texture = skin_texture
-				copy.albedo_color = copy.albedo_color * tint
-				copy.roughness = 1.0
-				copy.metallic_specular = 0.1
-				mesh_node.set_surface_override_material(i, copy)
+				mesh_node.set_surface_override_material(i, _retro_copy(mat))
 	for child: Node in node.get_children():
 		_retro_materials(child)
+
+
+func _retro_copy(mat: BaseMaterial3D) -> BaseMaterial3D:
+	var key: String = "%d|%d|%s|%s" % [mat.get_instance_id(), texture_filter,
+			skin_texture.resource_path if skin_texture != null else "", tint]
+	if skin_texture != null and skin_texture.resource_path == "":
+		key += "|%d" % skin_texture.get_instance_id()
+	if _material_cache.has(key):
+		return _material_cache[key]
+	var copy: BaseMaterial3D = mat.duplicate() as BaseMaterial3D
+	copy.texture_filter = texture_filter
+	if skin_texture != null:
+		copy.albedo_texture = skin_texture
+	copy.albedo_color = copy.albedo_color * tint
+	copy.roughness = 1.0
+	copy.metallic_specular = 0.1
+	_material_cache[key] = copy
+	return copy
 
 
 func _find_anim_player(node: Node) -> AnimationPlayer:

@@ -59,6 +59,11 @@ func get_minute() -> int:
 	return _minute
 
 
+## Smooth clock time in minutes (with the fraction), for continuous visuals like the day/night cycle.
+func get_exact_minute() -> float:
+	return minf(data.start_minute + _elapsed_minutes, float(data.end_minute))
+
+
 ## Pause the clock until every hold is released.
 func hold(reason: StringName) -> void:
 	_holds[reason] = true

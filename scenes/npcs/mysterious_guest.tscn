@@ -27,6 +27,7 @@ anim_speed = 0.35
 [node name="Interactable" type="Area3D" parent="."]
 script = ExtResource("2_inter")
 prompt_text = "Talk to guest"
+highlight_enabled = false
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Interactable"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0, 0)

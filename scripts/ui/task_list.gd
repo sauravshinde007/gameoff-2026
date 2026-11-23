@@ -3,6 +3,8 @@ extends CanvasLayer
 ## Top-left task list. Standing rules (is_rule) are not shown here; they live in the manager's note.
 ## A completed task turns green, then slides out to the left and the rows below move up.
 
+const BULLET: String = "• "
+
 @export var row_width: float = 560.0
 @export var font_size: int = 26
 @export var done_color: Color = Color(0.56, 0.83, 0.56)
@@ -55,7 +57,7 @@ func _add_row(task: TaskData) -> void:
 	label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	label.custom_minimum_size.x = row_width
-	label.text = "[ ] %s" % _row_text(task)
+	label.text = "%s%s" % [BULLET, _row_text(task)]
 	if task.priority == TaskData.Priority.URGENT:
 		label.add_theme_color_override("font_color", urgent_color)
 	label.add_theme_font_size_override("font_size", font_size)
@@ -83,7 +85,6 @@ func _slide_out(id: StringName, failed: bool = false) -> void:
 	var wrapper: Control = _rows[id]
 	_rows.erase(id)
 	var label: Label = wrapper.get_node("Label")
-	label.text = label.text.replace("[ ]", "[-]" if failed else "[x]")
 	label.add_theme_color_override("font_color", failed_color if failed else done_color)
 	var tween: Tween = create_tween()
 	tween.tween_interval(done_hold_seconds)

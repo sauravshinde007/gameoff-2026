@@ -5,6 +5,7 @@ extends CanvasLayer
 @onready var prompt_label: Label = $PromptLabel
 @onready var message_label: Label = $MessageLabel
 @onready var carry_label: Label = $CarryLabel
+@onready var interact_hint: Control = $InteractHint
 
 var _message_tween: Tween
 
@@ -17,9 +18,11 @@ func _ready() -> void:
 	_refresh_carry()
 
 
+## Prompt text sits under the crosshair; the "Interact [E]" key hint shows bottom-right.
 func set_prompt(text: String) -> void:
 	prompt_label.visible = not text.is_empty()
-	prompt_label.text = "[E] " + text
+	prompt_label.text = text
+	interact_hint.visible = not text.is_empty()
 
 
 ## Props call this via get_tree().call_group("hud", "show_message", text).

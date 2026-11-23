@@ -9,7 +9,13 @@
 [ext_resource type="Script" uid="uid://do3l2qikn6xrw" path="res://scripts/environment/day_night.gd" id="10_daynight"]
 [ext_resource type="Resource" path="res://data/lighting/day.tres" id="12_day"]
 [ext_resource type="Resource" path="res://data/lighting/night.tres" id="13_night"]
+[ext_resource type="Resource" path="res://data/lighting/sunset.tres" id="13b_sunset"]
+[ext_resource type="Script" path="res://scripts/environment/day_night_cycle.gd" id="13c_cycle"]
+[ext_resource type="Script" uid="uid://dqqicvbmm4cv2" path="res://scripts/resources/lighting_preset.gd" id="13d_preset"]
 [ext_resource type="PackedScene" path="res://scenes/ui/pause_menu.tscn" id="15_pause"]
+[ext_resource type="Script" path="res://scripts/debug/perf_overlay.gd" id="98_perf"]
+[ext_resource type="Script" path="res://scripts/components/csg_baker.gd" id="97_baker"]
+[ext_resource type="Script" path="res://scripts/components/foliage_batcher.gd" id="96_foliage"]
 [ext_resource type="PackedScene" path="res://scenes/ui/retro_filter.tscn" id="99_retro"]
 
 [sub_resource type="PanoramaSkyMaterial" id="Mat_sky"]
@@ -66,6 +72,11 @@ script = ExtResource("10_daynight")
 day_preset = ExtResource("12_day")
 night_preset = ExtResource("13_night")
 
+[node name="DayNightCycle" type="Node" parent="."]
+script = ExtResource("13c_cycle")
+keyframe_presets = Array[ExtResource("13d_preset")]([ExtResource("13_night"), ExtResource("13b_sunset"), ExtResource("12_day"), ExtResource("12_day"), ExtResource("13b_sunset"), ExtResource("13_night")])
+use_shift_clock = false
+
 [node name="PauseMenu" parent="." instance=ExtResource("15_pause")]
 
 [node name="HelpLayer" type="CanvasLayer" parent="."]
@@ -80,3 +91,12 @@ offset_bottom = 40.0
 theme_override_colors/font_color = Color(0.85, 0.9, 0.85, 0.8)
 theme_override_font_sizes/font_size = 18
 text = "FREE ROAM"
+
+[node name="PerfOverlay" type="CanvasLayer" parent="."]
+script = ExtResource("98_perf")
+
+[node name="CsgBaker" type="Node" parent="."]
+script = ExtResource("97_baker")
+
+[node name="FoliageBatcher" type="Node" parent="."]
+script = ExtResource("96_foliage")

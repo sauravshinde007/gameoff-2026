@@ -27,6 +27,8 @@ enum Mode { CHECK_IN, CHECK_OUT }
 @export var walk_turn_speed: float = 10.0
 ## Direction a guest faces while waiting at the desk: toward the counter and the window behind it.
 @export var counter_direction: Vector3 = Vector3(0.0, 0.0, -1.0)
+## Height (metres above the feet) the player's camera centres on while talking to this guest.
+@export var focus_height: float = 1.55
 ## Task completed when the key is handed over. Only the scripted first guest has one.
 @export var check_in_task_id: StringName = &"check_in_guest"
 
@@ -116,23 +118,23 @@ func _on_interacted(by: Node) -> void:
 	_turn_tween = NpcFacing.face(self, by as Node3D)
 	if mode == Mode.CHECK_OUT:
 		_checking_out = true
-		DialogueManager.start(dialogue_checkout)
+		DialogueManager.start(dialogue_checkout, self)
 		return
 	var res: ReservationData = RoomManager.get_reservation(reservation_id)
 	if res == null:
 		return
 	if res.status == ReservationData.Status.PENDING:
 		if _asked:
-			DialogueManager.start(dialogue_remind_room)
+			DialogueManager.start(dialogue_remind_room, self)
 		else:
 			_asked = true
-			DialogueManager.start(dialogue_ask)
+			DialogueManager.start(dialogue_ask, self)
 	elif res.status == ReservationData.Status.CHECKED_IN:
 		if RoomManager.issued_key_room_id == res.room_id:
 			_handing_over = true
-			DialogueManager.start(dialogue_handover)
+			DialogueManager.start(dialogue_handover, self)
 		else:
-			DialogueManager.start(dialogue_remind_key)
+			DialogueManager.start(dialogue_remind_key, self)
 
 
 func _on_dialogue_finished(id: StringName, _choice: int) -> void:
@@ -176,14 +178,26 @@ func _complete_check_in() -> void:
 	if res == null or not RoomManager.hand_over_key(res.room_id):
 		return
 	_done = true
-	EconomyManager.record_income(EconomyManager.config.room_price, &"room",
-			"Room %02d - %s" % [res.room_id, res.guest_name], "stay:" + res.id, res.room_id)
+	_pay_for_room(res)
 	GuestManager.check_in(record, res.room_id)
 	if check_in_task_id != &"":
 		TaskManager.complete_task(check_in_task_id)
 	checked_in.emit(res.id)
 	_release_desk()
 	_walk(spawner.route_to_room(res.room_id), spawner.doors_for_room(res.room_id), _depart)
+
+
+## The guest leaves the cash on the desk; it is banked when the player picks it up.
+## Without a cash stash in the scene, the payment goes straight to the balance.
+func _pay_for_room(res: ReservationData) -> void:
+	var amount: int = EconomyManager.config.room_price
+	var description: String = "Room %02d - %s" % [res.room_id, res.guest_name]
+	var stash: CashStash = get_tree().get_first_node_in_group(&"cash_stash") as CashStash
+	if stash != null:
+		stash.add_payment(amount, &"room", description, "stay:" + res.id, res.room_id)
+		get_tree().call_group("hud", "show_message", "%s left $%d on the desk." % [res.guest_name, amount])
+	else:
+		EconomyManager.record_income(amount, &"room", description, "stay:" + res.id, res.room_id)
 
 
 func _complete_check_out() -> void:
@@ -294,6 +308,11 @@ func _finish_walk(on_done: Callable) -> void:
 	_walking = false
 	set_process(false)
 	on_done.call()
+
+
+## Where the player's camera looks during a conversation (roughly the guest's face).
+func get_focus_point() -> Vector3:
+	return global_position + Vector3(0.0, focus_height, 0.0)
 
 
 func face_toward(point: Vector3) -> void:

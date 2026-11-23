@@ -5,6 +5,8 @@ extends CharacterBody3D
 @export var mouse_sensitivity: float = 0.0025
 @export var max_pitch_degrees: float = 85.0
 @export var gravity: float = 20.0
+## How fast the camera turns to centre the NPC being talked to (higher = snappier).
+@export var dialogue_focus_speed: float = 6.0
 
 @onready var head: Node3D = $Head
 @onready var interactor: Interactor = $Head/Camera3D/Interactor
@@ -41,6 +43,29 @@ func _unhandled_input(event: InputEvent) -> void:
 			deg_to_rad(max_pitch_degrees))
 	elif event is InputEventMouseButton and event.pressed and Input.mouse_mode != Input.MOUSE_MODE_CAPTURED:
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+
+
+func _process(delta: float) -> void:
+	_update_dialogue_focus(delta)
+
+
+## While talking to an NPC, keep them in the middle of the screen (body turns, head pitches).
+func _update_dialogue_focus(delta: float) -> void:
+	var target: Node3D = DialogueManager.focus_target
+	if not DialogueManager.is_active() or not is_instance_valid(target) or not target.is_inside_tree():
+		return
+	var point: Vector3 = (target.call(&"get_focus_point") as Vector3) if target.has_method(&"get_focus_point") \
+			else target.global_position + Vector3(0.0, 1.5, 0.0)
+	var eye: Vector3 = head.global_position
+	var offset: Vector3 = point - eye
+	var flat: float = Vector2(offset.x, offset.z).length()
+	if flat < 0.05:
+		return
+	var weight: float = 1.0 - exp(-dialogue_focus_speed * delta)
+	var yaw: float = atan2(-offset.x, -offset.z)
+	rotation.y = lerp_angle(rotation.y, yaw, weight)
+	var pitch: float = clampf(atan2(offset.y, flat), -deg_to_rad(max_pitch_degrees), deg_to_rad(max_pitch_degrees))
+	head.rotation.x = lerpf(head.rotation.x, pitch, weight)
 
 
 func _physics_process(delta: float) -> void:

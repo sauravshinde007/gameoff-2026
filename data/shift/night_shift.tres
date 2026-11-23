@@ -5,6 +5,6 @@
 [resource]
 script = ExtResource("1_shift")
 start_minute = 360
-end_minute = 840
+end_minute = 1320
 seconds_per_hour = 90.0
 fast_seconds_per_hour = 3.0

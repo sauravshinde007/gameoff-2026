@@ -7,6 +7,7 @@ signal flag_set(flag: StringName)
 @export var database: EventDatabase = preload("res://data/events/night_events.tres")
 
 var _pending: Array[EventData] = []
+var _phone: Telephone
 var _fired: Dictionary[StringName, bool] = {}
 var _flags: Dictionary[StringName, bool] = {}
 
@@ -37,6 +38,8 @@ func has_flag(flag: StringName) -> bool:
 
 
 func _process(_delta: float) -> void:
+	if _pending.is_empty():
+		return
 	for e: EventData in _pending.duplicate():
 		if _can_fire(e):
 			_fire(e)
@@ -62,7 +65,9 @@ func _can_fire(e: EventData) -> bool:
 		if DialogueManager.is_active() or Input.mouse_mode != Input.MOUSE_MODE_CAPTURED:
 			return false
 	if e.phone_call != null:
-		var phone: Telephone = get_tree().get_first_node_in_group(&"telephone") as Telephone
+		if not is_instance_valid(_phone):
+			_phone = get_tree().get_first_node_in_group(&"telephone") as Telephone
+		var phone: Telephone = _phone
 		if phone == null or phone.state != Telephone.State.IDLE:
 			return false
 	return true

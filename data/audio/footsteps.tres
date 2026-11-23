@@ -1,0 +1,94 @@
+[gd_resource type="Resource" script_class="FootstepBank" format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/footstep_bank.gd" id="1_bank"]
+[ext_resource type="Script" path="res://scripts/resources/footstep_surface.gd" id="2_surface"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/jute-dh-steps/stepdirt_1.wav" id="3_stepdirt_1"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/jute-dh-steps/stepdirt_2.wav" id="4_stepdirt_2"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/jute-dh-steps/stepdirt_3.wav" id="5_stepdirt_3"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/jute-dh-steps/stepdirt_4.wav" id="6_stepdirt_4"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/jute-dh-steps/stepdirt_5.wav" id="7_stepdirt_5"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/jute-dh-steps/stepdirt_6.wav" id="8_stepdirt_6"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/jute-dh-steps/stepdirt_7.wav" id="9_stepdirt_7"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/jute-dh-steps/stepdirt_8.wav" id="10_stepdirt_8"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/jute-dh-steps/stepsnow_1.wav" id="11_stepsnow_1"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/jute-dh-steps/stepsnow_2.wav" id="12_stepsnow_2"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/jute-dh-steps/stepstone_1.wav" id="13_stepstone_1"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/jute-dh-steps/stepstone_2.wav" id="14_stepstone_2"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/jute-dh-steps/stepstone_3.wav" id="15_stepstone_3"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/jute-dh-steps/stepstone_4.wav" id="16_stepstone_4"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/jute-dh-steps/stepstone_5.wav" id="17_stepstone_5"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/jute-dh-steps/stepstone_6.wav" id="18_stepstone_6"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/jute-dh-steps/stepstone_7.wav" id="19_stepstone_7"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/jute-dh-steps/stepstone_8.wav" id="20_stepstone_8"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/jute-dh-steps/stepwater_1.wav" id="21_stepwater_1"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/jute-dh-steps/stepwater_2.wav" id="22_stepwater_2"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/jute-dh-steps/stepwood_1.wav" id="23_stepwood_1"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/jute-dh-steps/stepwood_2.wav" id="24_stepwood_2"]
+
+[sub_resource type="Resource" id="s_stone"]
+script = ExtResource("2_surface")
+id = &"stone"
+streams = Array[AudioStream]([ExtResource("13_stepstone_1"), ExtResource("14_stepstone_2"), ExtResource("15_stepstone_3"), ExtResource("16_stepstone_4"), ExtResource("17_stepstone_5"), ExtResource("18_stepstone_6"), ExtResource("19_stepstone_7"), ExtResource("20_stepstone_8")])
+volume_db = -4.0
+pitch_min = 0.92
+pitch_max = 1.08
+
+[sub_resource type="Resource" id="s_dirt"]
+script = ExtResource("2_surface")
+id = &"dirt"
+streams = Array[AudioStream]([ExtResource("3_stepdirt_1"), ExtResource("4_stepdirt_2"), ExtResource("5_stepdirt_3"), ExtResource("6_stepdirt_4"), ExtResource("7_stepdirt_5"), ExtResource("8_stepdirt_6"), ExtResource("9_stepdirt_7"), ExtResource("10_stepdirt_8")])
+volume_db = -3.0
+pitch_min = 0.92
+pitch_max = 1.08
+
+[sub_resource type="Resource" id="s_wood"]
+script = ExtResource("2_surface")
+id = &"wood"
+streams = Array[AudioStream]([ExtResource("23_stepwood_1"), ExtResource("24_stepwood_2")])
+volume_db = -3.0
+pitch_min = 0.9
+pitch_max = 1.1
+
+[sub_resource type="Resource" id="s_carpet"]
+script = ExtResource("2_surface")
+id = &"carpet"
+streams = Array[AudioStream]([ExtResource("3_stepdirt_1"), ExtResource("4_stepdirt_2"), ExtResource("5_stepdirt_3"), ExtResource("6_stepdirt_4"), ExtResource("7_stepdirt_5"), ExtResource("8_stepdirt_6"), ExtResource("9_stepdirt_7"), ExtResource("10_stepdirt_8")])
+volume_db = -14.0
+pitch_min = 0.7
+pitch_max = 0.8
+
+[sub_resource type="Resource" id="s_tile"]
+script = ExtResource("2_surface")
+id = &"tile"
+streams = Array[AudioStream]([ExtResource("13_stepstone_1"), ExtResource("14_stepstone_2"), ExtResource("15_stepstone_3"), ExtResource("16_stepstone_4"), ExtResource("17_stepstone_5"), ExtResource("18_stepstone_6"), ExtResource("19_stepstone_7"), ExtResource("20_stepstone_8")])
+volume_db = -5.0
+pitch_min = 1.05
+pitch_max = 1.2
+
+[sub_resource type="Resource" id="s_water"]
+script = ExtResource("2_surface")
+id = &"water"
+streams = Array[AudioStream]([ExtResource("21_stepwater_1"), ExtResource("22_stepwater_2")])
+volume_db = -2.0
+pitch_min = 0.9
+pitch_max = 1.1
+
+[sub_resource type="Resource" id="s_snow"]
+script = ExtResource("2_surface")
+id = &"snow"
+streams = Array[AudioStream]([ExtResource("11_stepsnow_1"), ExtResource("12_stepsnow_2")])
+volume_db = -3.0
+pitch_min = 0.9
+pitch_max = 1.1
+
+[resource]
+script = ExtResource("1_bank")
+surfaces = Array[ExtResource("2_surface")]([SubResource("s_stone"), SubResource("s_dirt"), SubResource("s_wood"), SubResource("s_carpet"), SubResource("s_tile"), SubResource("s_water"), SubResource("s_snow")])
+material_surfaces = Dictionary[String, StringName]({
+"res://assets/materials/asphalt.tres": &"stone",
+"res://assets/materials/concrete.tres": &"stone",
+"res://assets/materials/floor_tile.tres": &"tile",
+"res://assets/materials/carpet.tres": &"carpet",
+"res://assets/materials/wood.tres": &"wood"
+})
+default_surface = &"stone"

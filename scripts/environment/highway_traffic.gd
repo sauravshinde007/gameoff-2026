@@ -21,14 +21,24 @@ extends Node3D
 var _head_mat: StandardMaterial3D
 var _tail_mat: StandardMaterial3D
 var _rng: RandomNumberGenerator = RandomNumberGenerator.new()
+## Shared by every car's lights (one mesh each instead of four new BoxMeshes per spawn).
+var _head_mesh: BoxMesh
+var _tail_mesh: BoxMesh
+## Hidden cars waiting to be reused: scene index -> Array of holder Node3D.
+var _idle: Dictionary = {}
 
 
 func _ready() -> void:
 	_rng.randomize()
 	_head_mat = _make_glow(Color(1.0, 0.95, 0.75))
 	_tail_mat = _make_glow(Color(0.9, 0.1, 0.08))
+	_head_mesh = _make_box_mesh(Vector3(0.22, 0.14, 0.06), _head_mat)
+	_tail_mesh = _make_box_mesh(Vector3(0.2, 0.12, 0.06), _tail_mat)
 	if car_scenes.is_empty():
 		return
+	# Build one hidden car per model now, so nothing is instanced or compiled mid-drive.
+	for i: int in car_scenes.size():
+		_idle[i] = [_build_holder(i)]
 	_loop()
 
 
@@ -39,14 +49,18 @@ func _loop() -> void:
 		await get_tree().create_timer(_rng.randf_range(min_gap_seconds, max_gap_seconds)).timeout
 
 
-func _spawn(eastbound: bool) -> void:
-	var car: Node3D = car_scenes[_rng.randi() % car_scenes.size()].instantiate()
+## A car with its lights and one headlight beam (off until night), hidden and parked.
+func _build_holder(index: int) -> Node3D:
+	var car: Node3D = car_scenes[index].instantiate()
 	if car is CollisionObject3D:
+		# Scenery only: drop the collider so the moving car costs the physics server nothing.
+		for child: Node in car.get_children():
+			if child is CollisionShape3D:
+				child.queue_free()
 		(car as CollisionObject3D).collision_layer = 0
 		(car as CollisionObject3D).collision_mask = 0
 	var holder: Node3D = Node3D.new()
-	holder.position = Vector3(x_from if eastbound else x_to, 0.0, lane_z_east if eastbound else lane_z_west)
-	holder.rotation.y = PI * 0.5 if eastbound else -PI * 0.5
+	holder.visible = false
 	add_child(holder)
 	holder.add_child(car)
 	var box: AABB = _bounds(car)
@@ -54,22 +68,41 @@ func _spawn(eastbound: bool) -> void:
 	var back: float = box.position.z
 	var half_w: float = box.size.x * 0.32
 	for side: float in [-half_w, half_w]:
-		_add_box(holder, Vector3(0.22, 0.14, 0.06), Vector3(side, 0.65, front + 0.02), _head_mat)
-		_add_box(holder, Vector3(0.2, 0.12, 0.06), Vector3(side, 0.75, back - 0.02), _tail_mat)
+		_add_light_box(holder, _head_mesh, Vector3(side, 0.65, front + 0.02))
+		_add_light_box(holder, _tail_mesh, Vector3(side, 0.75, back - 0.02))
+	var beam: SpotLight3D = SpotLight3D.new()
+	beam.name = "Beam"
+	beam.light_color = Color(1.0, 0.93, 0.75)
+	beam.spot_range = 22.0
+	beam.spot_angle = 32.0
+	beam.position = Vector3(0.0, 0.8, front + 0.1)
+	beam.rotation = Vector3(deg_to_rad(-6.0), PI, 0.0)
+	beam.visible = false
+	holder.add_child(beam)
+	return holder
+
+
+func _spawn(eastbound: bool) -> void:
+	var index: int = _rng.randi() % car_scenes.size()
+	var pool: Array = _idle.get(index, [])
+	var holder: Node3D = pool.pop_back() if not pool.is_empty() else _build_holder(index)
+	_idle[index] = pool
+	holder.position = Vector3(x_from if eastbound else x_to, 0.0, lane_z_east if eastbound else lane_z_west)
+	holder.rotation.y = PI * 0.5 if eastbound else -PI * 0.5
 	var night: float = _night_scale()
-	if night > 0.0:
-		var beam: SpotLight3D = SpotLight3D.new()
-		beam.light_color = Color(1.0, 0.93, 0.75)
-		beam.light_energy = beam_energy * night
-		beam.spot_range = 22.0
-		beam.spot_angle = 32.0
-		beam.position = Vector3(0.0, 0.8, front + 0.1)
-		beam.rotation = Vector3(deg_to_rad(-6.0), PI, 0.0)
-		holder.add_child(beam)
+	var beam: SpotLight3D = holder.get_node("Beam")
+	beam.light_energy = beam_energy * night
+	beam.visible = night > 0.0
+	holder.visible = true
 	var speed: float = _rng.randf_range(min_speed, max_speed)
 	var tween: Tween = holder.create_tween()
 	tween.tween_property(holder, "position:x", x_to if eastbound else x_from, absf(x_to - x_from) / speed)
-	tween.tween_callback(holder.queue_free)
+	tween.tween_callback(_recycle.bind(holder, index))
+
+
+func _recycle(holder: Node3D, index: int) -> void:
+	holder.visible = false
+	(_idle[index] as Array).append(holder)
 
 
 func _night_scale() -> float:
@@ -101,14 +134,19 @@ func _relative_transform(root: Node3D, child: Node3D) -> Transform3D:
 	return t
 
 
-func _add_box(parent: Node3D, size: Vector3, pos: Vector3, mat: Material) -> void:
+func _add_light_box(parent: Node3D, mesh: BoxMesh, pos: Vector3) -> void:
 	var node: MeshInstance3D = MeshInstance3D.new()
+	node.mesh = mesh
+	node.position = pos
+	node.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	parent.add_child(node)
+
+
+func _make_box_mesh(size: Vector3, mat: Material) -> BoxMesh:
 	var mesh: BoxMesh = BoxMesh.new()
 	mesh.size = size
 	mesh.material = mat
-	node.mesh = mesh
-	node.position = pos
-	parent.add_child(node)
+	return mesh
 
 
 func _make_glow(color: Color) -> StandardMaterial3D:

@@ -1,0 +1,30 @@
+[gd_resource type="Resource" script_class="LightingPreset" format=3]
+
+[ext_resource type="Script" uid="uid://dqqicvbmm4cv2" path="res://scripts/resources/lighting_preset.gd" id="1_preset"]
+[ext_resource type="Texture2D" path="res://assets/textures/sky/sunset_orange.png" id="2_sky"]
+
+[resource]
+script = ExtResource("1_preset")
+background_color = Color(0.55, 0.36, 0.26, 1)
+ambient_color = Color(0.62, 0.48, 0.42, 1)
+ambient_energy = 0.38
+fog_color = Color(0.62, 0.45, 0.35, 1)
+fog_density = 0.9
+fog_depth_begin = 14.0
+fog_depth_end = 100.0
+fog_depth_curve = 1.5
+ssao_intensity = 2.0
+ssao_radius = 1.1
+sun_color = Color(1, 0.62, 0.38, 1)
+sun_energy = 1.2
+sky_panorama = ExtResource("2_sky")
+sky_fog_affect = 0.4
+grade_contrast = 1.16
+grade_saturation = 1.05
+retro_tint = Color(1, 0.93, 0.86, 1)
+retro_vignette = 0.48
+reception_light_color = Color(1, 0.86, 0.66, 1)
+reception_light_scale = 1.1
+hallway_light_scale = 1.1
+exterior_light_scale = 0.6
+ambience = &"day_ambience"

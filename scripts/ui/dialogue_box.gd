@@ -4,9 +4,9 @@ extends CanvasLayer
 ## Text types out character by character. E or left click skips the typing, then advances.
 ## Choices are flat text buttons. The player's lines sit lower than everyone else's.
 
-@export var chars_per_second: float = 38.0
+@export var chars_per_second: float = 22.0
 ## Extra pause after sentence-ending punctuation (seconds).
-@export var punctuation_pause: float = 0.22
+@export var punctuation_pause: float = 0.3
 ## Name of the talk sound. It plays only while text is typing and stops at pauses and line end.
 @export var talk_sfx: StringName = &"type_blip"
 @export var player_speaker: String = "You"
@@ -19,9 +19,12 @@ extends CanvasLayer
 @export var player_color: Color = Color(0.8, 0.88, 1.0)
 ## Speaker name drawn above NPC lines (not shown for the player).
 @export var name_color: Color = Color(1, 0.85, 0.4)
+## Name label height (fraction of screen height) and the empty gap kept between it and the line.
 @export var name_gap: float = 0.05
+@export var name_line_spacing: float = 0.035
 
-const SUBTITLE_FONT: Font = preload("res://assets/fonts/subtitle_font.tres")
+## The game's custom VCR font, emboldened.
+const SUBTITLE_FONT: Font = preload("res://assets/fonts/subtitle_bold_font.tres")
 
 @onready var text_label: Label = %TextLabel
 @onready var name_label: Label = %NameLabel
@@ -115,8 +118,8 @@ func _on_line(speaker: String, text: String) -> void:
 	var show_name: bool = not is_player and speaker != ""
 	name_label.visible = show_name
 	name_label.text = speaker
-	name_label.anchor_bottom = y
-	name_label.anchor_top = y - name_gap
+	name_label.anchor_bottom = y - name_line_spacing
+	name_label.anchor_top = y - name_line_spacing - name_gap
 	_start_typing()
 
 
@@ -188,12 +191,21 @@ func _make_choice_button(text: String, index: int) -> Button:
 	b.add_theme_color_override("font_color", Color(0.7, 0.7, 0.7))
 	for c: String in ["font_hover_color", "font_focus_color", "font_pressed_color"]:
 		b.add_theme_color_override(c, Color.WHITE)
-	b.add_theme_stylebox_override("normal", StyleBoxEmpty.new())
+	# Box hugs the text (centered) instead of stretching across the whole column.
+	b.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+	var idle: StyleBoxEmpty = StyleBoxEmpty.new()
+	idle.content_margin_left = 24.0
+	idle.content_margin_right = 24.0
+	idle.content_margin_top = 10.0
+	idle.content_margin_bottom = 10.0
+	b.add_theme_stylebox_override("normal", idle)
 	var lit: StyleBoxFlat = StyleBoxFlat.new()
-	lit.bg_color = Color(0, 0, 0, 0.35)
-	lit.border_color = Color.WHITE
-	lit.border_width_bottom = 2
-	lit.set_content_margin_all(6)
+	lit.bg_color = Color(0.75, 0.75, 0.75, 0.85)
+	lit.content_margin_left = 24.0
+	lit.content_margin_right = 24.0
+	lit.content_margin_top = 10.0
+	lit.content_margin_bottom = 10.0
+	lit.set_corner_radius_all(3)
 	for state: String in ["hover", "focus", "pressed"]:
 		b.add_theme_stylebox_override(state, lit)
 	b.pressed.connect(DialogueManager.choose.bind(index))

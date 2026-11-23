@@ -65,12 +65,14 @@ func _play(anim: StringName, blend: float) -> void:
 	if anim == _current:
 		return
 	_current = anim
-	for model: RetroModel in [full_model, fp_model]:
-		if model != null:
-			model.play(anim, blend)
+	if full_model != null:
+		full_model.play(anim, blend)
+	if fp_model != null:
+		fp_model.play(anim, blend)
 
 
 func _set_speed(speed: float) -> void:
-	for model: RetroModel in [full_model, fp_model]:
-		if model != null and not is_equal_approx(model.anim_speed, speed):
-			model.set_anim_speed(speed)
+	if full_model != null and not is_equal_approx(full_model.anim_speed, speed):
+		full_model.set_anim_speed(speed)
+	if fp_model != null and not is_equal_approx(fp_model.anim_speed, speed):
+		fp_model.set_anim_speed(speed)

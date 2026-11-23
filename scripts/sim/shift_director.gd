@@ -93,6 +93,8 @@ func finish_shift() -> Dictionary:
 	if _finished:
 		return _report
 	_finished = true
+	# Cash still lying on the desk is banked before closing the books.
+	get_tree().call_group(&"cash_stash", &"collect_all", true)
 	var cost: int = EconomyManager.config.operating_cost
 	var pay: int = mini(cost, EconomyManager.get_balance())
 	if pay > 0:

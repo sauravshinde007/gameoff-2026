@@ -11,8 +11,14 @@
 [ext_resource type="PackedScene" path="res://scenes/ui/screen_fade.tscn" id="11_fade"]
 [ext_resource type="Resource" path="res://data/lighting/day.tres" id="12_day"]
 [ext_resource type="Resource" path="res://data/lighting/night.tres" id="13_night"]
+[ext_resource type="Resource" path="res://data/lighting/sunset.tres" id="13b_sunset"]
+[ext_resource type="Script" path="res://scripts/environment/day_night_cycle.gd" id="13c_cycle"]
+[ext_resource type="Script" uid="uid://dqqicvbmm4cv2" path="res://scripts/resources/lighting_preset.gd" id="13d_preset"]
 [ext_resource type="PackedScene" path="res://scenes/ui/end_screen.tscn" id="14_end"]
 [ext_resource type="PackedScene" path="res://scenes/ui/pause_menu.tscn" id="15_pause"]
+[ext_resource type="Script" path="res://scripts/debug/perf_overlay.gd" id="98_perf"]
+[ext_resource type="Script" path="res://scripts/components/csg_baker.gd" id="97_baker"]
+[ext_resource type="Script" path="res://scripts/components/foliage_batcher.gd" id="96_foliage"]
 [ext_resource type="PackedScene" path="res://scenes/ui/retro_filter.tscn" id="99_retro"]
 [ext_resource type="Script" uid="uid://cgxirj46okk6q" path="res://scripts/sim/guest_spawner.gd" id="100_spawner"]
 [ext_resource type="Script" uid="uid://b481x7aq6ubbm" path="res://scripts/sim/phone_dispatcher.gd" id="101_phone"]
@@ -46,6 +52,9 @@ fog_light_color = Color(0.1, 0.1, 0.14, 1)
 fog_density = 0.03
 adjustment_enabled = true
 
+[sub_resource type="BoxShape3D" id="Box_gate_exit"]
+size = Vector3(7.6, 2, 1.2)
+
 [node name="Main" type="Node3D" unique_id=1266530711]
 script = ExtResource("2_main")
 
@@ -60,7 +69,17 @@ script = ExtResource("9_flicker")
 hum_sfx = &"fluorescent_hum"
 
 [node name="Player" parent="." unique_id=144925829 instance=ExtResource("1_player")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.8)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14, 0, 7.8)
+
+[node name="GateExit" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14, 1, 9.4)
+collision_layer = 0
+collision_mask = 2
+monitoring = false
+monitorable = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="GateExit"]
+shape = SubResource("Box_gate_exit")
 
 [node name="HUD" parent="." unique_id=1481366506 instance=ExtResource("3_hud")]
 
@@ -81,6 +100,10 @@ screen_dither = true
 script = ExtResource("10_daynight")
 day_preset = ExtResource("12_day")
 night_preset = ExtResource("13_night")
+
+[node name="DayNightCycle" type="Node" parent="."]
+script = ExtResource("13c_cycle")
+keyframe_presets = Array[ExtResource("13d_preset")]([ExtResource("13_night"), ExtResource("13b_sunset"), ExtResource("12_day"), ExtResource("12_day"), ExtResource("13b_sunset"), ExtResource("13_night")])
 
 [node name="EndScreen" parent="." unique_id=1156824740 instance=ExtResource("14_end")]
 
@@ -149,3 +172,12 @@ script = ExtResource("105_maint")
 
 [node name="ShiftDirector" type="Node" parent="Simulator" unique_id=706586031]
 script = ExtResource("106_dir")
+
+[node name="PerfOverlay" type="CanvasLayer" parent="."]
+script = ExtResource("98_perf")
+
+[node name="CsgBaker" type="Node" parent="."]
+script = ExtResource("97_baker")
+
+[node name="FoliageBatcher" type="Node" parent="."]
+script = ExtResource("96_foliage")

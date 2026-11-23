@@ -1,27 +1,46 @@
 [gd_scene format=3]
 
 [ext_resource type="Script" path="res://scripts/props/manager_note.gd" id="1_script"]
-[ext_resource type="Script" path="res://scripts/components/interactable.gd" id="2_inter"]
-[ext_resource type="PackedScene" path="res://scenes/ui/note_panel.tscn" id="3_panel"]
+[ext_resource type="Material" path="res://assets/materials/wood.tres" id="3_wood"]
+[ext_resource type="FontVariation" path="res://assets/fonts/pixel_font.tres" id="4_font"]
+[ext_resource type="FontVariation" path="res://assets/fonts/screen_font.tres" id="5_title_font"]
 
 [sub_resource type="StandardMaterial3D" id="Mat_paper"]
 albedo_color = Color(0.9, 0.88, 0.75, 1)
 
-[sub_resource type="BoxShape3D" id="Box_area"]
-size = Vector3(0.6, 0.7, 0.4)
-
 [node name="ManagerNote" type="Node3D"]
 script = ExtResource("1_script")
 
+[node name="Frame" type="CSGBox3D" parent="."]
+size = Vector3(1.5, 1.1, 0.04)
+material = ExtResource("3_wood")
+
 [node name="Paper" type="CSGBox3D" parent="."]
-size = Vector3(0.3, 0.4, 0.02)
+position = Vector3(0, 0, 0.025)
+size = Vector3(1.4, 1, 0.01)
 material = SubResource("Mat_paper")
 
-[node name="Interactable" type="Area3D" parent="."]
-script = ExtResource("2_inter")
-prompt_text = "Read note"
+[node name="Title" type="Label3D" parent="."]
+position = Vector3(0, 0.41, 0.032)
+pixel_size = 0.001
+shaded = true
+modulate = Color(0.12, 0.1, 0.08, 1)
+outline_size = 0
+font = ExtResource("5_title_font")
+font_size = 72
+text = "SHIFT NOTES"
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Interactable"]
-shape = SubResource("Box_area")
-
-[node name="NotePanel" parent="." instance=ExtResource("3_panel")]
+[node name="Body" type="Label3D" parent="."]
+position = Vector3(-0.63, -0.02, 0.032)
+pixel_size = 0.001
+shaded = true
+modulate = Color(0.12, 0.1, 0.08, 1)
+outline_size = 0
+font = ExtResource("4_font")
+font_size = 46
+horizontal_alignment = 0
+vertical_alignment = 1
+autowrap_mode = 3
+width = 1260.0
+line_spacing = 8.0
+text = "Shift notes"

@@ -7,6 +7,9 @@ signal choices_shown(options: PackedStringArray)
 ## choice = picked index, or -1 if the dialogue had no choices.
 signal dialogue_finished(id: StringName, choice: int)
 
+## Who the player is talking to (an NPC), or null (phone, notes). The player's camera keeps it centred.
+var focus_target: Node3D = null
+
 var _data: DialogueData = null
 var _index: int = -1
 var _waiting_for_choice: bool = false
@@ -16,10 +19,12 @@ func is_active() -> bool:
 	return _data != null
 
 
-func start(data: DialogueData) -> void:
+## `focus`: the NPC speaking, so the camera can keep them in view until the dialogue ends.
+func start(data: DialogueData, focus: Node3D = null) -> void:
 	if _data != null or data == null:
 		return
 	_data = data
+	focus_target = focus
 	_index = -1
 	_waiting_for_choice = false
 	dialogue_started.emit(data.id)
@@ -50,6 +55,7 @@ func choose(index: int) -> void:
 
 func reset() -> void:
 	_data = null
+	focus_target = null
 	_index = -1
 	_waiting_for_choice = false
 

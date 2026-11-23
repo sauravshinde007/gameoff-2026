@@ -11,7 +11,8 @@ Status: all seven environment tasks are built and headless-validated. Waiting fo
 - Owner's office, laundry, storage, staff corridor and a rear service yard. All furnished with decorative props only.
 - Courtyard with parking bays, GGBot parked cars, street lamps, motel sign, vending and ice machines, fences, entrance gate, PSX trees, highway backdrop with random passing cars.
 - Day and night use the same geometry. Presets: `data/lighting/day.tres` and `night.tres` (distance fog, sun/moon, ambient, grade, light scales).
-- Free Roam mode (title screen) for reviewing the environment: N toggles day/night, ESC opens the pause menu.
+- Timed day/night cycle (`scripts/environment/day_night_cycle.gd`, added 2026-11-19): blends night -> sunset (`sunset.tres`, PSX Sky Sampler Sunset_Orange) -> day -> sunset -> night by hour, cross-fades the sky panoramas (`assets/shaders/sky_blend.gdshader`) and moves the sun/moon on an arc. Main game follows the shift clock (6 AM-10 PM); Free Roam runs its own looping clock (N skips 2 hours).
+- Free Roam mode (title screen) for reviewing the environment: time of day loops, N skips 2 hours, ESC opens the pause menu.
 
 ## Where things live
 

@@ -1,4 +1,5 @@
 [gd_scene format=3]
+[ext_resource type="Script" path="res://scripts/components/shadow_proximity.gd" id="shadow_prox"]
 
 [ext_resource type="Material" path="res://assets/materials/wall.tres" id="m_wall"]
 [ext_resource type="Material" path="res://assets/materials/concrete.tres" id="m_concrete"]
@@ -85,6 +86,8 @@ material = ExtResource("m_wall")
 position = Vector3(0, 2.6, 0)
 omni_range = 5.5
 light_energy = 0.7
+shadow_enabled = true
+script = ExtResource("shadow_prox")
 
 [node name="Props" type="Node3D" parent="."]
 

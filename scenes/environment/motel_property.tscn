@@ -1,6 +1,7 @@
 [gd_scene format=3]
 
 [ext_resource type="PackedScene" path="res://scenes/environment/reception.tscn" id="reception"]
+[ext_resource type="Material" path="res://assets/materials/grass.tres" id="mat_grass"]
 [ext_resource type="PackedScene" path="res://scenes/environment/guest_rooms/guest_room_shell.tscn" id="room"]
 [ext_resource type="PackedScene" path="res://scenes/props/door.tscn" id="door"]
 [ext_resource type="PackedScene" path="res://scenes/environment/service/laundry_room.tscn" id="laundry"]
@@ -50,9 +51,6 @@
 [ext_resource type="PackedScene" path="res://scenes/environment/trees/bush06.tscn" id="f_bush06"]
 [ext_resource type="Script" path="res://scripts/props/cctv_camera.gd" id="cctv"]
 [ext_resource type="PackedScene" path="res://scenes/props/exterior/street_lamp.tscn" id="lamp"]
-
-[sub_resource type="StandardMaterial3D" id="m_ground"]
-albedo_color = Color(0.16, 0.2, 0.12, 1)
 
 [sub_resource type="StandardMaterial3D" id="m_fence"]
 albedo_color = Color(0.3, 0.26, 0.2, 1)
@@ -150,10 +148,11 @@ light_energy = 0.8
 [node name="Site" type="Node3D" parent="."]
 
 [node name="Ground" type="CSGBox3D" parent="Site"]
+metadata/footstep_surface = &"dirt"
 position = Vector3(-2.9, -0.12, -8.5)
 size = Vector3(90, 0.2, 90)
 use_collision = true
-material = SubResource("m_ground")
+material = ExtResource("mat_grass")
 
 [node name="CourtyardAsphalt" type="CSGBox3D" parent="Site"]
 position = Vector3(-7.95, -0.03, -10.85)
@@ -219,6 +218,7 @@ rotation = Vector3(0, -1.5708, 0)
 position = Vector3(0, 1.05, 3)
 room_id = 1
 openable = true
+model_variant = 5
 
 [node name="Interior" parent="EastWing/Room01" instance=ExtResource("base")]
 
@@ -232,6 +232,7 @@ rotation = Vector3(0, -1.5708, 0)
 position = Vector3(0, 1.05, 3)
 room_id = 2
 openable = true
+model_variant = 5
 
 [node name="Interior" parent="EastWing/Room02" instance=ExtResource("base")]
 bedspread_color = Color(0.5, 0.38, 0.2, 1)
@@ -248,6 +249,7 @@ rotation = Vector3(0, -1.5708, 0)
 position = Vector3(0, 1.05, 3)
 room_id = 3
 openable = true
+model_variant = 5
 
 [node name="Interior" parent="EastWing/Room03" instance=ExtResource("base")]
 mirrored = true
@@ -266,6 +268,7 @@ curtains_closed = true
 position = Vector3(0, 1.05, 3)
 room_id = 4
 openable = true
+model_variant = 5
 
 [node name="Interior" parent="NorthWing/Room04" instance=ExtResource("base")]
 mirrored = true
@@ -282,6 +285,7 @@ curtains_closed = false
 position = Vector3(0, 1.05, 3)
 room_id = 5
 openable = true
+model_variant = 5
 
 [node name="Interior" parent="NorthWing/Room05" instance=ExtResource("base")]
 bedspread_color = Color(0.25, 0.32, 0.55, 1)
@@ -298,6 +302,7 @@ window_lit = true
 position = Vector3(0, 1.05, 3)
 room_id = 6
 openable = true
+model_variant = 5
 
 [node name="Interior" parent="NorthWing/Room06" instance=ExtResource("base")]
 mirrored = true
@@ -428,6 +433,7 @@ position = Vector3(-4, 1.05, 0)
 rotation = Vector3(0, 1.5708, 0)
 openable = true
 door_name = "Owner's Office"
+model_variant = 2
 
 [node name="LaundryDoorFrame" parent="Service/Doors" instance=ExtResource("frame")]
 position = Vector3(2, 0, 5.5)
@@ -438,6 +444,7 @@ position = Vector3(2, 1.05, 5.5)
 rotation = Vector3(0, 1.5708, 0)
 openable = true
 door_name = "Laundry"
+model_variant = 7
 
 [node name="StorageDoorFrame" parent="Service/Doors" instance=ExtResource("frame")]
 position = Vector3(-3, 0, 5.5)
@@ -448,6 +455,7 @@ position = Vector3(-3, 1.05, 5.5)
 rotation = Vector3(0, 1.5708, 0)
 openable = true
 door_name = "Storage"
+model_variant = 8
 
 [node name="ServiceDoorFrame" parent="Service/Doors" instance=ExtResource("frame")]
 position = Vector3(4, 0, 5.5)
@@ -458,6 +466,7 @@ position = Vector3(4, 1.05, 5.5)
 rotation = Vector3(0, -1.5708, 0)
 openable = true
 door_name = "Service Door"
+model_variant = 14
 
 [node name="Boundary" type="Node3D" parent="."]
 
@@ -646,6 +655,7 @@ position = Vector3(8.4, 0, 7.5)
 position = Vector3(9.2, 0, 7.5)
 
 [node name="PalletStack" type="CSGBox3D" parent="RearYard"]
+metadata/footstep_surface = &"wood"
 position = Vector3(6.8, 0.15, 7.2)
 size = Vector3(1, 0.3, 1)
 use_collision = true
@@ -1196,4 +1206,5 @@ position = Vector3(10, 0, 5.6)
 [node name="Sun" type="DirectionalLight3D" parent="." groups=["sun"]]
 rotation = Vector3(-0.9, 0.6, 0)
 shadow_enabled = true
-directional_shadow_max_distance = 60.0
+directional_shadow_mode = 1
+directional_shadow_max_distance = 40.0

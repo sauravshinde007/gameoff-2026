@@ -13,7 +13,7 @@ const SHADER: Shader = preload("res://assets/shaders/retro_screen.gdshader")
 			_rect.visible = enabled
 			_update_scaling()
 ## Height of the low-resolution picture in pixels. 240 is the PS1's usual; higher = sharper.
-@export_range(120, 1080) var lines: int = 400:
+@export_range(120, 1080) var lines: int = 540:
 	set(value):
 		lines = value
 		_apply(&"lines", float(screen_lines if _focus else value))
@@ -27,7 +27,7 @@ const SHADER: Shader = preload("res://assets/shaders/retro_screen.gdshader")
 	set(value):
 		color_bits = value
 		_apply(&"color_bits", value)
-@export_range(0.0, 1.0) var softness: float = 0.15:
+@export_range(0.0, 1.0) var softness: float = 0.05:
 	set(value):
 		softness = value
 		_apply(&"softness", value)
@@ -45,7 +45,8 @@ const SHADER: Shader = preload("res://assets/shaders/retro_screen.gdshader")
 		_apply(&"vignette", value)
 ## The 3D is rendered at this multiple of the low-res size and smoothed, so thin geometry does
 ## not sparkle when the picture is snapped to the pixel grid. 0 renders it at full resolution.
-@export_range(0.0, 4.0) var supersample: float = 2.0
+## 1.0 renders the 3D at exactly the low-res size (cheapest); 2.0 was the old, ~4x costlier value.
+@export_range(0.0, 4.0) var supersample: float = 1.0
 
 ## While the player is up close to an in-world screen (computer, CCTV monitor) the picture is
 ## drawn at this height with no softening or dither, so its text stays readable.

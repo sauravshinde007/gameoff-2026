@@ -10,6 +10,9 @@ extends Node3D
 ## Optional extras that make rooms feel individual.
 @export var suitcase: bool = false
 @export var armchair: bool = false
+## Furniture further than this from the camera is not drawn (renderer visibility range, so no CSG
+## rebuild and no collision change). 0 disables. Hides far rooms' contents and their shadow passes.
+@export var cull_distance: float = 10.0
 
 @onready var furniture: Node3D = $Furniture
 
@@ -19,6 +22,8 @@ func _ready() -> void:
 		$Furniture/Suitcase.queue_free()
 	if not armchair:
 		$Furniture/Armchair.queue_free()
+	if cull_distance > 0.0:
+		_set_visibility_range(furniture)
 	_tint($Furniture/Bed/Bedspread, bedspread_color)
 	_tint($Furniture/Rug/Mat, rug_color)
 	if mirrored:
@@ -34,3 +39,15 @@ func _tint(box: CSGBox3D, color: Color) -> void:
 	var mat: StandardMaterial3D = (box.material as StandardMaterial3D).duplicate()
 	mat.albedo_color = color
 	box.material = mat
+
+
+func _set_visibility_range(node: Node) -> void:
+	for child: Node in node.get_children():
+		if child.is_queued_for_deletion():
+			continue
+		if child is GeometryInstance3D:
+			var geo: GeometryInstance3D = child
+			geo.visibility_range_end = cull_distance
+			geo.visibility_range_end_margin = 1.0
+			geo.visibility_range_fade_mode = GeometryInstance3D.VISIBILITY_RANGE_FADE_DISABLED
+		_set_visibility_range(child)

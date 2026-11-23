@@ -3,12 +3,19 @@ extends Node3D
 ## Guest-room / entrance door. Static (locked, shows room status) unless `openable` is set.
 ## room_id > 0 = guest room (status from RoomManager). room_id <= 0 = entrance.
 
+## Emitted when the player uses the key action (see set_key_action). The shift scene decides
+## what happens (e.g. unlock at the start of the day, lock up at the end).
+signal key_requested(action: String, by: Node)
+
 @export var room_id: int = 0
 ## Prompt/message name for non-guest-room doors (office, laundry...). Empty = "Entrance" or "Room NN".
 @export var door_name: String = ""
 @export var door_size: Vector3 = Vector3(0.9, 2.1, 0.1)
 @export var handle_turn_degrees: float = 45.0
 @export var handle_turn_seconds: float = 0.6
+## Door model from assets/models/props/doors (door_01 .. door_15). 0 = plain wooden box leaf.
+## The model is stretched to door_size; the box leaf stays as the (invisible) collider.
+@export_range(0, 15) var model_variant: int = 0
 @export_group("Opening")
 ## When true, interacting swings the door open/closed instead of showing the locked message.
 @export var openable: bool = false
@@ -22,24 +29,35 @@ extends Node3D
 @onready var leaf: CSGBox3D = $Hinge/Leaf
 @onready var label: Label3D = $Hinge/Leaf/Label
 @onready var handle: Node3D = $Hinge/Leaf/Handle
-@onready var interactable: Interactable = $Interactable
-@onready var shape: CollisionShape3D = $Interactable/CollisionShape3D
+## Under the leaf, so the interaction box swings with the door (it can be closed while open).
+@onready var interactable: Interactable = $Hinge/Leaf/Interactable
+@onready var shape: CollisionShape3D = $Hinge/Leaf/Interactable/CollisionShape3D
+
+const DOOR_MODEL_PATH: String = "res://assets/models/props/doors/door_%02d.glb"
+## Variants whose knob is modelled on the left: turned 180 degrees so it sits on the handle side.
+const KNOB_LEFT_VARIANTS: Array[int] = [1, 2, 3, 4]
 
 var _handle_tween: Tween
 var _swing_tween: Tween
 var _is_open: bool = false
 ## +1 = swings away from the labelled (front) face, -1 = away from the back face.
 var _swing_sign: float = 1.0
+## Key lock set by the shift scene (reception front door). Locked doors never open for the player.
+var _key_locked: bool = false
+## Key action offered to the player ("Unlock", "Lock"); empty = none. Overrides the open/close prompt.
+var _key_action: String = ""
 
 
 func _ready() -> void:
 	_apply_size()
+	_apply_model()
 	if room_id > 0:
 		add_to_group(&"room_doors")
 	elif room_id == -1:
 		add_to_group(&"entrance_doors")
 	label.text = "%02d" % room_id
-	label.visible = room_id > 0
+	# Model doors carry no painted number (the room's wall plate shows it).
+	label.visible = room_id > 0 and model_variant <= 0
 	interactable.interacted.connect(_on_interacted)
 	RoomManager.room_status_changed.connect(_on_room_status_changed)
 	EventManager.flag_set.connect(_on_flag_set)
@@ -47,6 +65,8 @@ func _ready() -> void:
 
 
 func is_locked() -> bool:
+	if _key_locked:
+		return true
 	if not openable:
 		return true
 	# A guest's room stays locked while they have it. Guests open their own door through set_open().
@@ -70,6 +90,19 @@ func set_open(open: bool, opener: Node3D = null) -> void:
 	var target: float = deg_to_rad(open_degrees) * _swing_sign if open else 0.0
 	_swing_tween = create_tween()
 	_swing_tween.tween_property(hinge, "rotation:y", target, open_seconds)
+	_refresh_prompt()
+
+
+func set_key_locked(locked: bool) -> void:
+	_key_locked = locked
+	if locked:
+		set_open(false)
+	_refresh_prompt()
+
+
+## Offer a key action to the player instead of open/close. Interacting emits key_requested.
+func set_key_action(action: String) -> void:
+	_key_action = action
 	_refresh_prompt()
 
 
@@ -99,7 +132,46 @@ func _apply_size() -> void:
 	shape.shape = box
 
 
+func _apply_model() -> void:
+	if model_variant <= 0:
+		return
+	var scene: PackedScene = load(DOOR_MODEL_PATH % model_variant) as PackedScene
+	if scene == null:
+		push_warning("Door: missing model variant %d" % model_variant)
+		return
+	var model: Node3D = scene.instantiate() as Node3D
+	model.name = "Model"
+	model.set_script(RetroModel)
+	leaf.add_child(model)
+	var box: AABB = _mesh_aabb(model)
+	if box.size.x <= 0.0 or box.size.y <= 0.0 or box.size.z <= 0.0:
+		return
+	var fit: Basis = Basis.from_scale(door_size / box.size)
+	if model_variant in KNOB_LEFT_VARIANTS:
+		fit = Basis(Vector3.UP, PI) * fit
+	# Model origin is its bottom centre; the leaf origin is the door's centre.
+	model.transform = Transform3D(fit, Vector3(0.0, -door_size.y * 0.5, 0.0))
+	# Hide the plain box (and its knob) but keep its collision.
+	leaf.layers = 0
+	leaf.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+
+
+## Bounds of every mesh under `root`, in root's local space.
+func _mesh_aabb(root: Node3D) -> AABB:
+	var out: AABB = AABB()
+	var first: bool = true
+	var to_root: Transform3D = root.global_transform.affine_inverse()
+	for mi: Node in root.find_children("*", "MeshInstance3D", true, false):
+		var m: MeshInstance3D = mi as MeshInstance3D
+		var b: AABB = (to_root * m.global_transform) * m.get_aabb()
+		out = b if first else out.merge(b)
+		first = false
+	return out
+
+
 func _status_text() -> String:
+	if _key_action != "":
+		return "%s – %s" % [_display_name(), _key_action]
 	if not is_locked():
 		return "%s – %s" % [_display_name(), "Close" if _is_open else "Open"]
 	if room_id <= 0:
@@ -141,6 +213,9 @@ func _on_flag_set(flag: StringName) -> void:
 
 
 func _on_interacted(by: Node) -> void:
+	if _key_action != "":
+		key_requested.emit(_key_action, by)
+		return
 	if not is_locked():
 		set_open(not _is_open, by as Node3D)
 		return

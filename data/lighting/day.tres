@@ -1,31 +1,30 @@
-[gd_resource type="Resource" script_class="LightingPreset" format=3]
+[gd_resource type="Resource" script_class="LightingPreset" format=3 uid="uid://birtpir6vv2fo"]
 
-[ext_resource type="Script" path="res://scripts/resources/lighting_preset.gd" id="1_preset"]
-[ext_resource type="Texture2D" path="res://assets/textures/sky/summer_cumulus.png" id="2_sky"]
+[ext_resource type="Script" uid="uid://dqqicvbmm4cv2" path="res://scripts/resources/lighting_preset.gd" id="1_preset"]
+[ext_resource type="Texture2D" uid="uid://b8ghvnn62h7re" path="res://assets/textures/sky/summer_cumulus.png" id="2_sky"]
 
 [resource]
 script = ExtResource("1_preset")
 background_color = Color(0.62, 0.76, 0.9, 1)
-ambient_color = Color(0.72, 0.76, 0.85, 1)
-ambient_energy = 0.6
+ambient_color = Color(0.62, 0.68, 0.8, 1)
+ambient_energy = 0.32
 fog_color = Color(0.86, 0.88, 0.9, 1)
 fog_density = 0.9
-sky_panorama = ExtResource("2_sky")
-sky_energy = 1.0
-sky_fog_affect = 0.35
-grade_brightness = 1.0
-grade_contrast = 1.18
-grade_saturation = 1.25
-reception_light_color = Color(1, 0.9, 0.72, 1)
-reception_light_scale = 0.9
-hallway_light_scale = 0.8
-exterior_light_scale = 0.0
-retro_tint = Color(1, 0.98, 0.94, 1)
-retro_vignette = 0.3
-desk_lamp = false
-ambience = &"day_ambience"
 fog_depth_begin = 20.0
 fog_depth_end = 130.0
 fog_depth_curve = 1.6
+ssao_intensity = 2.2
+ssao_radius = 1.2
 sun_color = Color(1, 0.93, 0.8, 1)
-sun_energy = 1.5
+sun_energy = 2.2
+sky_panorama = ExtResource("2_sky")
+sky_fog_affect = 0.35
+grade_contrast = 1.18
+grade_saturation = 1.15
+retro_tint = Color(1, 0.98, 0.94, 1)
+retro_vignette = 0.42
+reception_light_color = Color(1, 0.9, 0.72, 1)
+reception_light_scale = 1.35
+hallway_light_scale = 1.4
+exterior_light_scale = 0.0
+ambience = &"day_ambience"

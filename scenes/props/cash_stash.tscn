@@ -1,0 +1,20 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/props/cash_stash.gd" id="1_cash"]
+[ext_resource type="Script" path="res://scripts/components/interactable.gd" id="2_inter"]
+
+[sub_resource type="BoxShape3D" id="Box_cash"]
+size = Vector3(0.7, 0.15, 0.3)
+
+[node name="CashStash" type="Node3D"]
+script = ExtResource("1_cash")
+
+[node name="Stacks" type="Node3D" parent="."]
+
+[node name="Interactable" type="Area3D" parent="."]
+script = ExtResource("2_inter")
+prompt_text = "Collect cash"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Interactable"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.06, 0.06)
+shape = SubResource("Box_cash")

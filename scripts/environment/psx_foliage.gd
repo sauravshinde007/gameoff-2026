@@ -8,6 +8,8 @@ extends Node3D
 @export var tint: Color = Color.WHITE
 ## Model-space trunk radius. 0 = no collision (outside the fence).
 @export var trunk_radius: float = 0.0
+## Plants further than this from the camera are not drawn (fog hides them by then). 0 = off.
+@export var cull_distance: float = 140.0
 
 static var _materials: Dictionary = {}
 
@@ -49,5 +51,7 @@ func _apply(node: Node, mat: StandardMaterial3D) -> void:
 		var mesh_node: MeshInstance3D = node
 		mesh_node.material_override = mat
 		mesh_node.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+		if cull_distance > 0.0:
+			mesh_node.visibility_range_end = cull_distance
 	for child: Node in node.get_children():
 		_apply(child, mat)

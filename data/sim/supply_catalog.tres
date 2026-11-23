@@ -62,11 +62,3 @@ carry_limit = 1
 [resource]
 script = ExtResource("1_cat")
 items = Array[ExtResource("2_item")]([SubResource("I_towels"), SubResource("I_pillows"), SubResource("I_soap"), SubResource("I_cleaning"), SubResource("I_fuel"), SubResource("I_bulbs"), SubResource("I_ice"), SubResource("I_coffee")])
-take_amount = 1
-max_purchase_quantity = 10
-clean_cost = {
-&"cleaning": 1,
-&"soap": 1,
-&"towels": 1
-}
-clean_seconds = 4.0

@@ -1,0 +1,8 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/props/mirror.gd" id="1_mirror"]
+
+; Working mirror: glass faces local +Z. The reflection viewport, camera, glass and frame are
+; built by the script (see Mirror). Rotate the node so +Z points into the room.
+[node name="Mirror" type="Node3D"]
+script = ExtResource("1_mirror")

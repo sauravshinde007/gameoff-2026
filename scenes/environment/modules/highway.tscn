@@ -37,11 +37,13 @@ albedo_color = Color(0.3, 0.3, 0.32, 1)
 [node name="Highway" type="Node3D"]
 
 [node name="Road" type="CSGBox3D" parent="."]
+metadata/footstep_surface = &"stone"
 position = Vector3(-2.9, -0.06, 18)
 size = Vector3(100, 0.1, 8.4)
 material = SubResource("p_asphalt")
 
 [node name="Apron" type="CSGBox3D" parent="."]
+metadata/footstep_surface = &"stone"
 position = Vector3(-14, -0.06, 12)
 size = Vector3(8, 0.1, 4)
 material = SubResource("p_asphalt")
